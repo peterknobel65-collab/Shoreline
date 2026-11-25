@@ -385,6 +385,7 @@
     storm: { pos: [-26, 9, -26], target: [-2, 2.2, 2], fov: 46 }
   };
   function camera(view, mode, aspect) {
+    T = root.THREE;
     var v = VIEWS[view], p = v.pos.slice();
     if (v.eye) p[1] = height(p[0], p[2], mode) + v.eye;
     var cam = new T.PerspectiveCamera(v.fov, aspect || 1.6, 0.1, 600);

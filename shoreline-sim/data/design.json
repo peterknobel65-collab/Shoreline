@@ -86,8 +86,8 @@
   "mcRejected": 19,
   "target": "bank within 2 m of today through 2076 in >= 90% of Monte Carlo futures"
  },
- "screened": 384,
- "passCentral": 213,
+ "screened": 84,
+ "passCentral": 83,
  "doNothing": {
   "trajectory": [
    {
@@ -303,332 +303,332 @@
   "label": "Recommended (value-engineered)",
   "design": {
    "crestRaise": 0.8,
-   "initialYd3": 1250,
-   "topUpYd3": 499,
-   "trigger": 10,
+   "initialYd3": 1000,
+   "topUpYd3": 750,
+   "trigger": 12,
    "backpass": 0,
    "ownerMonitoring": true
   },
   "retreat2076": 0,
   "reliability": {
-   "pWithin2m": 0.7,
-   "pHouseSafe": 0.93,
+   "pWithin2m": 0.93,
+   "pHouseSafe": 0.98,
    "median": 0,
-   "p90": 7.076564429043117
+   "p90": 0.08784805447797674
   },
   "trajectory": [
    {
     "year": 2026,
     "retreat": 0,
-    "buffer": 9.9,
+    "buffer": 8.5,
     "topUp": false
    },
    {
     "year": 2027,
     "retreat": 0,
-    "buffer": 11,
+    "buffer": 9.7,
     "topUp": false
    },
    {
     "year": 2028,
     "retreat": 0,
-    "buffer": 11,
-    "topUp": false
+    "buffer": 13.3,
+    "topUp": true
    },
    {
     "year": 2029,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2030,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2031,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2032,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2033,
     "retreat": 0,
-    "buffer": 10.8,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2034,
     "retreat": 0,
-    "buffer": 10.8,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2035,
     "retreat": 0,
-    "buffer": 10.8,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2036,
     "retreat": 0,
-    "buffer": 10.7,
+    "buffer": 13.3,
     "topUp": false
    },
    {
     "year": 2037,
     "retreat": 0,
-    "buffer": 10.7,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2038,
     "retreat": 0,
-    "buffer": 10.6,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2039,
     "retreat": 0,
-    "buffer": 10.6,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2040,
     "retreat": 0,
-    "buffer": 10.6,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2041,
     "retreat": 0,
-    "buffer": 10.5,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2042,
     "retreat": 0,
-    "buffer": 10.4,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2043,
     "retreat": 0,
-    "buffer": 10.4,
+    "buffer": 13.2,
     "topUp": false
    },
    {
     "year": 2044,
     "retreat": 0,
-    "buffer": 10.3,
+    "buffer": 13.1,
     "topUp": false
    },
    {
     "year": 2045,
     "retreat": 0,
-    "buffer": 10.3,
+    "buffer": 13.1,
     "topUp": false
    },
    {
     "year": 2046,
     "retreat": 0,
-    "buffer": 10.2,
+    "buffer": 13.1,
     "topUp": false
    },
    {
     "year": 2047,
     "retreat": 0,
-    "buffer": 10.1,
+    "buffer": 13.1,
     "topUp": false
    },
    {
     "year": 2048,
     "retreat": 0,
-    "buffer": 10,
+    "buffer": 13,
     "topUp": false
    },
    {
     "year": 2049,
     "retreat": 0,
-    "buffer": 9.9,
+    "buffer": 13,
     "topUp": false
    },
    {
     "year": 2050,
     "retreat": 0,
-    "buffer": 12.3,
-    "topUp": true
+    "buffer": 13,
+    "topUp": false
    },
    {
     "year": 2051,
     "retreat": 0,
-    "buffer": 12.2,
+    "buffer": 12.9,
     "topUp": false
    },
    {
     "year": 2052,
     "retreat": 0,
-    "buffer": 12.1,
+    "buffer": 12.9,
     "topUp": false
    },
    {
     "year": 2053,
     "retreat": 0,
-    "buffer": 12,
+    "buffer": 12.9,
     "topUp": false
    },
    {
     "year": 2054,
     "retreat": 0,
-    "buffer": 11.9,
+    "buffer": 12.8,
     "topUp": false
    },
    {
     "year": 2055,
     "retreat": 0,
-    "buffer": 11.8,
+    "buffer": 12.8,
     "topUp": false
    },
    {
     "year": 2056,
     "retreat": 0,
-    "buffer": 11.6,
+    "buffer": 12.8,
     "topUp": false
    },
    {
     "year": 2057,
     "retreat": 0,
-    "buffer": 11.5,
+    "buffer": 12.6,
     "topUp": false
    },
    {
     "year": 2058,
     "retreat": 0,
-    "buffer": 11.3,
+    "buffer": 12.6,
     "topUp": false
    },
    {
     "year": 2059,
     "retreat": 0,
-    "buffer": 11.1,
+    "buffer": 12.4,
     "topUp": false
    },
    {
     "year": 2060,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 12.2,
     "topUp": false
    },
    {
     "year": 2061,
     "retreat": 0,
-    "buffer": 10.7,
+    "buffer": 12.1,
     "topUp": false
    },
    {
     "year": 2062,
     "retreat": 0,
-    "buffer": 10.4,
+    "buffer": 11.9,
     "topUp": false
    },
    {
     "year": 2063,
     "retreat": 0,
-    "buffer": 10,
-    "topUp": false
+    "buffer": 15.4,
+    "topUp": true
    },
    {
     "year": 2064,
     "retreat": 0,
-    "buffer": 9.8,
+    "buffer": 15.4,
     "topUp": false
    },
    {
     "year": 2065,
     "retreat": 0,
-    "buffer": 11.9,
-    "topUp": true
+    "buffer": 15.3,
+    "topUp": false
    },
    {
     "year": 2066,
     "retreat": 0,
-    "buffer": 11.6,
+    "buffer": 15.2,
     "topUp": false
    },
    {
     "year": 2067,
     "retreat": 0,
-    "buffer": 11.4,
+    "buffer": 15.1,
     "topUp": false
    },
    {
     "year": 2068,
     "retreat": 0,
-    "buffer": 11,
+    "buffer": 14.9,
     "topUp": false
    },
    {
     "year": 2069,
     "retreat": 0,
-    "buffer": 10.5,
+    "buffer": 14.7,
     "topUp": false
    },
    {
     "year": 2070,
     "retreat": 0,
-    "buffer": 10.1,
+    "buffer": 14.6,
     "topUp": false
    },
    {
     "year": 2071,
     "retreat": 0,
-    "buffer": 9.3,
+    "buffer": 14.4,
     "topUp": false
    },
    {
     "year": 2072,
     "retreat": 0,
-    "buffer": 11.4,
-    "topUp": true
+    "buffer": 14.1,
+    "topUp": false
    },
    {
     "year": 2073,
     "retreat": 0,
-    "buffer": 10.9,
+    "buffer": 13.9,
     "topUp": false
    },
    {
     "year": 2074,
     "retreat": 0,
-    "buffer": 10.1,
+    "buffer": 13.5,
     "topUp": false
    },
    {
     "year": 2075,
     "retreat": 0,
-    "buffer": 9.3,
+    "buffer": 13.1,
     "topUp": false
    }
   ],
   "topUps": {
-   "events": 3,
-   "importedYd3": 1497,
+   "events": 2,
+   "importedYd3": 1500,
    "backpassedYd3": 0
   },
-  "sandFirstYd3": 1476,
+  "sandFirstYd3": 1226,
   "duneYd3": 226,
   "plantedAreaM2": 330,
   "capital": {
-   "low": 366540,
-   "high": 696480,
+   "low": 321540,
+   "high": 621480,
    "items": [
     {
      "item": "Certified shoreline & beach survey",
@@ -652,8 +652,8 @@
     },
     {
      "item": "Compatible sand (beach + dune), delivered & placed",
-     "low": 227400,
-     "high": 381000
+     "low": 189900,
+     "high": 318500
     },
     {
      "item": "Native planting",
@@ -682,14 +682,14 @@
     },
     {
      "item": "Contingency (20%)",
-     "low": 61090,
-     "high": 116080
+     "low": 53590,
+     "high": 103580
     }
    ]
   },
   "npv50": {
-   "low": 540996,
-   "high": 1064839
+   "low": 561969,
+   "high": 1100862
   }
  },
  "earlier": {
@@ -1110,11 +1110,11 @@
     "interval": 0,
     "backpass": 0,
     "ownerMonitoring": false,
-    "trigger": 10
+    "trigger": 12
    },
-   "npvLow": 571802,
-   "npvHigh": 1130743,
-   "pWithin2m": 0.48,
+   "npvLow": 585382,
+   "npvHigh": 1154836,
+   "pWithin2m": 0.71,
    "events": 5
   },
   {
@@ -1126,15 +1126,15 @@
     "interval": 0,
     "backpass": 0,
     "ownerMonitoring": true,
-    "trigger": 10
+    "trigger": 12
    },
-   "npvLow": 554999,
-   "npvHigh": 1090011,
-   "pWithin2m": 0.48,
+   "npvLow": 568579,
+   "npvHigh": 1114103,
+   "pWithin2m": 0.71,
    "events": 5
   },
   {
-   "name": "+ Recycle drifted sand (backpassing, 30%)",
+   "name": "Tested, not adopted: recycle drifted sand (30%)",
    "d": {
     "crestRaise": 0.6,
     "initialYd3": 1500,
@@ -1142,197 +1142,169 @@
     "interval": 0,
     "backpass": 0.3,
     "ownerMonitoring": true,
-    "trigger": 10
+    "trigger": 12
    },
-   "npvLow": 555804,
-   "npvHigh": 1096208,
-   "pWithin2m": 0.28,
-   "events": 7
+   "npvLow": 592206,
+   "npvHigh": 1173150,
+   "pWithin2m": 0.41,
+   "events": 12
   },
   {
-   "name": "+ Right-size volumes (optimised)",
+   "name": "+ Right-size sand volumes (recommended)",
    "d": {
     "crestRaise": 0.8,
-    "initialYd3": 1250,
-    "topUpYd3": 499,
-    "trigger": 10,
+    "initialYd3": 1000,
+    "topUpYd3": 750,
+    "trigger": 12,
     "backpass": 0,
     "ownerMonitoring": true
    },
-   "npvLow": 540996,
-   "npvHigh": 1064839,
-   "pWithin2m": 0.7,
-   "events": 3
+   "npvLow": 561969,
+   "npvHigh": 1100862,
+   "pWithin2m": 0.93,
+   "events": 2
   }
  ],
  "shortlist": [
   {
    "d": {
     "crestRaise": 0.8,
-    "initialYd3": 1250,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0,
-    "ownerMonitoring": true
-   },
-   "npvLow": 540996,
-   "npvHigh": 1064839,
-   "pWithin2m": 0.7,
-   "pHouseSafe": 0.93
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 1250,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0,
-    "ownerMonitoring": false
-   },
-   "npvLow": 557799,
-   "npvHigh": 1105572,
-   "pWithin2m": 0.7,
-   "pHouseSafe": 0.93
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
     "initialYd3": 1000,
-    "topUpYd3": 499,
-    "trigger": 10,
+    "topUpYd3": 750,
+    "trigger": 12,
     "backpass": 0,
     "ownerMonitoring": true
    },
-   "npvLow": 558803,
-   "npvHigh": 1098264,
-   "pWithin2m": 0.69,
-   "pHouseSafe": 0.93
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 750,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0,
-    "ownerMonitoring": true
-   },
-   "npvLow": 536649,
-   "npvHigh": 1062703,
-   "pWithin2m": 0.66,
-   "pHouseSafe": 0.9
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 750,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0,
-    "ownerMonitoring": false
-   },
-   "npvLow": 553452,
-   "npvHigh": 1103436,
-   "pWithin2m": 0.66,
-   "pHouseSafe": 0.9
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 1500,
-    "topUpYd3": 400,
-    "trigger": 10,
-    "backpass": 0,
-    "ownerMonitoring": true
-   },
-   "npvLow": 557107,
-   "npvHigh": 1090744,
-   "pWithin2m": 0.65,
-   "pHouseSafe": 0.92
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 1000,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0.3,
-    "ownerMonitoring": true
-   },
-   "npvLow": 557445,
-   "npvHigh": 1100416,
-   "pWithin2m": 0.65,
-   "pHouseSafe": 0.9
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 1250,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0.3,
-    "ownerMonitoring": true
-   },
-   "npvLow": 563387,
-   "npvHigh": 1106634,
-   "pWithin2m": 0.65,
-   "pHouseSafe": 0.92
-  },
-  {
-   "d": {
-    "crestRaise": 0.8,
-    "initialYd3": 750,
-    "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0.3,
-    "ownerMonitoring": true
-   },
-   "npvLow": 560925,
-   "npvHigh": 1109892,
-   "pWithin2m": 0.64,
-   "pHouseSafe": 0.89
+   "npvLow": 561969,
+   "npvHigh": 1100862,
+   "pWithin2m": 0.93,
+   "pHouseSafe": 0.98
   },
   {
    "d": {
     "crestRaise": 0.8,
     "initialYd3": 1500,
     "topUpYd3": 499,
-    "trigger": 10,
-    "backpass": 0.3,
+    "trigger": 12,
+    "backpass": 0,
     "ownerMonitoring": true
    },
-   "npvLow": 557686,
-   "npvHigh": 1092625,
-   "pWithin2m": 0.63,
-   "pHouseSafe": 0.91
+   "npvLow": 570523,
+   "npvHigh": 1113130,
+   "pWithin2m": 0.89,
+   "pHouseSafe": 1
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 499,
+    "trigger": 12,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 569700,
+   "npvHigh": 1117075,
+   "pWithin2m": 0.88,
+   "pHouseSafe": 0.96
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1500,
+    "topUpYd3": 750,
+    "trigger": 12,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 572458,
+   "npvHigh": 1115071,
+   "pWithin2m": 0.95,
+   "pHouseSafe": 1
   },
   {
    "d": {
     "crestRaise": 0.8,
     "initialYd3": 1250,
-    "topUpYd3": 400,
-    "trigger": 10,
+    "topUpYd3": 750,
+    "trigger": 12,
     "backpass": 0,
     "ownerMonitoring": true
    },
-   "npvLow": 546051,
-   "npvHigh": 1074776,
-   "pWithin2m": 0.62,
-   "pHouseSafe": 0.92
+   "npvLow": 596554,
+   "npvHigh": 1158074,
+   "pWithin2m": 0.96,
+   "pHouseSafe": 1
   },
   {
    "d": {
     "crestRaise": 0.8,
     "initialYd3": 1000,
     "topUpYd3": 400,
-    "trigger": 10,
+    "trigger": 15,
     "backpass": 0,
     "ownerMonitoring": true
    },
-   "npvLow": 556113,
-   "npvHigh": 1095537,
-   "pWithin2m": 0.62,
-   "pHouseSafe": 0.9
+   "npvLow": 611411,
+   "npvHigh": 1191707,
+   "pWithin2m": 0.93,
+   "pHouseSafe": 0.95
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 250,
+    "trigger": 15,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 615185,
+   "npvHigh": 1205580,
+   "pWithin2m": 0.89,
+   "pHouseSafe": 0.93
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 499,
+    "trigger": 15,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 627453,
+   "npvHigh": 1214091,
+   "pWithin2m": 0.99,
+   "pHouseSafe": 1
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 250,
+    "trigger": 15,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 625205,
+   "npvHigh": 1218518,
+   "pWithin2m": 0.92,
+   "pHouseSafe": 0.96
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 750,
+    "trigger": 15,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 629220,
+   "npvHigh": 1215714,
+   "pWithin2m": 0.98,
+   "pHouseSafe": 0.98
   }
  ]
 }
