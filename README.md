@@ -71,3 +71,5 @@ This is a planning tool, not a stamped engineering design.
 - `shoreline-sim/plan.html` – the restoration design (renders, engineering, costs, build plan)
 - `shoreline-sim/tools/optimize.js` – searches design combinations and prices them (`data/design.json`)
 - `shoreline-sim/render/scene.js` + `tools/render.js` – 3D site model and before/after renders
+- `shoreline-sim/tools/dem.py`, `grading.py` – 2023 lidar elevation grid and the designed grading surface
+- `shoreline-sim/tools/cad.py` – concept drawings: `cad/*.pdf` (7 sheets) and `cad/*.dxf` (UTM zone 4N)

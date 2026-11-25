@@ -1,39 +1,41 @@
-// Still renders of the 3D site model (before / after) using headless Chromium.
-// Usage: node shoreline-sim/tools/render.js <path-to-three.min.js>
-// Writes shoreline-sim/img/render_<view>_<mode>.jpg
+// Still renders of the 3D site model (before / after, plus a storm view).
+// Usage: node shoreline-sim/tools/render.js <path-to-three.min.js> [stormTWL]
+// Needs data/grading.json (tools/cad.py). Writes shoreline-sim/img/render_<view>_<mode>.jpg
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
 const THREE_JS = process.argv[2];
-const SCENE_JS = path.join(__dirname, '..', 'render', 'scene.js');
-const OUT = path.join(__dirname, '..', 'img');
+const STORM = Number(process.argv[3] || 3.3);
+const ROOT = path.join(__dirname, '..');
+const grid = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'grading.json'), 'utf8')).grid;
 
 (async () => {
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
   page.on('pageerror', (e) => console.error('pageerror', e.message));
+  page.on('console', (m) => { if (m.type() === 'error') console.error(m.text()); });
   await page.setContent('<body style="margin:0"><canvas id="c" width="1600" height="1000"></canvas></body>');
   await page.addScriptTag({ content: fs.readFileSync(THREE_JS, 'utf8') });
-  await page.addScriptTag({ content: fs.readFileSync(SCENE_JS, 'utf8') });
-  for (const view of ['aerial', 'beach', 'dune']) {
+  await page.addScriptTag({ content: fs.readFileSync(path.join(ROOT, 'render', 'scene.js'), 'utf8') });
+  await page.evaluate((g) => ShoreScene.setGrid(g), grid);
+  for (const view of ['beach', 'aerial', 'dune', 'lanai']) {
     for (const mode of ['before', 'after']) {
-      const data = await page.evaluate(([view, mode]) => {
+      const data = await page.evaluate(([view, mode, storm]) => {
         const T = THREE, canvas = document.getElementById('c');
         const r = new T.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
         r.setSize(1600, 1000, false); r.shadowMap.enabled = true; r.shadowMap.type = T.PCFSoftShadowMap;
-        r.outputEncoding = T.sRGBEncoding; r.toneMapping = T.NoToneMapping;
-        const scene = ShoreScene.build(mode), v = ShoreScene.VIEWS[view];
-        const cam = new T.PerspectiveCamera(view === 'beach' ? 55 : 45, 1.6, 0.1, 500);
-        cam.position.set(...v.pos); cam.lookAt(new T.Vector3(...v.target));
+        r.outputEncoding = T.sRGBEncoding;
+        const scene = ShoreScene.build(mode, view === 'storm' ? { storm } : {});
+        const cam = ShoreScene.camera(view, mode, 1.6);
         r.render(scene, cam);
         const url = canvas.toDataURL('image/jpeg', 0.86);
         r.dispose();
         return url;
-      }, [view, mode]);
-      const file = path.join(OUT, `render_${view}_${mode}.jpg`);
+      }, [view, mode, STORM]);
+      const file = path.join(ROOT, 'img', `render_${view}_${mode}.jpg`);
       fs.writeFileSync(file, Buffer.from(data.split(',')[1], 'base64'));
-      console.log('wrote', file);
+      console.log('wrote', path.basename(file));
     }
   }
   await browser.close();

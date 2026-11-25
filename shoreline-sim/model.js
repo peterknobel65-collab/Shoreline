@@ -31,14 +31,14 @@
 
   var DEFAULT_SITE = {
     shoreNormal: 350,       // deg true the beach faces (UH/USGS transects 596-600 run 170 deg)
-    reefTransmission: 0.5,  // share of refracted offshore Hs that reaches the beach
+    reefTransmission: 0.47, // share of refracted offshore Hs reaching the beach; joint calibration window 0.42-0.52 (measured retreat + intact lawn)
     foreshoreSlope: 0.09,   // tan(beta) of the beach face (2023 lidar: 0 to +1 m over ~11 m)
     runupCal: 1.0,          // multiplier on Stockdon R2%
     toeElev: 1.5,           // m above MSL, base of the bank (lidar 2023 ~+1.7, lowered since per Nov 2026 photos)
     crestElev: 2.9,         // m above MSL, top edge of the bank at 461 (lidar 2023, transect 599)
     houseDistance: 11,      // m, bank edge to roof edge of the house (imagery Jan 2026 on transect 599)
     pocketLength: 110,      // m, sandy shoreline between the two revetments
-    frontageLength: 34,     // m, unarmoured frontage in front of the house
+    frontageLength: 30,     // m, unarmoured frontage in front of the house (2023 lidar)
     Cs: 1.7e-4,             // Larson et al. (2004) wave-impact coefficient for loose sand
     scarpFactor: 0.1,       // erodibility of the cohesive, rooted scarp relative to sand (calibrated)
     profileLoss: 0.3,       // share of placed sand that settles into the nearshore profile
@@ -58,7 +58,7 @@
     vegetation: 0.3,        // 0..1 cover x maturity of deep-rooted native dune plants
     vegEffect: 0.4,         // max fractional cut in scarp erosion from roots (collision regime)
     nourishVolume: 0,       // m^3 of compatible sand placed
-    nourishLength: 34,      // m of shoreline it is spread along
+    nourishLength: 30,      // m of shoreline it is spread along
     coirHeight: 0,          // m, height of coir (coconut-fibre) envelopes at the toe
     coirLifeHours: 40,      // hours of direct wave attack before they are torn open
     bagHeight: 0,           // m, height of temporary geotextile sand bags at the toe
@@ -278,32 +278,47 @@
    * optionally renourishes / replaces toe protection every N years.
    */
   function project(siteIn, designIn, seasons, p) {
+    // Top-up policies:
+    //   renourishEvery N      fixed interval
+    //   trigger T (m^3/m)     adaptive: after the summer survey, top up when the sand in front
+    //                         of the bank (berm + placed) is below T, at most once per minGap years
+    //   backpassFrac f        share of placed sand that has drifted along the pocket which is
+    //                         pushed back in front instead of buying new sand
+    // `order` (array of season indices) lets Monte Carlo runs shuffle the winters.
     p = extend({ years: 30, startYear: 2026, slr2100: 0.98, renourishEvery: 0,
-                 maintainToe: true }, p);
+                 maintainToe: true, trigger: 0, minGap: 2, backpassFrac: 0, order: null }, p);
     var site = extend(DEFAULT_SITE, siteIn), design = extend(DEFAULT_DESIGN, designIn);
-    var st = initState(site, design), out = [];
+    var st = initState(site, design), out = [], last = 0;
+    var len = Math.max(1, Math.min(design.nourishLength, site.pocketLength));
     for (var y = 0; y < p.years; y++) {
-      var yr = p.startYear + y;
+      var yr = p.startYear + y, ev = null;
       var s2 = extend(site, { slr: site.slr + slrAt(yr, p.slr2100, p.startYear) });
       if (y > 0) {
         var back = Math.min(st.pool, Math.max(0, site.naturalBermMax - st.vNat));
         st.vNat += back; st.pool -= back;                  // summer berm rebuilding
         if (p.maintainToe) { st.coirUsed = 0; st.bagUsed = 0; }
         var topUp = p.topUpVolume != null ? p.topUpVolume : design.nourishVolume;
-        if (p.renourishEvery > 0 && y % p.renourishEvery === 0 && topUp > 0) {
-          var len = Math.max(1, Math.min(design.nourishLength, site.pocketLength));
-          var add = topUp * (1 - site.profileLoss);
-          st.nTotal += add;
-          st.nFront += add / len;
+        var due = topUp > 0 && (
+          (p.renourishEvery > 0 && y % p.renourishEvery === 0) ||
+          (p.trigger > 0 && st.vNat + st.nFront < p.trigger && y - last >= p.minGap));
+        if (due) {
+          // backpass: sand that spread beyond the frontage, pushed back (no new purchase)
+          var spread = Math.max(0, st.nTotal - st.nFront * len);
+          var bp = Math.min(topUp, spread * p.backpassFrac);
+          var imported = topUp - bp;
+          st.nTotal += imported * (1 - site.profileLoss);
+          st.nFront += (imported * (1 - site.profileLoss) + bp) / len;
+          ev = { imported: imported, backpassed: bp };
+          last = y;
         }
       }
-      var season = seasons[y % seasons.length];
+      var season = seasons[p.order ? p.order[y % p.order.length] : y % seasons.length];
       for (var i = 0; i < season.hs.length; i++) {
         var d = unpack(season, i);
         step(s2, design, st, d.hs, d.tp, d.dir, d.wl);
       }
-      out.push({ year: yr, slr: s2.slr, retreat: st.retreat,
-                 margin: site.houseDistance - st.retreat, season: season.name });
+      out.push({ year: yr, slr: s2.slr, retreat: st.retreat, buffer: st.vNat + st.nFront,
+                 margin: site.houseDistance - st.retreat, season: season.name, topUp: ev });
     }
     return out;
   }
@@ -330,7 +345,34 @@
     return Math.exp(0.5 * (lo + hi));
   }
 
+  /**
+   * Morphological calibration of wave transmission over the reef: choose the
+   * reef factor so the median winter-maximum total water level equals the
+   * elevation of the vegetated bank top (vegetation grows up to where the
+   * largest waves of a typical year reach). Monotonic, so bisection works.
+   */
+  function calibrateReef(siteIn, seasons, targetMaxTwl) {
+    var lo = 0.1, hi = 1.0;
+    function medMax(rt) {
+      var site = extend(extend(DEFAULT_SITE, siteIn), { reefTransmission: rt }), mx = [];
+      seasons.forEach(function (s) {
+        var m = -9;
+        for (var i = 0; i < s.hs.length; i++) {
+          var d = unpack(s, i);
+          if (!(d.hs >= 0) || !(d.wl > -9) || !(d.dir >= 0) || !(d.tp > 0)) continue;
+          var t = hydro(site, d.hs, d.tp, d.dir, d.wl).twl; if (t > m) m = t;
+        }
+        mx.push(m);
+      });
+      mx.sort(function (a, b) { return a - b; });
+      return mx[Math.floor(mx.length / 2)];
+    }
+    for (var k = 0; k < 30; k++) { var mid = (lo + hi) / 2; if (medMax(mid) < targetMaxTwl) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+
   return {
+    calibrateReef: calibrateReef,
     calibrateScarp: calibrateScarp,
     DEFAULT_SITE: DEFAULT_SITE, DEFAULT_DESIGN: DEFAULT_DESIGN,
     refraction: refraction, runupStockdon: runupStockdon, diffusivity: diffusivity,

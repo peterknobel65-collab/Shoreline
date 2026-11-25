@@ -93,37 +93,51 @@ tr.rec td { background: var(--water-soft) }
 .warnbox { border-left: 3px solid var(--warn); padding: 4px 0 4px 14px }
 footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 14px }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
+.sheets { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px }
+.sheets button { padding: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: #fff; cursor: zoom-in; display: grid; text-align: left }
+.sheets img { width: 100%; height: auto; display: block; aspect-ratio: 17 / 11; object-fit: cover }
+.sheets span { font: 500 .78rem var(--mono); padding: 6px 10px; color: #1b2622; background: #fff }
+#lightbox { position: fixed; inset: 0; background: rgba(10,16,14,.88); display: grid; place-items: center; z-index: 50; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) }
+#lightbox img { max-width: 100%; max-height: 88vh; background: #fff; border-radius: 6px }
+#lightbox button { position: absolute; top: max(14px, env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px)); font: 600 .9rem var(--body); padding: 8px 14px; border-radius: 99px; border: 0; background: #fff; color: #1b2622; cursor: pointer }
+.ladder { display: grid; gap: 8px }
+.rung { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr) auto; gap: 12px; align-items: center; font-size: .88rem }
+@media (max-width: 640px) { .rung { grid-template-columns: 1fr; gap: 4px } }
+.bar { height: 18px; border-radius: 4px; background: var(--rule); position: relative; overflow: hidden }
+.bar i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); opacity: .85 }
+.bar b { position: absolute; top: 0; bottom: 0; background: var(--accent); opacity: .35 }
+.rung .v { font: 500 .82rem var(--mono); white-space: nowrap }
 </style>
 
 <div class="wrap">
 <header class="stack">
-  <span class="eyebrow">461 Laulea Place · Spreckelsville, Maui · Design concept, November 2026</span>
+  <span class="eyebrow">461 Laulea Place · Spreckelsville, Maui · Concept design v2 · November 2026</span>
   <h1>Laulea Living Shoreline</h1>
-  <p class="prose">A soft, planted shoreline for the eroding beachfront at 461 Laulea Place. A sand berm and vegetated foredune rebuild the beach in front of the bank. A low planted dune on the lawn holds back storm overwash. Native coastal plants, shade trees and a sand path make it a place to spend time. No walls or rocks, so it fits Hawaiʻi's ban on private shoreline hardening at sand beaches.</p>
+  <p class="prose">A soft, planted shoreline for the eroding beachfront at 461 Laulea Place, designed on the 2023 USGS lidar of your lot. A sand berm takes the winter swell. A planted dune rising to +3.7 m keeps waves off the lawn. Native plants, two kou shade trees, a sand path and an open view from the lanai make it a place to enjoy. No walls or rocks, as Hawaiʻi's ban on private shoreline hardening at sand beaches requires.</p>
   <div class="facts" id="facts"></div>
   <nav class="toc" aria-label="Sections">
-    <a href="#see">1 · See it</a><a href="#design">2 · The design</a><a href="#engineering">3 · Engineering</a>
-    <a href="#materials">4 · Materials &amp; planting</a><a href="#cost">5 · Cost</a><a href="#build">6 · Build plan</a><a href="#code">7 · Code &amp; permits</a>
+    <a href="#see">1 · See it</a><a href="#design">2 · Design</a><a href="#drawings">3 · Drawings</a><a href="#engineering">4 · Engineering</a>
+    <a href="#value">5 · Value engineering</a><a href="#materials">6 · Materials</a><a href="#cost">7 · Cost</a><a href="#build">8 · Build plan</a><a href="#code">9 · Code</a>
   </nav>
 </header>
 
 <section id="see" class="stack">
   <span class="eyebrow">1 · Renders</span>
   <h2>Before and after</h2>
-  <p class="prose muted">Drag across each image. These are renders of a 3D model built from the August 2023 lidar of your lot: real ground heights, the real bank position and the real house setback. The plants and buildings are simplified shapes. A landscape architect's illustrations would show the finished look in more detail.</p>
+  <p class="prose muted">Drag across each image. The ground, bank, berm and dune are the real 2023 lidar surface and the designed grading surface. The house outline comes from the January 2026 aerial. Plants are placed by planting zone, so their positions match the planting plan, but they are simplified shapes.</p>
   <div class="views" id="viewBtns" role="group" aria-label="Camera view">
     <button type="button" data-v="beach" aria-pressed="true">From the beach</button>
+    <button type="button" data-v="dune" aria-pressed="false">On the path</button>
+    <button type="button" data-v="lanai" aria-pressed="false">From the lanai</button>
     <button type="button" data-v="aerial" aria-pressed="false">Aerial</button>
-    <button type="button" data-v="dune" aria-pressed="false">Along the dune</button>
   </div>
   <div class="compare" id="compare" style="--cut: 50%">
-    <img class="before" id="imgBefore" src="img/render_beach_before.jpg" alt="Today: eroded bank, scattered boulders, narrow beach" width="1600" height="1000">
-    <img class="after" id="imgAfter" src="img/render_beach_after.jpg" alt="After: planted foredune, sand berm, path and shade trees" width="1600" height="1000">
+    <img class="before" id="imgBefore" src="img/render_beach_before.jpg" alt="Today: eroded bank, scattered boulders, narrow upper beach" width="1600" height="1000">
+    <img class="after" id="imgAfter" src="img/render_beach_after.jpg" alt="After: sand berm, planted dune, path and kou trees" width="1600" height="1000">
     <div class="handle"></div>
     <span class="tag l">Today</span><span class="tag r">After</span>
     <input type="range" id="cut" min="0" max="100" value="50" aria-label="Slide between today and after">
   </div>
-
   <div class="stack">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center">
       <h3>Walk around the model</h3>
@@ -136,177 +150,146 @@ footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule
 
 <section id="design" class="stack">
   <span class="eyebrow">2 · The design</span>
-  <h2>Five zones from the water to the house</h2>
-  <div class="zones">
-    <div class="zone" style="--c: var(--sand-deep)"><span class="who">A · State beach · OCCL permit</span><b>Sand berm</b><span class="small">1,500 yd³ of beach-compatible carbonate sand builds a berm at +2.0 m above sea level, 6–8 m wide in front of the bank. It is the sacrificial buffer: winter swells take sand from here instead of from your bank. Topped up with 250 yd³ every three years.</span></div>
-    <div class="zone" style="--c: #8fae4a"><span class="who">B · Bank face · OCCL / County</span><b>Vegetated foredune</b><span class="small">The vertical scarp is buried under a 1:3 sand slope rising from the berm to the lawn edge. It is densely planted with ʻakiʻaki grass and pōhuehue, whose runners trap blowing sand and knit the surface together.</span></div>
-    <div class="zone" style="--c: var(--leaf)"><span class="who">C · Your lawn · County SMA</span><b>Planted lawn dune</b><span class="small">A low dune 0.6 m high and 5.4 m wide, with a 1.5 m crest, raises the lowest bank top on this stretch from +2.9 to +3.5 m. Naupaka kahakai on the crest, silver hinahina and golden ʻilima on the back slope.</span></div>
-    <div class="zone" style="--c: var(--flower)"><span class="who">D · Access</span><b>Sand path</b><span class="small">One curved sand path through the dunes, edged with rope and posts, so everyone uses one route and the plants stay intact.</span></div>
-    <div class="zone" style="--c: var(--accent)"><span class="who">E · Your lawn</span><b>Shade and lounge lawn</b><span class="small">About 5 m of lawn left between the dune and the house. Two kou trees give shade and orange blossoms, with movable loungers. Nothing fixed is built in the shoreline setback.</span></div>
-  </div>
-
-  <div class="two">
-    <div class="panel sheet stack">
-      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><h3>Section through 461 (transect 599)</h3><span class="small muted">heights in m above mean sea level</span></div>
-      <svg id="section" viewBox="0 0 560 280" role="img" aria-label="Cross-section comparing today's ground with the designed berm, foredune and lawn dune"></svg>
-      <p class="small muted">Today's ground from the 2023 lidar, lowered at the toe to match your November photos. The designed surface is drawn over it. Vertical scale exaggerated 3×.</p>
-    </div>
-    <div class="panel sheet stack">
-      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><h3>Plan</h3><span class="small muted">34 m frontage · north is up-left (beach faces 350°)</span></div>
-      <svg viewBox="0 0 560 300" role="img" aria-label="Plan view: sand berm, foredune, lawn dune with path, lounge lawn and house between two neighbouring rock walls">
-        <rect x="0" y="0" width="560" height="300" style="fill:var(--water-soft)"/>
-        <rect x="70" y="70" width="420" height="230" style="fill:var(--sand);opacity:.55"/>
-        <rect x="70" y="70" width="420" height="44" style="fill:var(--sand-deep);opacity:.55"/>
-        <rect x="70" y="114" width="420" height="36" style="fill:#8fae4a;opacity:.7"/>
-        <rect x="70" y="150" width="420" height="50" style="fill:var(--leaf);opacity:.7"/>
-        <rect x="70" y="200" width="420" height="40" style="fill:#6fae55;opacity:.35"/>
-        <path d="M200 70 C 205 110, 190 150, 210 200 L 222 240" style="fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round"/>
-        <path d="M200 70 C 205 110, 190 150, 210 200 L 222 240" style="fill:none;stroke:var(--sand-deep);stroke-width:1;stroke-dasharray:3 4"/>
-        <circle cx="140" cy="222" r="17" style="fill:var(--leaf);opacity:.85"/><circle cx="410" cy="222" r="17" style="fill:var(--leaf);opacity:.85"/>
-        <rect x="140" y="246" width="280" height="54" style="fill:var(--panel);stroke:var(--ink)"/>
-        <text x="280" y="278" text-anchor="middle" style="fill:var(--ink)">House 461</text>
-        <path d="M70 40 L70 300" style="stroke:var(--rock);stroke-width:14"/><path d="M490 20 L490 300" style="stroke:var(--rock);stroke-width:14"/>
-        <text x="62" y="30" text-anchor="end">463 wall</text><text x="498" y="14">459 wall</text>
-        <text x="300" y="96">A · sand berm +2.0 m</text><text x="300" y="136">B · foredune 1:3</text>
-        <text x="300" y="178">C · lawn dune +0.6 m</text><text x="236" y="226">E · lounge lawn</text>
-        <text x="214" y="64">D · path</text>
-        <text x="20" y="200" transform="rotate(-90 20 200)">water ↑</text>
-        <line x1="80" y1="46" x2="480" y2="46" style="stroke:var(--ink)"/><line x1="80" y1="40" x2="80" y2="52" style="stroke:var(--ink)"/><line x1="480" y1="40" x2="480" y2="52" style="stroke:var(--ink)"/><text x="350" y="40" text-anchor="middle" style="fill:var(--ink)">34 m frontage</text>
-      </svg>
-      <p class="small muted">Schematic, not to exact scale. Final layout follows the certified shoreline survey.</p>
-    </div>
+  <h2>Berm, dune, garden, view</h2>
+  <div class="zones" id="zones"></div>
+  <div class="panel sheet stack">
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><h3>Section C through the middle of 461</h3><span class="small muted">m above mean sea level · vertical ×3</span></div>
+    <svg id="section" viewBox="0 0 560 290" role="img" aria-label="Cross-section: today's ground, the designed berm and dune, and storm runup levels"></svg>
+    <p class="small muted">Red dashed lines are measured-climate runup levels: a typical winter's highest (+3.30 m) and the record winter 2019–20 (+3.56 m). Today they overtop the +2.9 m bank top. The designed crest at +3.7 m stays above both.</p>
   </div>
 </section>
 
+<section id="drawings" class="stack">
+  <span class="eyebrow">3 · Concept drawings</span>
+  <h2>Seven-sheet concept set</h2>
+  <p class="prose muted">Generated from the lidar surface and the designed grading. Contours, quantities and planting areas come from the same model as the renders. The DXF uses UTM zone 4N coordinates, so a surveyor or engineer can overlay it directly. These are concept drawings, not construction drawings.</p>
+  <div class="sheets" id="sheets"></div>
+  <p class="small muted">The PDF set and DXF file are in the Shoreline repository under <span class="num">shoreline-sim/cad/</span>.</p>
+</section>
+
 <section id="engineering" class="stack">
-  <span class="eyebrow">3 · Engineering</span>
-  <h2>How the design was chosen</h2>
-  <p class="prose">The storm model from the <a href="https://claude.ai/artifact/L79wnNzJngm2Khu9kqD2dj" target="_blank" rel="noopener">Shoreline Lab</a> ran 1,200 combinations of lawn-dune height, starting sand volume, top-up volume and interval, and coir toe protection. Each was tested against 50 years of real Pauwela buoy swells and Kahului water levels, with sea-level rise to +0.98 m by 2100. The model is calibrated to the measured 0.49 m/yr retreat at 461. Of the 492 designs that held the bank within 1 m through 2076, this one is the cheapest that still holds when swells are 15% bigger and the sea rises 1.5 m by 2100.</p>
+  <span class="eyebrow">4 · Engineering</span>
+  <h2>How sure are we?</h2>
+  <p class="prose" id="engIntro"></p>
   <div class="two">
     <div class="panel stack">
-      <h3>Bank retreat toward the house</h3>
-      <svg id="trajChart" viewBox="0 0 520 260" role="img" aria-label="Projected bank retreat for each design tier, 2026 to 2076"></svg>
+      <h3>Bank position through 2076</h3>
+      <svg id="trajChart" viewBox="0 0 520 260" role="img" aria-label="Bank retreat over time, do nothing versus the recommended design"></svg>
       <div class="small muted" id="trajKey"></div>
     </div>
     <div class="panel stack">
-      <h3>Stress tests of the recommended design</h3>
-      <div class="tablewrap"><table style="min-width:0">
-        <thead><tr><th>Scenario to 2076</th><th class="num">Bank retreat</th></tr></thead>
-        <tbody id="stressRows"></tbody>
-      </table></div>
-      <p class="small muted">Coir envelopes were tested too. On this high-energy north shore the model gives them almost no benefit for their cost, so they are optional. Add them only if OCCL or your engineer wants a toe marker under the sand.</p>
-      <p class="small muted">Zero means the sand berm absorbed every simulated storm before waves reached the bank. That depends on topping up on schedule: skip top-ups and the berm thins, and the bank starts retreating again.</p>
+      <h3>Reliability across 100 possible futures</h3>
+      <div class="tablewrap"><table style="min-width:0"><thead><tr><th>Outcome by 2076</th><th class="num">Do nothing</th><th class="num">Design</th></tr></thead><tbody id="relRows"></tbody></table></div>
+      <p class="small muted">Each future samples reef sheltering, sand erodibility, how fast the beach rebuilds, sand losses, the measured retreat rate (±95%), swell size, the order of the winters, and sea-level rise from +0.6 to +1.6 m by 2100. Every future is re-calibrated to reproduce the measured retreat before it is used.</p>
     </div>
   </div>
   <div class="panel tablewrap">
     <table>
-      <thead><tr><th>Option</th><th>What it includes</th><th>Bank reaches house</th><th>Bigger swells + 1.5 m sea rise</th><th class="num">Build cost</th><th class="num">50-year cost*</th></tr></thead>
-      <tbody id="tierRows"></tbody>
+      <thead><tr><th>Calibration check</th><th>Evidence</th><th>Model</th></tr></thead>
+      <tbody>
+        <tr><td>Long-term retreat</td><td>0.49 m/yr, UH/USGS transect 599, 1912–2002</td><td>Reproduced exactly (calibrated)</td></tr>
+        <tr><td>Reef sheltering</td><td>Lawn grass intact; bank top +2.9 m only overtopped in big winters</td><td>Wave transmission 0.42–0.52; typical winter max runup +3.3 m</td></tr>
+        <tr><td>Bank toe regularly hit</td><td>Fresh wrack and an active scarp in the Nov 2026 photos</td><td>Waves reach the +1.5 m toe on about 1,600 winter hours a year</td></tr>
+        <tr><td>Design geometry</td><td>2023 USGS 1 m lidar, 8,000 points</td><td>Volumes from the graded surface, not an idealised section</td></tr>
+      </tbody>
     </table>
-    <p class="small muted" style="margin-top:8px">*Present value at 3%: build cost plus top-ups, planting care and monitoring for 50 years.</p>
+  </div>
+</section>
+
+<section id="value" class="stack">
+  <span class="eyebrow">5 · Value engineering</span>
+  <h2>Same protection, lower lifetime cost</h2>
+  <p class="prose">Starting from the earlier design, each measure below was added and re-run through 50 years of real winters and the 100 Monte Carlo futures. Bars show the 50-year cost range in today's dollars. The percentage is the share of futures in which the bank stays within 2 m of where it is today.</p>
+  <div class="panel ladder" id="ladder"></div>
+  <div class="two">
+    <div class="stack small">
+      <p><b>Top up on a survey trigger, not a clock.</b> Calm years need no sand and rough years get it promptly. A simple spring survey decides.</p>
+      <p><b>Owner-led monitoring.</b> Fixed-point photos and tape measurements by you, with a phone or drone survey each spring, and an engineer's check every three years instead of every year.</p>
+      <p><b>Recycle drifted sand.</b> Waves spread sand toward 463 and the corner of 459's wall. Pushing it back with a small loader costs about $25–50/yd³, against $150–250 for new sand. Needs OCCL approval in the maintenance plan.</p>
+    </div>
+    <div class="stack small">
+      <p><b>Right-size the volumes.</b> The lidar showed the frontage is 30 m, not 34 m, and how much sand the berm actually holds. The optimiser picks the starting volume and top-up size that meet the reliability target for the least money.</p>
+      <p><b>Raise the crest later, not now.</b> The crest is set to clear today's record runup. Add sand to the crest in later decades as the sea rises, instead of paying for a taller dune today.</p>
+      <p><b>Not adopted:</b> coir envelopes (little benefit on this exposed shore) and a non-beach-sand dune core (risky if it ever erodes onto the beach).</p>
+    </div>
   </div>
 </section>
 
 <section id="materials" class="stack">
-  <span class="eyebrow">4 · Materials &amp; planting</span>
+  <span class="eyebrow">6 · Materials &amp; planting</span>
   <h2>What goes into it</h2>
   <div class="two">
     <div class="panel stack">
-      <h3>Sand specification</h3>
-      <ul class="small" style="margin:0;padding-left:1.1em;display:grid;gap:6px">
-        <li><b>Type:</b> calcareous (carbonate) beach-quality sand matching the native beach in grain size, colour and composition, as OCCL requires.</li>
-        <li><b>Grain size:</b> median within about 20% of the native beach sand, set by lab tests. Fines (passing #200 sieve) under 5%, no gravel, clay, debris or organics.</li>
-        <li><b>Quantities:</b> 1,500 yd³ on the beach and foredune (about 100 truckloads) plus about 92 yd³ for the lawn dune. Then 250 yd³ every 3 years.</li>
-        <li><b>Source:</b> an approved inland Maui supplier; Sugar Cove used screened Grade A Maui dune sand. Maui County has restricted Central Maui inland sand mining, so lock in a source early.</li>
-      </ul>
+      <h3>Sand</h3>
+      <ul class="small" style="margin:0;padding-left:1.1em;display:grid;gap:6px" id="sandList"></ul>
     </div>
     <div class="panel stack">
       <h3>Other materials</h3>
       <ul class="small" style="margin:0;padding-left:1.1em;display:grid;gap:6px">
-        <li><b>Path edging:</b> naturally rot-resistant or recycled-plastic posts at 1.5 m, with 19 mm manila rope.</li>
-        <li><b>Sand fencing:</b> temporary wooden slat fence on the berm for the first 1–2 years, to trap wind-blown sand while plants establish.</li>
-        <li><b>Irrigation:</b> temporary surface drip on a timer for 12–18 months, then removed. The exposed PVC in the bank is cut off and rerouted inland.</li>
-        <li><b>Coir (optional):</b> sand-filled coir envelopes buried in the foredune toe, if your engineer and OCCL want them.</li>
+        <li><b>Path edging:</b> recycled-plastic or rot-resistant posts at 1.5 m with 19 mm manila rope (36 posts).</li>
+        <li><b>Sand fence:</b> temporary wood slat fence along the dune toe for 1–2 years.</li>
+        <li><b>Irrigation:</b> temporary drip on a timer for 12–18 months. The exposed PVC in the bank is cut, capped and rerouted inland.</li>
+        <li><b>Hedge:</b> the existing seaward hedge is trimmed to about 1 m to open the view; the dune now takes the salt spray.</li>
         <li><b>Excluded:</b> rock, concrete, gabions, and permanent geotextile or plastic bags.</li>
       </ul>
     </div>
   </div>
-  <h3>Plant palette (about 320 m²)</h3>
-  <div class="plants" id="plants"></div>
-  <p class="small muted">Native coastal species suited to salt spray, wind and sand burial. Order 6–9 months ahead from a native-plant nursery; most growers contract-grow ʻakiʻaki plugs. Plant at the end of summer with drip irrigation, before the first big swells, so roots establish over the wet season.</p>
+  <h3>Planting by zone (sheet L-101)</h3>
+  <div class="tablewrap panel"><table><thead><tr><th>Zone</th><th>Species and spacing</th><th class="num">Area</th><th class="num">Quantity</th></tr></thead><tbody id="plantRows"></tbody></table></div>
 </section>
 
 <section id="cost" class="stack">
-  <span class="eyebrow">5 · Cost estimate</span>
+  <span class="eyebrow">7 · Cost estimate</span>
   <h2>What it costs</h2>
-  <div class="panel tablewrap">
-    <table>
-      <thead><tr><th>Item</th><th class="num">Low</th><th class="num">High</th></tr></thead>
-      <tbody id="costRows"></tbody>
-    </table>
-  </div>
+  <div class="panel tablewrap"><table><thead><tr><th>Item</th><th class="num">Low</th><th class="num">High</th></tr></thead><tbody id="costRows"></tbody></table></div>
   <div class="facts" id="recurring"></div>
-  <p class="small muted prose">Order-of-magnitude estimate in 2026 dollars for planning only. Sand is costed at $150–250/yd³ delivered and placed; Hawaiʻi sand moves typically cost $100–200/yd³ before small-job premiums. Get contractor quotes once the engineer's drawings exist. Sand price and supply are the biggest uncertainty.</p>
+  <p class="small muted prose">Order-of-magnitude estimate in 2026 dollars for planning only. Sand is costed at $150–250/yd³ delivered and placed (Hawaiʻi sand moves alone run $100–200/yd³) and recycled sand at $25–50/yd³. Get contractor quotes once the engineer's drawings exist. Sand price and supply are the biggest uncertainty: Maui restricted inland sand mining, so lock in a source early.</p>
 </section>
 
 <section id="build" class="stack">
-  <span class="eyebrow">6 · Build plan</span>
+  <span class="eyebrow">8 · Build plan</span>
   <h2>Steps and schedule</h2>
-  <div class="timeline" id="timeline">
+  <div class="timeline">
     <div class="phase"><span class="when">Now – winter 2026/27</span><div><b>Protect and measure</b><ul>
-      <li>Set two fixed survey points (a house corner and a buried post); tape to the bank edge monthly and after each big swell.</li>
-      <li>Cut and cap the exposed irrigation pipe; reroute it landward.</li>
-      <li>Keep people off the bank face. Don't add or move rocks.</li>
+      <li>Set two fixed points (a house corner and a buried post); tape to the bank edge monthly and after big swells.</li>
+      <li>Cut and cap the exposed irrigation pipe; keep people off the bank face; don't add or move rocks.</li>
       <li>If the bank comes within about 6 m of the house, ask OCCL about temporary emergency measures.</li></ul></div></div>
-    <div class="phase"><span class="when">Dec 2026 – Mar 2027</span><div><b>Survey and design team</b><ul>
-      <li>Certified shoreline survey and topographic beach profile.</li>
-      <li>Hire a Hawaiʻi-licensed coastal engineer to turn this concept into stamped drawings and confirm volumes.</li>
-      <li>Sand sampling and grain-size tests of the native beach; identify a sand source.</li>
-      <li>Archaeological assessment for SHPD.</li></ul></div></div>
+    <div class="phase"><span class="when">Dec 2026 – Mar 2027</span><div><b>Survey and engineer</b><ul>
+      <li>Certified shoreline and topographic survey (replaces the lidar base in these drawings).</li>
+      <li>Hawaiʻi-licensed coastal engineer turns this concept set into stamped drawings; sand sampling and grain-size tests.</li>
+      <li>Archaeological assessment for SHPD; secure a sand source.</li></ul></div></div>
     <div class="phase"><span class="when">Mar 2027 – early 2028</span><div><b>Permits</b><ul>
-      <li>DLNR-OCCL Small-Scale Beach Nourishment, Category II, for 1,500 yd³ plus maintenance top-ups. It needs a Chapter 343 environmental determination and agency and public comment.</li>
-      <li>Maui County Planning: SMA assessment and shoreline-setback approval for the lawn dune, path and planting.</li>
-      <li>Order plants for contract growing as soon as the permits look likely.</li></ul></div></div>
-    <div class="phase"><span class="when">May – Aug 2028 (calm season)</span><div><b>Construction, about 6–8 weeks</b><ul>
-      <li>Mobilise through your lot (lawn protection mats), with the archaeological monitor present.</li>
-      <li>Build the lawn dune and shape it to 0.6 m with a 1:2.5 face and 1:4 back.</li>
-      <li>Place beach sand against the bank, burying the scarp at a 1:3 foredune slope, then grade the +2.0 m berm.</li>
-      <li>Optional coir envelopes in the foredune toe. Sand fencing on the berm.</li>
-      <li>Install drip irrigation, then plant from the dune crest down to the foredune.</li>
-      <li>Lay the sand path with rope-and-post edging, and plant the kou trees.</li>
-      <li>As-built survey and photos for OCCL.</li></ul></div></div>
-    <div class="phase"><span class="when">2028 – 2030</span><div><b>Establishment</b><ul>
-      <li>Water through the first 12–18 months; replace losses after the first winter.</li>
-      <li>Hand-weed monthly in year one, quarterly after.</li>
-      <li>Remove sand fencing once plants hold the surface.</li></ul></div></div>
-    <div class="phase"><span class="when">Every 3 years</span><div><b>Maintenance top-ups</b><ul>
-      <li>250 yd³ of sand under the permit's maintenance volume, placed in the calm season.</li>
-      <li>Top up early if the berm gets narrower than 4 m or a new scarp more than 0.5 m high appears.</li>
-      <li>Annual profile survey and photo report; re-run the Shoreline Lab model with each survey.</li></ul></div></div>
+      <li>DLNR-OCCL Small-Scale Beach Nourishment, Category II, with a maintenance plan covering trigger top-ups and sand recycling.</li>
+      <li>Maui County SMA assessment and shoreline-setback approval for the dune, path, planting and hedge work.</li>
+      <li>Order plants for contract growing 6–9 months ahead.</li></ul></div></div>
+    <div class="phase"><span class="when">May – Aug 2028</span><div><b>Construction, about 6–8 weeks (sheet C-601)</b><ul>
+      <li>Mobilise through your lot on lawn-protection mats; archaeological monitor present.</li>
+      <li>Build the lawn dune to +3.7 m, then place beach sand against the bank and grade the 1:3 dune face and +2.0 m berm.</li>
+      <li>Sand fence, path posts and rope; drip irrigation; plant from the crest down; plant the kou trees; trim the hedge.</li>
+      <li>As-built survey and photo report to OCCL and the County.</li></ul></div></div>
+    <div class="phase"><span class="when">2028 onward</span><div><b>Establish and maintain</b><ul id="maintList">
+      <li>Water through the first 12–18 months; replace losses after the first winter; weed monthly in year one.</li></ul></div></div>
   </div>
 </section>
 
 <section id="code" class="stack">
-  <span class="eyebrow">7 · Code &amp; permits</span>
+  <span class="eyebrow">9 · Code &amp; permits</span>
   <h2>How it fits the rules</h2>
-  <div class="panel tablewrap">
-    <table>
-      <thead><tr><th>Requirement</th><th>How the design meets it</th></tr></thead>
-      <tbody>
-        <tr><td>HRS 205A (Act 16, 2020): no private shoreline hardening at sand beaches</td><td>No walls, revetments, rock or concrete. Sand, plants and optional biodegradable coir only.</td></tr>
-        <tr><td>Small-Scale Beach Nourishment rules (DLNR-OCCL)</td><td>Category II volume, compatible sand, maintenance volumes, monitoring and reporting.</td></tr>
-        <tr><td>Maui SMA rules and shoreline setback (2024 update)</td><td>Lawn dune and planting are landscaping and dune restoration in the setback, with County review. No new fixed structures in the setback; the loungers are movable.</td></tr>
-        <tr><td>Shoreline location</td><td>Planting is not used to move the certified shoreline seaward.</td></tr>
-        <tr><td>Historic preservation (HRS 6E)</td><td>SHPD review and archaeological monitoring during earthwork.</td></tr>
-        <tr><td>Unauthorised boulders</td><td>Left in place pending OCCL direction. Their removal can be folded into the OCCL application if OCCL agrees.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="panel tablewrap"><table><thead><tr><th>Requirement</th><th>How the design meets it</th></tr></thead><tbody>
+    <tr><td>HRS 205A (Act 16, 2020): no private shoreline hardening at sand beaches</td><td>No walls, revetments, rock or concrete; sand and native plants only.</td></tr>
+    <tr><td>DLNR-OCCL Small-Scale Beach Nourishment</td><td>Category II volume, compatible sand, maintenance plan with trigger-based top-ups and sand recycling, monitoring reports.</td></tr>
+    <tr><td>Maui SMA rules and shoreline setback (2024 update)</td><td>Dune, path and planting are landscaping and dune restoration in the setback, with County review. No new fixed structures; loungers are movable.</td></tr>
+    <tr><td>Shoreline location</td><td>Planting is not used to move the certified shoreline seaward.</td></tr>
+    <tr><td>Historic preservation (HRS 6E)</td><td>SHPD review and archaeological monitoring during earthwork.</td></tr>
+    <tr><td>Unauthorised boulders</td><td>Left in place pending OCCL direction; removal can be folded into the OCCL application if OCCL agrees.</td></tr>
+  </tbody></table></div>
   <div class="warnbox small prose">This is a concept design and planning estimate from public data and a calibrated model. It is not a stamped engineering design or legal advice. A Hawaiʻi-licensed coastal engineer, DLNR-OCCL and Maui County Planning make the final calls on volumes, slopes and permit paths.</div>
 </section>
 
-<footer>Model, data and render code: Shoreline repository, <span class="num">shoreline-sim/</span> (<span class="num">tools/optimize.js</span>, <span class="num">render/scene.js</span>). Site data: USGS 3DEP 2023 lidar, UH Coastal Geology Group / USGS shorelines, NOAA buoy 51205, NOAA Kahului tide gauge. Cost references: Hawaii Business (sand moving $100–200/yd³), DLNR-OCCL SSBN records.</footer>
+<footer>Model, data, drawings and render code: Shoreline repository, <span class="num">shoreline-sim/</span>. Site data: USGS 3DEP 2023 lidar, UH Coastal Geology Group / USGS shorelines, NOAA buoy 51205, NOAA Kahului tide gauge, Esri World Imagery. The simulator is the <a href="https://claude.ai/artifact/L79wnNzJngm2Khu9kqD2dj" target="_blank" rel="noopener">Shoreline Lab</a>.</footer>
 </div>
+
+<div id="lightbox" hidden><button type="button" id="lbClose">Close</button><img id="lbImg" alt=""></div>
 
 <script src="render/scene.js"></script>
 <script>
@@ -314,129 +297,137 @@ footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule
 'use strict';
 var $ = function (s) { return document.querySelector(s); };
 var money = function (v) { return '$' + (v >= 1e6 ? (v / 1e6).toFixed(2) + 'M' : Math.round(v / 1000) + 'k'); };
+var pct = function (v) { return Math.round(v * 100) + '%'; };
 
-// ---------- before / after ----------
+// before / after
 var cmp = $('#compare'), cut = $('#cut');
 cut.addEventListener('input', function () { cmp.style.setProperty('--cut', cut.value + '%'); });
 document.querySelectorAll('#viewBtns button').forEach(function (b) {
   b.addEventListener('click', function () {
-    var v = b.dataset.v;
-    $('#imgBefore').src = 'img/render_' + v + '_before.jpg';
-    $('#imgAfter').src = 'img/render_' + v + '_after.jpg';
+    $('#imgBefore').src = 'img/render_' + b.dataset.v + '_before.jpg';
+    $('#imgAfter').src = 'img/render_' + b.dataset.v + '_after.jpg';
     document.querySelectorAll('#viewBtns button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
   });
 });
 
-// ---------- plants ----------
-var PLANTS = [
-  ['ʻAkiʻaki', 'Sporobolus virginicus', 'B · foredune and berm back', 'Plugs at 0.45 m centres, about 700', '#8fae4a'],
-  ['Pōhuehue', 'Ipomoea pes-caprae', 'A/B · runners over the foredune', '1-gal at 1.5 m, about 90; lilac flowers', '#c66bc0'],
-  ['Naupaka kahakai', 'Scaevola taccada', 'C · dune crest', '3-gal at 1.5 m, about 35', '#2f7f3a'],
-  ['Hinahina kū kahakai', 'Heliotropium anomalum', 'C · dune back', '1-gal at 0.9 m, about 60; silver foliage', '#b8c4bd'],
-  ['ʻIlima', 'Sida fallax', 'C · dune back', '1-gal at 0.9 m, about 50; golden flowers', '#f2b630'],
-  ['Nanea', 'Vigna marina', 'B/C · fills gaps', '1-gal at 1.2 m, about 40; yellow flowers', '#c9b43a'],
-  ['Kou', 'Cordia subcordata', 'E · shade trees', '15-gal, 2 trees; orange blossoms', '#f07a28']
-];
-$('#plants').innerHTML = PLANTS.map(function (p) {
-  return '<div class="plant" style="--c:' + p[4] + '"><span class="dot"></span><div><b>' + p[0] + '</b><i>' + p[1] + '</i><div class="small">' + p[2] + '</div><div class="small muted">' + p[3] + '</div></div></div>';
+// drawings + lightbox
+var SHEETS = [['C-001', 'Cover and notes'], ['C-101', 'Existing conditions'], ['C-201', 'Grading plan'], ['C-301', 'Sections A–E'],
+  ['L-101', 'Planting plan'], ['C-501', 'Typical section and details'], ['C-601', 'Quantities and sequence']];
+$('#sheets').innerHTML = SHEETS.map(function (s) {
+  return '<button type="button" data-src="img/sheet_' + s[0] + '.png"><img src="img/sheet_' + s[0] + '.png" alt="Sheet ' + s[0] + ': ' + s[1] + '" loading="lazy" width="1870" height="1210"><span>' + s[0] + ' · ' + s[1] + '</span></button>';
 }).join('');
+var lb = $('#lightbox');
+$('#sheets').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; $('#lbImg').src = b.dataset.src; lb.hidden = false; $('#lbClose').focus(); });
+$('#lbClose').addEventListener('click', function () { lb.hidden = true; });
+lb.addEventListener('click', function (e) { if (e.target === lb) lb.hidden = true; });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.hidden = true; });
 
-// ---------- section drawing from the same terrain model ----------
-function drawSection() {
-  var svg = $('#section'), H = ShoreScene.height, NS = 'http://www.w3.org/2000/svg';
-  var W = 560, Hh = 280, L = 40, R = 10, T = 14, B = 30, s0 = -22, s1 = 14, z0 = -1, z1 = 7;
+function svgEl(svg, t, a, txt) { var e = document.createElementNS('http://www.w3.org/2000/svg', t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; }
+
+function drawSection(g) {
+  var svg = $('#section'), H = ShoreScene.height;
+  var W = 560, Hh = 290, L = 40, R = 10, T = 12, B = 30, s0 = -24, s1 = 15, z0 = -1, z1 = 5.5;
   var X = function (s) { return L + (s - s0) / (s1 - s0) * (W - L - R); };
   var Y = function (z) { return T + (1 - (z - z0) / (z1 - z0)) * (Hh - T - B); };
-  function el(t, a, txt) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; }
   svg.innerHTML = '';
-  for (var z = 0; z <= 6; z += 1) { el('line', { x1: L, x2: W - R, y1: Y(z), y2: Y(z), style: 'stroke:var(--rule)' }); el('text', { x: L - 5, y: Y(z) + 4, 'text-anchor': 'end' }, (z > 0 ? '+' : '') + z); }
-  el('rect', { x: L, y: Y(0.25), width: X(-14.6) - L, height: Y(z0) - Y(0.25), style: 'fill:var(--water-soft)' });
-  function pts(mode) { var a = []; for (var s = s0; s <= 11.4; s += 0.1) a.push(X(s) + ',' + Y(H(0, s, mode))); return a; }
+  for (var z = -1; z <= 5; z += 1) { svgEl(svg, 'line', { x1: L, x2: W - R, y1: Y(z), y2: Y(z), style: 'stroke:var(--rule)' }); svgEl(svg, 'text', { x: L - 5, y: Y(z) + 4, 'text-anchor': 'end' }, (z > 0 ? '+' : '') + z); }
+  function pts(mode) { var a = []; for (var s = s0; s <= s1; s += 0.25) a.push(X(s) + ',' + Y(H(0, s, mode))); return a; }
+  svgEl(svg, 'rect', { x: L, y: Y(0.25), width: W - L - R, height: Y(z0) - Y(0.25), style: 'fill:var(--water-soft)' });
   var after = pts('after'), before = pts('before');
-  el('polygon', { points: X(s0) + ',' + Y(z0) + ' ' + after.join(' ') + ' ' + X(11.4) + ',' + Y(z0), style: 'fill:var(--sand);opacity:.85' });
-  el('polygon', { points: X(s0) + ',' + Y(z0) + ' ' + before.join(' ') + ' ' + X(11.4) + ',' + Y(z0), style: 'fill:var(--soil);opacity:.55' });
-  el('polyline', { points: before.join(' '), style: 'fill:none;stroke:var(--soil);stroke-width:1.5;stroke-dasharray:4 3' });
-  el('polyline', { points: after.join(' '), style: 'fill:none;stroke:var(--ink);stroke-width:2' });
-  // plants along the designed surface
-  for (var s = -4; s <= 5.4; s += 0.6) {
-    var zz = H(0, s, 'after'), col = s < 0 ? '#8fae4a' : s < 3.2 ? '#2f7f3a' : '#b8c4bd', r = s < 0 ? 3 : s < 3.2 ? 7 : 4;
-    el('circle', { cx: X(s), cy: Y(zz) - r * 0.6, r: r, style: 'fill:' + col });
-  }
-  el('rect', { x: X(11.4), y: Y(6.3), width: X(s1) - X(11.4), height: Y(3.3) - Y(6.3), style: 'fill:var(--panel);stroke:var(--ink)' });
-  el('text', { x: (X(11.4) + X(s1)) / 2, y: Y(4.8), 'text-anchor': 'middle', style: 'fill:var(--ink)' }, 'house');
-  [['berm +2.0', -6, 2.0], ['foredune 1:3', -4.2, 2.3], ['lawn dune +3.5', 2.2, 3.55], ['today\'s scarp', -0.3, 1.6]].forEach(function (l, i) {
-    el('text', { x: X(l[1]), y: Y(l[2]) - (i === 3 ? -16 : 20), 'text-anchor': 'middle', style: 'fill:var(--ink)' }, l[0]);
+  svgEl(svg, 'polygon', { points: X(s0) + ',' + Y(z0) + ' ' + after.join(' ') + ' ' + X(s1) + ',' + Y(z0), style: 'fill:var(--sand);opacity:.9' });
+  svgEl(svg, 'polygon', { points: X(s0) + ',' + Y(z0) + ' ' + before.join(' ') + ' ' + X(s1) + ',' + Y(z0), style: 'fill:var(--soil);opacity:.55' });
+  svgEl(svg, 'polyline', { points: before.join(' '), style: 'fill:none;stroke:var(--soil);stroke-width:1.5;stroke-dasharray:4 3' });
+  svgEl(svg, 'polyline', { points: after.join(' '), style: 'fill:none;stroke:var(--ink);stroke-width:2' });
+  [[3.30, 'typical winter max runup +3.30'], [3.56, 'record winter 2019–20 +3.56']].forEach(function (l, i) {
+    svgEl(svg, 'line', { x1: L, x2: W - R, y1: Y(l[0]), y2: Y(l[0]), style: 'stroke:var(--danger);stroke-dasharray:5 4;opacity:.8' });
+    svgEl(svg, 'text', { x: L + 4 + i * 200, y: Y(l[0]) - 4, style: 'fill:var(--danger)' }, l[1]);
   });
-  el('text', { x: X(-18), y: Y(0.25) - 6 }, 'mean water');
-  el('text', { x: L, y: Hh - 8 }, '← ocean'); el('text', { x: W - R, y: Hh - 8, 'text-anchor': 'end' }, 'house →');
-  el('line', { x1: X(-20), x2: X(-16), y1: Y(6.2), y2: Y(6.2), style: 'stroke:var(--ink);stroke-width:2' });
-  el('text', { x: X(-15.6), y: Y(6.2) + 4, style: 'fill:var(--ink)' }, 'designed');
-  el('line', { x1: X(-20), x2: X(-16), y1: Y(5.5), y2: Y(5.5), style: 'stroke:var(--soil);stroke-width:1.5;stroke-dasharray:4 3' });
-  el('text', { x: X(-15.6), y: Y(5.5) + 4 }, 'today');
+  svgEl(svg, 'rect', { x: X(10.5), y: Y(5.3), width: X(s1) - X(10.5), height: Y(3.3) - Y(5.3), style: 'fill:var(--panel);stroke:var(--ink)' });
+  svgEl(svg, 'text', { x: (X(10.5) + X(s1)) / 2, y: Y(4.2), 'text-anchor': 'middle', style: 'fill:var(--ink)' }, 'house');
+  svgEl(svg, 'text', { x: X(-12), y: Y(2.0) - 6, 'text-anchor': 'middle', style: 'fill:var(--ink)' }, 'berm +2.0');
+  svgEl(svg, 'text', { x: X(2.6), y: Y(g.crest) - 8, 'text-anchor': 'middle', style: 'fill:var(--ink)' }, 'crest +' + g.crest.toFixed(1));
+  svgEl(svg, 'text', { x: X(1.5), y: Y(1.6) + 16, 'text-anchor': 'middle' }, "today's scarp");
+  svgEl(svg, 'text', { x: L, y: Hh - 8 }, '← ocean'); svgEl(svg, 'text', { x: W - R, y: Hh - 8, 'text-anchor': 'end' }, 'house →');
 }
-drawSection();
 
-// ---------- engineering numbers ----------
-fetch('data/design.json').then(function (r) { return r.json(); }).then(function (d) {
-  var o = d.optimal;
+function render(d, gr) {
+  var o = d.optimal, des = o.design, rel = o.reliability;
+  var policy = des.trigger ? 'when the spring survey shows berm sand below ' + des.trigger + ' m³/m' : 'every ' + des.interval + ' years';
   $('#facts').innerHTML = [
-    ['good', 'No bank loss through 2076', 'simulated, incl. sea-level rise'],
+    ['good', pct(rel.pWithin2m), 'of 100 futures: bank holds within 2 m to 2076'],
     ['', money(o.capital.low) + '–' + money(o.capital.high), 'build cost'],
-    ['', money(o.topUp.low) + '–' + money(o.topUp.high), 'sand top-up every 3 years'],
-    ['', '6–8 weeks', 'construction, calm season'],
-    ['', '12–18 months', 'survey, design and permits first']
+    ['', money(o.npv50.low) + '–' + money(o.npv50.high), '50-year cost, today\'s dollars'],
+    ['', gr.beach_fill_yd3.toLocaleString() + ' + ' + gr.dune_fill_yd3 + ' yd³', 'beach + dune sand to build'],
+    ['', '6–8 weeks', 'construction, calm season']
   ].map(function (f) { return '<div class="fact ' + f[0] + '"><span class="v">' + f[1] + '</span><span class="k">' + f[2] + '</span></div>'; }).join('');
+
+  $('#zones').innerHTML = [
+    ['var(--sand-deep)', 'A · State beach · OCCL', 'Sand berm', gr.beach_fill_yd3.toLocaleString() + ' yd³ of matching carbonate sand builds a berm at +2.0 m, about ' + gr.berm_width_m + ' m wide, with a 1:6 construction face that the waves reshape. It is the sacrificial buffer: swells take sand from here instead of from your bank.'],
+    ['#8fae4a', 'B · Bank face · OCCL / County', 'Planted dune face', 'The scarp is buried under a 1:3 sand slope rising to the crest, planted with ʻakiʻaki grass, pōhuehue and nanea that knit the surface and trap blowing sand.'],
+    ['var(--leaf)', 'C · Your lawn · County', 'Dune crest +' + gr.crest.toFixed(1) + ' m', 'A 1.5 m wide crest of naupaka kahakai, then a 1:4 back slope of silver hinahina and golden ʻilima easing into the lawn. ' + gr.dune_fill_yd3 + ' yd³ of sand fills the low west half of the lawn.'],
+    ['var(--flower)', 'D · Access', 'Sand path', 'One 1.6 m sand path through a lowered notch in the dune (crest +2.95 m), edged with rope and posts, so the plants stay intact.'],
+    ['var(--accent)', 'E · Lawn and lanai', 'Shade and view', 'Two kou trees, movable loungers, and the seaward hedge trimmed to about 1 m, so the lanai looks over the dune to the sea.']
+  ].map(function (z) { return '<div class="zone" style="--c:' + z[0] + '"><span class="who">' + z[1] + '</span><b>' + z[2] + '</b><span class="small">' + z[3] + '</span></div>'; }).join('');
+
+  $('#engIntro').textContent = 'The optimiser screened ' + d.screened + ' combinations of starting sand, top-up size, top-up policy, sand recycling and monitoring through 50 years of real Pauwela swells and Kahului water levels. ' +
+    d.passCentral + ' protected the bank in the central case. The 40 cheapest were then run through ' + d.assumptions.mcSets + ' Monte Carlo futures, and the cheapest that holds the bank within 2 m in at least 90% of them was chosen. ' +
+    'Recommended: ' + des.initialYd3.toLocaleString() + ' yd³ to start, then ' + des.topUpYd3 + ' yd³ ' + policy + (des.backpass ? ', recycling drifted sand first' : '') + (des.ownerMonitoring ? ', with owner-led monitoring' : '') + '.';
+
+  var nr = d.doNothing.reliability;
+  $('#relRows').innerHTML = [
+    ['Bank within 2 m of today', pct(nr.pWithin2m), pct(rel.pWithin2m)],
+    ['House not reached', pct(nr.pHouseSafe), pct(rel.pHouseSafe)],
+    ['Median bank retreat', nr.median.toFixed(1) + ' m', rel.median.toFixed(1) + ' m'],
+    ['Bad case (90th percentile)', nr.p90.toFixed(1) + ' m', rel.p90.toFixed(1) + ' m']
+  ].map(function (r) { return '<tr><td>' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num"><b>' + r[2] + '</b></td></tr>'; }).join('');
+
+  // trajectory chart
+  var svg = $('#trajChart'), W = 520, Hh = 260, L = 40, R = 12, T = 12, B = 28, vmax = 40;
+  var X = function (y) { return L + (y - 2026) / 50 * (W - L - R); }, Y = function (v) { return T + (1 - Math.min(v, vmax) / vmax) * (Hh - T - B); };
+  for (var v = 0; v <= vmax; v += 10) { svgEl(svg, 'line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), style: 'stroke:var(--rule)' }); svgEl(svg, 'text', { x: L - 5, y: Y(v) + 4, 'text-anchor': 'end', style: 'fill:var(--muted);font:11px var(--mono)' }, v + ' m'); }
+  [2026, 2036, 2046, 2056, 2066, 2076].forEach(function (y) { svgEl(svg, 'text', { x: X(y), y: Hh - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font:11px var(--mono)' }, y); });
+  svgEl(svg, 'rect', { x: L, y: T, width: W - L - R, height: Y(11) - T, style: 'fill:var(--danger);opacity:.08' });
+  svgEl(svg, 'line', { x1: L, x2: W - R, y1: Y(11), y2: Y(11), style: 'stroke:var(--danger);stroke-dasharray:5 4' });
+  svgEl(svg, 'text', { x: L + 6, y: Y(11) - 6, style: 'fill:var(--danger);font:11px var(--mono)' }, 'house (11 m)');
+  [[d.doNothing.trajectory, 'var(--muted)', 1.6], [o.trajectory, 'var(--accent)', 3]].forEach(function (sr) {
+    svgEl(svg, 'polyline', { points: X(2025) + ',' + Y(0) + ' ' + sr[0].map(function (r) { return X(r.year) + ',' + Y(r.retreat); }).join(' '), style: 'fill:none;stroke:' + sr[1] + ';stroke-width:' + sr[2] });
+  });
+  o.trajectory.forEach(function (r) { if (r.topUp) svgEl(svg, 'circle', { cx: X(r.year), cy: Y(0) - 8, r: 3.5, style: 'fill:var(--sand-deep)' }); });
+  $('#trajKey').innerHTML = '<span style="color:var(--muted)">━ do nothing</span> &nbsp; <span style="color:var(--accent)">━ design</span> &nbsp; <span style="color:var(--sand-deep)">● top-up years (central case)</span>. Do nothing reaches the house around ' + d.doNothing.houseYear + '.';
+
+  // value-engineering ladder
+  var maxV = Math.max.apply(null, d.ladder.map(function (l) { return l.npvHigh; }));
+  $('#ladder').innerHTML = d.ladder.map(function (l) {
+    return '<div class="rung"><span>' + l.name + '</span><div class="bar"><i style="width:' + (l.npvLow / maxV * 100) + '%"></i><b style="left:' + (l.npvLow / maxV * 100) + '%;width:' + ((l.npvHigh - l.npvLow) / maxV * 100) + '%"></b></div>' +
+      '<span class="v">' + money(l.npvLow) + '–' + money(l.npvHigh) + ' · ' + pct(l.pWithin2m) + '</span></div>';
+  }).join('');
+
+  $('#sandList').innerHTML = [
+    '<b>Type:</b> carbonate beach-quality sand matching the native beach in grain size, colour and composition; fines (passing #200) under 5%; no gravel, clay or debris.',
+    '<b>To build:</b> ' + gr.beach_fill_yd3.toLocaleString() + ' yd³ for the berm and dune face plus ' + gr.dune_fill_yd3 + ' yd³ for the lawn dune, about ' + Math.round((gr.beach_fill_yd3 + gr.dune_fill_yd3) / 15) + ' truckloads.',
+    '<b>To maintain:</b> ' + des.topUpYd3 + ' yd³ ' + policy + '. The central case needs ' + o.topUps.events + ' top-ups in 50 years, totalling ' + o.topUps.importedYd3.toLocaleString() + ' yd³ new' + (o.topUps.backpassedYd3 ? ' and ' + o.topUps.backpassedYd3.toLocaleString() + ' yd³ recycled' : '') + '.',
+    '<b>Source:</b> an approved inland Maui supplier (Sugar Cove used screened Grade A Maui dune sand). Confirm supply early.'
+  ].map(function (t) { return '<li>' + t + '</li>'; }).join('');
+
+  $('#plantRows').innerHTML = gr.planting.map(function (p) { return '<tr><td>' + p.zone + '</td><td>' + p.plants + '</td><td class="num">' + p.area_m2 + ' m²</td><td class="num">' + p.qty.join(' + ') + '</td></tr>'; }).join('') +
+    '<tr><td>Trees</td><td>Kou (Cordia subcordata), 15-gal</td><td class="num">–</td><td class="num">2</td></tr>';
 
   var rows = o.capital.items.filter(function (i) { return i.high > 0; });
   $('#costRows').innerHTML = rows.map(function (i) { return '<tr><td>' + i.item + '</td><td class="num">' + money(i.low) + '</td><td class="num">' + money(i.high) + '</td></tr>'; }).join('') +
     '<tr class="total"><td>Build total</td><td class="num">' + money(o.capital.low) + '</td><td class="num">' + money(o.capital.high) + '</td></tr>';
+  var ev = Math.max(1, o.topUps.events);
   $('#recurring').innerHTML = [
-    [money(o.topUp.low) + '–' + money(o.topUp.high), '250 yd³ sand top-up, every 3 years'],
-    [money(o.annual.low) + '–' + money(o.annual.high), 'plant care and monitoring, per year'],
-    [money(o.npv50.low) + '–' + money(o.npv50.high), '50-year total, present value at 3%']
+    [o.topUps.events + ' top-ups', 'expected in 50 years (central case)'],
+    [money(o.npv50.low) + '–' + money(o.npv50.high), '50-year total, present value at 3%'],
+    [money(d.earlier.npv50.low) + '–' + money(d.earlier.npv50.high), 'earlier design, same frontage, for comparison']
   ].map(function (f) { return '<div class="fact"><span class="v">' + f[0] + '</span><span class="k">' + f[1] + '</span></div>'; }).join('');
 
-  $('#stressRows').innerHTML = [
-    ['Central case (+0.98 m sea level by 2100)', o.retreat['2076']],
-    ['Swells 15% bigger', o.stress.swellsPlus15],
-    ['Sea level +1.5 m by 2100', o.stress.slr1_5m],
-    ['Both together', o.stress.both]
-  ].map(function (r) { return '<tr><td>' + r[0] + '</td><td class="num">' + r[1].toFixed(1) + ' m</td></tr>'; }).join('');
+  $('#maintList').innerHTML += '<li>Each spring: owner photo and phone or drone survey of the berm; engineer check every 3 years.</li>' +
+    '<li>Top up ' + des.topUpYd3 + ' yd³ ' + policy + (des.backpass ? '; push drifted sand back first, then buy only the shortfall' : '') + '.</li>' +
+    '<li>Add sand to the crest in later decades as the sea rises, keeping it above the measured winter runup.</li>';
+}
 
-  var desc = {
-    'Plants only': 'Dense native planting on the bank and lawn edge',
-    'Lawn dune + plants': '0.6 m planted dune on the lawn, no beach sand',
-    'Cat. I sand + lawn dune': 'Lawn dune, 499 yd³ beach sand, 250 yd³ every 3 yr',
-    'Least cost (central case)': 'Lawn dune 0.4 m, 1,000 yd³, 250 yd³ every 5 yr',
-    'Recommended': 'Lawn dune 0.6 m, 1,500 yd³, 250 yd³ every 3 yr'
-  };
-  $('#tierRows').innerHTML = d.tiers.map(function (t) {
-    var house = t.houseYear ? '<span class="tag2 bad">' + t.houseYear + '</span>' : '<span class="tag2 ok">not by 2076</span>';
-    var st = t.stressBoth <= 2 ? '<span class="tag2 ok">holds (' + t.stressBoth.toFixed(1) + ' m)</span>' : '<span class="tag2 bad">' + t.stressBoth.toFixed(0) + ' m lost</span>';
-    return '<tr class="' + (t.name === 'Recommended' ? 'rec' : '') + '"><td><b>' + t.name + '</b></td><td>' + desc[t.name] + '</td><td>' + house + '</td><td>' + st + '</td><td class="num">' + money(t.capital.low) + '–' + money(t.capital.high) + '</td><td class="num">' + money(t.npv50.low) + '–' + money(t.npv50.high) + '</td></tr>';
-  }).join('');
-
-  // trajectory chart
-  var svg = $('#trajChart'), NS = 'http://www.w3.org/2000/svg', W = 520, Hh = 260, L = 40, R = 12, T = 12, B = 28;
-  function el(t, a, txt) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; }
-  var X = function (y) { return L + (y - 2026) / 50 * (W - L - R); }, vmax = 40;
-  var Y = function (v) { return T + (1 - Math.min(v, vmax) / vmax) * (Hh - T - B); };
-  for (var v = 0; v <= vmax; v += 10) { el('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), style: 'stroke:var(--rule)' }); el('text', { x: L - 5, y: Y(v) + 4, 'text-anchor': 'end', style: 'fill:var(--muted);font:11px var(--mono)' }, v + ' m'); }
-  [2026, 2036, 2046, 2056, 2066, 2076].forEach(function (y) { el('text', { x: X(y), y: Hh - 8, 'text-anchor': 'middle', style: 'fill:var(--muted);font:11px var(--mono)' }, y); });
-  el('rect', { x: L, y: T, width: W - L - R, height: Y(11) - T, style: 'fill:var(--danger);opacity:.08' });
-  el('line', { x1: L, x2: W - R, y1: Y(11), y2: Y(11), style: 'stroke:var(--danger);stroke-dasharray:5 4' });
-  el('text', { x: L + 6, y: Y(11) - 6, style: 'fill:var(--danger);font:11px var(--mono)' }, 'house (11 m)');
-  var series = [['Do nothing', d.doNothing.trajectory, 'var(--muted)', 1.6]];
-  var tiers = {}; d.tiers.forEach(function (t) { tiers[t.name] = t; });
-  // trajectories for tiers are recomputed client-side only for the recommended one; others use stored end points
-  series.push(['Recommended', o.trajectory, 'var(--accent)', 3]);
-  series.forEach(function (sr) {
-    el('polyline', { points: X(2025) + ',' + Y(0) + ' ' + sr[1].map(function (r) { return X(r.year) + ',' + Y(r.retreat); }).join(' '), style: 'fill:none;stroke:' + sr[2] + ';stroke-width:' + sr[3] });
-  });
-  $('#trajKey').innerHTML = '<span style="color:var(--muted)">━ do nothing</span> &nbsp; <span style="color:var(--accent)">━ recommended design</span> &nbsp; Do nothing reaches the house around ' + d.doNothing.houseYear + '.';
-});
-
-// ---------- interactive 3D viewer ----------
+// interactive viewer
 var mode = 'after', renderer, scene, camera, controls, needs = true;
 function setMode(m) {
   mode = m; $('#mBefore').setAttribute('aria-pressed', String(m === 'before')); $('#mAfter').setAttribute('aria-pressed', String(m === 'after'));
@@ -448,23 +439,29 @@ function startViewer() {
   if (!window.THREE || !THREE.OrbitControls) { $('#viewerMsg').textContent = 'The 3D viewer could not load. The renders above show the same model.'; return; }
   var box = $('#viewer');
   try { renderer = new THREE.WebGLRenderer({ antialias: true }); } catch (e) { $('#viewerMsg').textContent = 'This device cannot show 3D. The renders above show the same model.'; return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.shadowMap.enabled = true; renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.shadowMap.enabled = true; renderer.outputEncoding = THREE.sRGBEncoding;
   box.innerHTML = ''; box.appendChild(renderer.domElement);
-  camera = new THREE.PerspectiveCamera(45, 1.6, 0.1, 600);
-  var v = ShoreScene.VIEWS.aerial; camera.position.set(v.pos[0], v.pos[1], v.pos[2]);
+  camera = ShoreScene.camera('aerial', mode, 1.6);
   controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.target.set(v.target[0], v.target[1], v.target[2]); controls.maxPolarAngle = Math.PI * 0.49; controls.minDistance = 4; controls.maxDistance = 140;
-  controls.enableDamping = true; controls.addEventListener('change', function () { needs = true; });
+  var t = ShoreScene.VIEWS.aerial.target; controls.target.set(t[0], t[1], t[2]);
+  controls.maxPolarAngle = Math.PI * 0.49; controls.minDistance = 4; controls.maxDistance = 140; controls.enableDamping = true;
+  controls.addEventListener('change', function () { needs = true; });
   scene = ShoreScene.build(mode);
   function size() { var w = box.clientWidth, h = box.clientHeight || w / 1.6; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); needs = true; }
   if (window.ResizeObserver) new ResizeObserver(size).observe(box); size();
   (function loop() { requestAnimationFrame(loop); controls.update(); if (needs) { renderer.render(scene, camera); needs = false; } })();
 }
 function load(src, cb) { var s = document.createElement('script'); s.src = src; s.onload = cb; s.onerror = cb; document.head.appendChild(s); }
-load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function () {
-  if (!window.THREE) return startViewer();
-  load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js', startViewer);
-});
+
+Promise.all([fetch('data/design.json').then(function (r) { return r.json(); }), fetch('data/grading.json').then(function (r) { return r.json(); })]).then(function (res) {
+  var d = res[0], gr = res[1];
+  ShoreScene.setGrid(gr.grid);
+  drawSection(gr);
+  render(d, gr);
+  load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function () {
+    if (!window.THREE) return startViewer();
+    load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js', startViewer);
+  });
+}).catch(function (e) { $('#viewerMsg').textContent = 'The design data could not load (' + e.message + ').'; });
 })();
 </script>

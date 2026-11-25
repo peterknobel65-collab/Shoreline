@@ -1,183 +1,190 @@
-// Design optimisation for 461 Laulea Pl.
+// Design optimisation with value engineering and Monte Carlo reliability.
 //
-// Searches combinations of the soft-shoreline elements the rules allow
-// (planted lawn dune, beach nourishment with periodic top-ups, coir toe,
-// native planting), runs each through the calibrated storm model for 50
-// years of real winters plus sea-level rise, prices it, and keeps the
-// cheapest design that protects the house. Robustness is then checked
-// against bigger swells and faster sea-level rise.
+// 1. Screen: every combination of lawn-dune height, initial beach sand,
+//    top-up volume, top-up policy (fixed interval or monitoring trigger) and
+//    sand backpassing, run through the calibrated model (central parameters,
+//    50 real-winter years with sea-level rise to +0.98 m by 2100).
+// 2. Reliability: the cheapest screened designs are re-run across N Monte
+//    Carlo parameter sets. Each set samples the uncertain inputs and is
+//    re-calibrated to a sampled long-term retreat rate; sets that cannot
+//    reproduce it are rejected (joint calibration).
+// 3. Choose the cheapest design whose bank stays within 2 m of today's
+//    position through 2076 in >= 90% of accepted sets, and compare it with
+//    the earlier (fixed-interval, no value engineering) design.
 //
-// Usage: node shoreline-sim/tools/optimize.js   (writes data/design.json)
+// Usage: node shoreline-sim/tools/optimize.js  -> data/design.json
 const fs = require('fs');
 const path = require('path');
 const M = require('../model.js');
 const data = require('../data/winters.json');
 
-const YD3 = 0.764555;            // m^3 per cubic yard
-const FT = 3.28084;
+const YD3 = 0.764555, FT = 3.28084;
 const full = data.seasons.filter((s) => s.coverage > 0.9);
-const FRONT = 34;                // m of frontage at 461
-const RATE = 0.49;               // m/yr measured long-term retreat (UH/USGS transect 599)
-const YEARS = 50;
-const DISCOUNT = 0.03;
+const FRONT = 30;               // m, 461's open frontage (2023 lidar)
+const RATE = 0.49;              // m/yr measured long-term retreat (UH/USGS transect 599)
+const YEARS = 50, DISCOUNT = 0.03, N_MC = Number(process.env.N_MC || 100);
+const DUNE_YD3 = { 0.4: 141, 0.6: 180, 0.8: 226 };   // lawn-dune fill from grading.py (crest +3.3/+3.5/+3.7)
+const MAX_INITIAL = 1500;       // yd3: 1,500 yd3 already gives an 11 m berm on this frontage (grading.py)
 
-const site = { scarpFactor: M.calibrateScarp({}, { vegetation: 0.3 }, full, RATE) };
+const central = { scarpFactor: M.calibrateScarp({}, { vegetation: 0.3 }, full, RATE) };
 
 // ---- cost model (2026 USD, small Maui job; [low, high]) ----
 const C = {
-  sandPerYd3: [150, 250],         // compatible carbonate sand delivered and placed (Hawaii: $100-200/yd3 haul alone)
-  sandMobilise: [6000, 12000],    // equipment mobilisation per sand event
-  coirPerLfPerTier: [90, 200],    // sand-filled coir envelopes, installed (no verified Hawaii price)
-  plantsPerM2: [35, 80],          // native plugs, shrubs, trees, installed
-  irrigation: [3000, 8000],       // temporary drip for 12-18 months of establishment
-  sandFence: [2000, 5000],
-  accessPath: [2500, 7000],       // sand path with rope-and-post edging and a low dune crossover
-  pipeReroute: [1000, 3000],
-  survey: [10000, 25000],         // certified shoreline + beach profile
-  engineering: [25000, 60000],    // coastal engineer: design, drawings, construction observation
-  permitting: [20000, 55000],     // SSBN application, sand testing, biological & archaeological reports, County SMA
-  archMonitor: [3000, 10000],
-  contingency: 0.2,
-  plantCarePerYr: [2000, 5000],
-  monitoringPerYr: [2000, 5000],  // annual profile survey + photo report (OCCL reporting)
+  sandPerYd3: [150, 250], backpassPerYd3: [25, 50], sandMobilise: [6000, 12000],
+  coirPerLfPerTier: [90, 200], plantsPerM2: [35, 80], irrigation: [3000, 8000], sandFence: [2000, 5000],
+  accessPath: [2500, 7000], pipeReroute: [1000, 3000], survey: [10000, 25000], engineering: [25000, 60000],
+  permitting: [20000, 55000], archMonitor: [3000, 10000], contingency: 0.2,
+  plantCarePerYr: [2000, 5000], monitoringPro: [2000, 5000], monitoringOwner: [700, 1800], proCheckEvery: 3,
   topUpReport: [3000, 8000],
 };
 
-function duneGeometry(h) {
-  // 1.5 m crest, 1:2.5 seaward face, 1:4 landward face (walkable, mowable transition)
-  const width = 1.5 + 2.5 * h + 4 * h;
-  const area = 1.5 * h + 0.5 * h * 2.5 * h + 0.5 * h * 4 * h;
-  return { width, area, volumeM3: area * FRONT };
+function capital(d, i) {
+  const sandYd3 = d.initialYd3 + DUNE_YD3[d.crestRaise];
+  const plantedArea = FRONT * 11;
+  const items = {
+    'Certified shoreline & beach survey': C.survey[i],
+    'Coastal engineering & construction observation': C.engineering[i],
+    'Permits, sand testing & environmental reports': C.permitting[i],
+    'Archaeological monitoring': C.archMonitor[i],
+    'Compatible sand (beach + dune), delivered & placed': sandYd3 * C.sandPerYd3[i] + C.sandMobilise[i],
+    'Native planting': plantedArea * C.plantsPerM2[i],
+    'Establishment irrigation': C.irrigation[i],
+    'Sand fencing': C.sandFence[i],
+    'Beach access path & dune crossover': C.accessPath[i],
+    'Remove / reroute exposed irrigation': C.pipeReroute[i],
+  };
+  const sub = Object.values(items).reduce((a, b) => a + b, 0);
+  items['Contingency (20%)'] = sub * C.contingency;
+  return { items, total: sub * (1 + C.contingency), sandYd3, plantedArea };
 }
 
-function costs(d) {
-  const lf = FRONT * FT;
-  const dune = duneGeometry(d.crestRaise);
-  const plantedArea = FRONT * (dune.width + 4);   // dune + bank face + transition
-  const sandYd3 = d.initialYd3 + dune.volumeM3 / YD3;
-  const capital = (i) => {
-    const items = {
-      'Certified shoreline & beach survey': C.survey[i],
-      'Coastal engineering & construction observation': C.engineering[i],
-      'Permits, sand testing & environmental reports': C.permitting[i],
-      'Archaeological monitoring': C.archMonitor[i],
-      'Compatible sand (beach + dune), delivered & placed': sandYd3 > 0 ? sandYd3 * C.sandPerYd3[i] + C.sandMobilise[i] : 0,
-      'Coir envelopes at the toe': d.coirTiers * lf * C.coirPerLfPerTier[i],
-      'Native planting': plantedArea * C.plantsPerM2[i],
-      'Establishment irrigation': C.irrigation[i],
-      'Sand fencing': d.crestRaise > 0 || d.initialYd3 > 0 ? C.sandFence[i] : 0,
-      'Beach access path & dune crossover': C.accessPath[i],
-      'Remove / reroute exposed irrigation': C.pipeReroute[i],
-    };
-    const sub = Object.values(items).reduce((a, b) => a + b, 0);
-    items['Contingency (20%)'] = sub * C.contingency;
-    return { items, total: sub * (1 + C.contingency) };
-  };
-  const topUp = (i) => (d.topUpYd3 > 0 ? d.topUpYd3 * C.sandPerYd3[i] + C.sandMobilise[i] + C.topUpReport[i] : 0);
-  const annual = (i) => C.plantCarePerYr[i] + C.monitoringPerYr[i];
-  const npv = (i) => {
-    let v = capital(i).total;
-    for (let y = 1; y < YEARS; y++) {
-      const df = Math.pow(1 + DISCOUNT, -y);
-      v += annual(i) * df;
-      if (d.interval > 0 && y % d.interval === 0) v += topUp(i) * df;
+// cost of the life cycle given the top-up events the model actually triggered
+function lifeCycle(d, proj, i) {
+  let v = capital(d, i).total, events = 0, imported = 0, backpassed = 0;
+  proj.forEach((r, y) => {
+    if (y === 0) return;
+    const df = Math.pow(1 + DISCOUNT, -y);
+    const ownerMon = d.ownerMonitoring;
+    const mon = ownerMon ? (C.monitoringOwner[i] + (y % C.proCheckEvery === 0 ? C.monitoringPro[i] : 0)) : C.monitoringPro[i];
+    v += (C.plantCarePerYr[i] + mon) * df;
+    if (r.topUp) {
+      const imp = r.topUp.imported / YD3, bp = r.topUp.backpassed / YD3;
+      v += (imp * C.sandPerYd3[i] + bp * C.backpassPerYd3[i] + C.sandMobilise[i] + C.topUpReport[i]) * df;
+      events++; imported += imp; backpassed += bp;
     }
-    return v;
-  };
-  return { capital: [capital(0), capital(1)], topUp: [topUp(0), topUp(1)], annual: [annual(0), annual(1)],
-           npv: [npv(0), npv(1)], sandYd3, dune, plantedArea };
+  });
+  return { npv: v, events, imported, backpassed };
 }
 
-function simulate(d, over = {}, proj = {}) {
-  const design = {
-    vegetation: 1, nourishVolume: d.initialYd3 * YD3, nourishLength: FRONT,
-    coirHeight: d.coirTiers * 0.45, crestRaise: d.crestRaise,
-  };
-  return M.project({ ...site, ...over }, design, full,
-    { years: YEARS, slr2100: 0.98, renourishEvery: d.interval, topUpVolume: d.topUpYd3 * YD3, ...proj });
+function designFor(d) {
+  return { vegetation: 1, nourishVolume: d.initialYd3 * YD3, nourishLength: FRONT, crestRaise: d.crestRaise };
+}
+function run(d, site, proj = {}) {
+  return M.project(site, designFor(d), full, {
+    years: YEARS, slr2100: 0.98, renourishEvery: d.interval || 0, trigger: d.trigger || 0, minGap: 2,
+    backpassFrac: d.backpass || 0, topUpVolume: d.topUpYd3 * YD3, ...proj });
+}
+function evaluate(d, site = central, proj = {}) {
+  const p = run(d, site, proj);
+  const lo = lifeCycle(d, p, 0), hi = lifeCycle(d, p, 1);
+  return { r2076: p.at(-1).retreat, p, npvLow: lo.npv, npvHigh: hi.npv, events: lo.events, imported: lo.imported, backpassed: lo.backpassed };
 }
 
-const out = [];
-for (const crestRaise of [0, 0.4, 0.6, 0.8, 1.0])
-  for (const initialYd3 of [0, 250, 499, 1000, 1500])
-    for (const topUpYd3 of [0, 150, 250, 499])
-      for (const interval of [0, 2, 3, 4, 5, 7])
-        for (const coirTiers of [0, 1, 2]) {
-          if ((topUpYd3 === 0) !== (interval === 0)) continue;
-          const d = { crestRaise, initialYd3, topUpYd3, interval, coirTiers };
-          const p = simulate(d);
-          const r2056 = p[29].retreat, r2076 = p[YEARS - 1].retreat;
-          const c = costs(d);
-          out.push({ ...d, r2056, r2076, npvLow: c.npv[0], npvHigh: c.npv[1], capLow: c.capital[0].total });
-        }
+// ---- 1. deterministic screen ----
+const cands = [];
+for (const crestRaise of [0.8])   // crest +3.7 m: clears the record winter runup (+3.56 m) today; raise later with sea level
+  for (const initialYd3 of [750, 1000, 1250, 1500])
+    for (const topUpYd3 of [200, 300, 400, 499])
+      for (const pol of [...[2, 3, 4, 5].map((n) => ({ interval: n })), ...[4, 6, 8, 10].map((t) => ({ trigger: t }))])
+        for (const backpass of [0, 0.3])
+          for (const ownerMonitoring of [false, true]) {
+            if (ownerMonitoring && !pol.trigger) continue;          // owner monitoring only makes sense with a trigger
+            cands.push({ crestRaise, initialYd3, topUpYd3, ...pol, backpass, ownerMonitoring });
+          }
+const screened = cands.map((d) => ({ d, ...evaluate(d) })).filter((r) => r.r2076 <= 1.0);
+screened.sort((a, b) => (a.npvLow + a.npvHigh) - (b.npvLow + b.npvHigh));
+console.log('screened', cands.length, 'pass central case', screened.length);
 
-const ok = out.filter((o) => o.r2076 <= 1.0 && o.crestRaise <= 1.0 && duneGeometry(o.crestRaise).width <= 9);
-ok.sort((a, b) => (a.npvLow + a.npvHigh) - (b.npvLow + b.npvHigh));
-const best = ok[0];
+// ---- 2. Monte Carlo parameter sets (joint calibration) ----
+function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+const r = rng(20261125);
+const U = (a, b) => a + (b - a) * r();
+const N = (m, sd) => m + sd * Math.sqrt(-2 * Math.log(r() + 1e-12)) * Math.cos(2 * Math.PI * r());
+const tri = (a, m, b) => { const u = r(), f = (m - a) / (b - a); return u < f ? a + Math.sqrt(u * (b - a) * (m - a)) : b - Math.sqrt((1 - u) * (b - a) * (b - m)); };
+const sets = [];
+let rejected = 0;
+while (sets.length < N_MC && sets.length + rejected < N_MC * 3) {
+  const site = {
+    reefTransmission: U(0.42, 0.52), Cs: 1.7e-4 * Math.exp(N(0, 0.45)), cellLoss: U(0.15, 0.35),
+    recoveryRate: U(0.03, 0.08), profileLoss: U(0.2, 0.4), foreshoreSlope: U(0.075, 0.105), naturalBermMax: U(4, 8),
+    waveScale: N(1, 0.05),
+  };
+  const rate = Math.min(0.9, Math.max(0.2, N(RATE, 0.23)));
+  const f = M.calibrateScarp(site, { vegetation: 0.3 }, full, rate);
+  const check = M.project({ ...site, scarpFactor: f }, { vegetation: 0.3 }, full, { years: 9, slr2100: 0 }).at(-1).retreat / 9;
+  if (Math.abs(check - rate) > 0.05) { rejected++; continue; }
+  const order = Array.from({ length: YEARS }, () => Math.floor(r() * full.length));
+  sets.push({ site: { ...site, scarpFactor: f }, rate, slr2100: tri(0.6, 0.98, 1.6), order });
+}
+console.log('Monte Carlo sets', sets.length, 'rejected', rejected);
 
-// robustness of the top candidates: bigger swells and faster sea-level rise
-function stress(d) {
+function reliability(d) {
+  let ok = 0, safe = 0; const r76 = [];
+  for (const s of sets) {
+    const v = run(d, s.site, { slr2100: s.slr2100, order: s.order }).at(-1).retreat;
+    r76.push(v); if (v <= 2) ok++; if (v < 11) safe++;
+  }
+  r76.sort((a, b) => a - b);
+  return { pWithin2m: ok / sets.length, pHouseSafe: safe / sets.length, median: r76[Math.floor(r76.length / 2)], p90: r76[Math.floor(r76.length * 0.9)] };
+}
+
+// ---- 3. choose ----
+const mid = (x) => x.npvLow + x.npvHigh;
+const shortlist = screened.slice(0, 40).map((x) => ({ ...x, rel: reliability(x.d) }));
+const reliable = shortlist.filter((x) => x.rel.pWithin2m >= 0.9).sort((a, b) => mid(a) - mid(b));
+const rec = reliable[0] || shortlist.sort((a, b) => b.rel.pWithin2m - a.rel.pWithin2m)[0];
+console.log('recommended', JSON.stringify(rec.d), 'P(within 2 m)', rec.rel.pWithin2m, 'npv', Math.round(rec.npvLow), Math.round(rec.npvHigh));
+
+// earlier design (v1), re-run on the corrected 30 m frontage for a fair comparison
+const v1 = { crestRaise: 0.6, initialYd3: 1500, topUpYd3: 250, interval: 3, backpass: 0, ownerMonitoring: false };
+const v1e = { ...evaluate(v1), d: v1 }; v1e.rel = reliability(v1);
+
+function describe(x, label) {
+  const capL = capital(x.d, 0), capH = capital(x.d, 1);
   return {
-    swellsPlus15: simulate(d, { waveScale: 1.15 }).at(-1).retreat,
-    slr1_5m: simulate(d, {}, { slr2100: 1.5 }).at(-1).retreat,
-    both: simulate(d, { waveScale: 1.15 }, { slr2100: 1.5 }).at(-1).retreat,
+    label, design: x.d,
+    retreat2076: +x.r2076.toFixed(2), reliability: x.rel,
+    trajectory: x.p.map((q) => ({ year: q.year, retreat: +q.retreat.toFixed(2), buffer: +q.buffer.toFixed(1), topUp: !!q.topUp })),
+    topUps: { events: x.events, importedYd3: Math.round(x.imported), backpassedYd3: Math.round(x.backpassed) },
+    sandFirstYd3: Math.round(capL.sandYd3), duneYd3: DUNE_YD3[x.d.crestRaise], plantedAreaM2: capL.plantedArea,
+    capital: { low: Math.round(capL.total), high: Math.round(capH.total),
+               items: Object.keys(capL.items).map((k) => ({ item: k, low: Math.round(capL.items[k]), high: Math.round(capH.items[k]) })) },
+    npv50: { low: Math.round(x.npvLow), high: Math.round(x.npvHigh) },
   };
 }
-const shortlist = ok.map((o) => ({ ...o, stress: stress(o) }));
-const mid = (o) => o.npvLow + o.npvHigh;
-const robustSet = shortlist.filter((o) => o.stress.swellsPlus15 <= 3 && o.stress.slr1_5m <= 3).sort((a, b) => mid(a) - mid(b));
-const robust = robustSet.find((o) => o.crestRaise === 0.6 && o.stress.both === 0 && o.coirTiers === 0) || robustSet[0] || best;  // 0.6 m dune: same cost band, more overwash margin and planting depth
-const veryRobust = shortlist.filter((o) => o.stress.both <= 3).sort((a, b) => mid(a) - mid(b))[0] || null;
-console.log('robust candidates', robustSet.length, 'very robust', veryRobust ? JSON.stringify(veryRobust) : 'none');
-for (const o of robustSet.slice(0, 6)) console.log(' R', JSON.stringify({ ...o, npvLow: Math.round(o.npvLow), npvHigh: Math.round(o.npvHigh), capLow: Math.round(o.capLow) }));
 
-function describe(o, label) {
-  const c = costs(o);
-  const p = simulate(o);
-  return {
-    label, design: o,
-    retreat: { 2036: p[9].retreat, 2056: p[29].retreat, 2076: p[YEARS - 1].retreat },
-    trajectory: p.map((r) => ({ year: r.year, retreat: +r.retreat.toFixed(2) })),
-    stress: stress(o),
-    sandFirstYd3: Math.round(c.sandYd3),
-    dune: { heightM: o.crestRaise, widthM: +c.dune.width.toFixed(1), volumeYd3: Math.round(c.dune.volumeM3 / YD3) },
-    plantedAreaM2: Math.round(c.plantedArea),
-    capital: { low: Math.round(c.capital[0].total), high: Math.round(c.capital[1].total),
-               items: Object.keys(c.capital[0].items).map((k) => ({ item: k, low: Math.round(c.capital[0].items[k]), high: Math.round(c.capital[1].items[k]) })) },
-    topUp: { low: Math.round(c.topUp[0]), high: Math.round(c.topUp[1]) },
-    annual: { low: c.annual[0], high: c.annual[1] },
-    npv50: { low: Math.round(c.npv[0]), high: Math.round(c.npv[1]) },
-  };
-}
-const none = { crestRaise: 0, initialYd3: 0, topUpYd3: 0, interval: 0, coirTiers: 0 };
-const noneP = M.project(site, { vegetation: 0.3 }, full, { years: YEARS, slr2100: 0.98 });
+// value-engineering ladder: start from v1 and add one measure at a time
+const ladder = [];
+const step = (name, d) => { const e = { ...evaluate(d), d }; e.rel = reliability(d); ladder.push({ name, d, npvLow: Math.round(e.npvLow), npvHigh: Math.round(e.npvHigh), pWithin2m: e.rel.pWithin2m, events: e.events }); };
+step('Earlier design: 1,500 yd³ + 250 yd³ every 3 yr', v1);
+step('+ Top up on a survey trigger instead of a clock', { ...v1, interval: 0, trigger: rec.d.trigger || 6 });
+step('+ Owner-led monitoring, engineer check every 3 yr', { ...v1, interval: 0, trigger: rec.d.trigger || 6, ownerMonitoring: true });
+step('+ Recycle drifted sand (backpassing, 30%)', { ...v1, interval: 0, trigger: rec.d.trigger || 6, ownerMonitoring: true, backpass: 0.3 });
+step('+ Right-size volumes (optimised)', rec.d);
+
+const noneP = M.project(central, { vegetation: 0.3 }, full, { years: YEARS, slr2100: 0.98 });
+const noneRel = reliability({ crestRaise: 0, initialYd3: 0, topUpYd3: 0, interval: 0 });
 const result = {
   generated: new Date().toISOString().slice(0, 10),
-  assumptions: { frontageM: FRONT, calibrationRate: RATE, years: YEARS, discount: DISCOUNT, slr2100: 0.98, costs: C,
-                 constraint: 'bank retreat <= 1.0 m by 2076; lawn dune footprint <= 9 m (house is ~11 m behind the bank)' },
-  searched: out.length, feasible: ok.length,
-  doNothing: { trajectory: noneP.map((r) => ({ year: r.year, retreat: +r.retreat.toFixed(2) })),
-               houseYear: (noneP.find((r) => r.retreat >= 11) || {}).year || null },
-  optimal: describe(robust, 'Recommended: robust least-cost design'),
-  cheapest: describe(best, 'Least cost (meets the target in the central case only)'),
-  veryRobust: veryRobust ? describe(veryRobust, 'Holds even with bigger swells and 1.5 m sea-level rise') : null,
-  alternatives: robustSet.slice(0, 8).map((o) => ({ ...o, npvMid: Math.round((o.npvLow + o.npvHigh) / 2) })),
+  assumptions: { frontageM: FRONT, calibrationRate: RATE, reefWindow: [0.42, 0.52], years: YEARS, discount: DISCOUNT, costs: C,
+                 maxInitialYd3: MAX_INITIAL, mcSets: sets.length, mcRejected: rejected, target: 'bank within 2 m of today through 2076 in >= 90% of Monte Carlo futures' },
+  screened: cands.length, passCentral: screened.length,
+  doNothing: { trajectory: noneP.map((q) => ({ year: q.year, retreat: +q.retreat.toFixed(2) })), houseYear: (noneP.find((q) => q.retreat >= 11) || {}).year || null, reliability: noneRel },
+  optimal: describe(rec, 'Recommended (value-engineered)'),
+  earlier: describe(v1e, 'Earlier design on the corrected frontage'),
+  ladder,
+  shortlist: shortlist.slice(0, 12).map((x) => ({ d: x.d, npvLow: Math.round(x.npvLow), npvHigh: Math.round(x.npvHigh), pWithin2m: x.rel.pWithin2m, pHouseSafe: x.rel.pHouseSafe })),
 };
-result.tiers = [
-  ['Plants only', { crestRaise: 0, initialYd3: 0, topUpYd3: 0, interval: 0, coirTiers: 0 }],
-  ['Lawn dune + plants', { crestRaise: 0.6, initialYd3: 0, topUpYd3: 0, interval: 0, coirTiers: 0 }],
-  ['Cat. I sand + lawn dune', { crestRaise: 0.6, initialYd3: 499, topUpYd3: 250, interval: 3, coirTiers: 0 }],
-  ['Least cost (central case)', best],
-  ['Recommended', robust],
-].map(([name, d]) => {
-  const x = describe(d, name);
-  const houseYear = (x.trajectory.find((r) => r.retreat >= 11) || {}).year || null;
-  return { name, design: d, retreat2076: +x.retreat[2076].toFixed(1), stressBoth: +x.stress.both.toFixed(1), houseYear,
-           capital: x.capital, topUp: x.topUp, npv50: x.npv50 };
-});
 fs.writeFileSync(path.join(__dirname, '..', 'data', 'design.json'), JSON.stringify(result, null, 1));
-console.log('searched', out.length, 'feasible', ok.length);
-console.log('cheapest', JSON.stringify(best));
-console.log('robust  ', JSON.stringify(robust), JSON.stringify(stress(robust)));
-console.log('capital', result.optimal.capital.low, '-', result.optimal.capital.high, 'topUp', result.optimal.topUp, 'npv', result.optimal.npv50);
-console.log('do nothing reaches house', result.doNothing.houseYear);
+console.log('ladder'); ladder.forEach((l) => console.log(' ', l.name.padEnd(52), l.npvLow, l.npvHigh, 'P', l.pWithin2m.toFixed(2), 'events', l.events));
+console.log('do nothing house year', result.doNothing.houseYear, 'P(house safe)', noneRel.pHouseSafe);

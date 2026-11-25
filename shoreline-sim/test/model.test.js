@@ -59,3 +59,25 @@ test('calibration reproduces the target retreat rate', () => {
   const p = M.project({ scarpFactor: f }, { vegetation: 0.3 }, full, { years, slr2100: 0 });
   assert.ok(Math.abs(p.at(-1).retreat / years - 0.3) < 0.02);
 });
+
+test('reef calibration is monotonic and lands inside the physical window', () => {
+  const lo = M.calibrateReef({}, full, 3.0), hi = M.calibrateReef({}, full, 3.4);
+  assert.ok(lo < hi && lo > 0.2 && hi < 0.8);
+});
+
+test('trigger top-ups only happen when the berm is thin, and backpassing never creates sand', () => {
+  const site = { scarpFactor: 0.02 };
+  const d = { vegetation: 1, nourishVolume: 750, nourishLength: 30, crestRaise: 0.8 };
+  const p = M.project(site, d, full, { years: 20, trigger: 6, minGap: 2, topUpVolume: 200, backpassFrac: 0.3 });
+  let last = -9;
+  p.forEach((r, y) => {
+    if (r.topUp) {
+      assert.ok(y - last >= 2, 'min gap respected');
+      assert.ok(r.topUp.backpassed >= 0 && r.topUp.imported >= 0);
+      assert.ok(Math.abs(r.topUp.backpassed + r.topUp.imported - 200) < 1e-6);
+      last = y;
+    }
+  });
+  const fixed = M.project(site, d, full, { years: 20, renourishEvery: 3, topUpVolume: 200 });
+  assert.equal(fixed.filter((r) => r.topUp).length, 6);
+});

@@ -326,7 +326,7 @@ footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule
     <div class="stack">
       <p><b>Erosion.</b> Larson, Erikson &amp; Hanson (2004) wave-impact model, dV/dt = 4·Cs·(TWL − z<sub>toe</sub>)²/T. Sand in front of the bank goes first. The cohesive, rooted bank erodes at a calibrated fraction of that rate, reduced further by plant roots. Retreat equals eroded volume divided by bank height.</p>
       <p><b>Sand budget.</b> Sand stripped off the beach moves offshore. Most of it returns in calm weather and over summer; part leaves the pocket for good. That loss is the chronic erosion.</p>
-      <p><b>Nourishment spreading.</b> Pelnard-Considère diffusion spreads sand placed on your 34 m frontage along the roughly 110 m of beach between the two walls, so only part of it stays in front of 461.</p>
+      <p><b>Nourishment spreading.</b> Pelnard-Considère diffusion spreads sand placed on your 30 m frontage along the roughly 110 m of beach between the two walls, so only part of it stays in front of 461.</p>
       <p><b>Site data.</b> Bank and beach heights from the USGS 3DEP 1 m lidar (August 2023). Retreat rate from UH/USGS surveyed shorelines 1912–2002 (transects 598–600). House distance and condition from dated aerial imagery (2016–2026) and your November 2026 photos.</p>
       <p><b>Calibration.</b> The bank's erodibility is tuned so that “do nothing” matches the measured long-term retreat rate at 461, 0.49 m/yr.</p>
     </div>
@@ -359,19 +359,19 @@ var css = function (n) { return getComputedStyle(document.documentElement).getPr
 
 var PRESETS = [
   { id: 'none', label: 'Do nothing', color: '--l1', tone: 'ok', legal: 'No permit', note: 'Today\'s condition: thin pōhuehue on the bank, no added sand. The unauthorised boulders are given no protective value.',
-    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
+    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 30, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
   { id: 'plants', label: 'Native dune planting', color: '--l2', tone: 'ok', legal: 'Usually allowed', note: 'Dense, mature native cover on the bank and lawn edge, landward of the shoreline. Roots take 1–2 years to establish.',
-    design: { vegetation: 1, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
+    design: { vegetation: 1, nourishVolume: 0, nourishLength: 30, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
   { id: 'dune', label: 'Planted dune on your lawn', color: '--l7', tone: 'warn', legal: 'County SMA review', note: 'Build a 0.8 m high dune of clean inland sand on your own lawn behind the bank edge, and plant it densely. Being landward of the shoreline, it needs Maui County SMA and shoreline-setback review, not an OCCL beach permit.',
-    design: { vegetation: 1, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 0, crestRaise: 0.8 } },
-  { id: 'sandFront', label: 'Beach sand 500 yd³ + plants', color: '--l3', tone: 'warn', legal: 'OCCL SSBN Cat. I', note: '500 yd³ of compatible sand placed against the bank along your 34 m frontage, planted. Under 500 yd³: OCCL Small-Scale Beach Nourishment Category I. Waves spread it along the beach, so some ends up in front of the neighbours.',
-    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 34, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
+    design: { vegetation: 1, nourishVolume: 0, nourishLength: 30, coirHeight: 0, bagHeight: 0, crestRaise: 0.8 } },
+  { id: 'sandFront', label: 'Beach sand 500 yd³ + plants', color: '--l3', tone: 'warn', legal: 'OCCL SSBN Cat. I', note: '500 yd³ of compatible sand placed against the bank along your 30 m frontage, planted. Under 500 yd³: OCCL Small-Scale Beach Nourishment Category I. Waves spread it along the beach, so some ends up in front of the neighbours.',
+    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 30, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
   { id: 'sandBig', label: 'Beach sand 1,500 yd³ + plants', color: '--l4', tone: 'warn', legal: 'OCCL SSBN Cat. II', note: '1,500 yd³ along your frontage, planted. A single-owner Category II application; it can include maintenance volumes for future top-ups.',
-    design: { vegetation: 1, nourishVolume: 1500 * YD3, nourishLength: 34, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
+    design: { vegetation: 1, nourishVolume: 1500 * YD3, nourishLength: 30, coirHeight: 0, bagHeight: 0, crestRaise: 0 } },
   { id: 'hybrid', label: 'Lawn dune + sand + coir + plants', color: '--l5', tone: 'warn', legal: 'OCCL + County', note: 'The full soft package: a planted 0.8 m dune on the lawn, 500 yd³ of beach sand with 0.9 m of buried coir envelopes at the toe, topped up as needed. Coir is biodegradable but still needs agency approval.',
-    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 34, coirHeight: 0.9, bagHeight: 0, crestRaise: 0.8 } },
+    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 30, coirHeight: 0.9, bagHeight: 0, crestRaise: 0.8 } },
   { id: 'bags', label: 'Temporary sand bags', color: '--l6', tone: 'danger', legal: 'Emergency only', note: '1.2 m of geotextile sand bags at the toe. Only with emergency, time-limited authorisation, and they must come out.',
-    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 1.2, crestRaise: 0 } }
+    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 30, coirHeight: 0, bagHeight: 1.2, crestRaise: 0 } }
 ];
 
 var S = {
@@ -404,7 +404,7 @@ function buildControls() {
   [
     { id: 'veg', label: 'Native plant cover', min: 0, max: 1, step: 0.05, get: function () { return S.design.vegetation; }, set: function (v) { S.design.vegetation = v; }, fmt: function (v) { return Math.round(v * 100) + '%'; } },
     { id: 'nv', label: 'Sand placed', min: 0, max: 6000, step: 100, get: function () { return Math.round(S.design.nourishVolume / YD3 / 100) * 100; }, set: function (v) { S.design.nourishVolume = v * YD3; }, fmt: function (v) { return v.toLocaleString() + ' yd³'; }, hint: '500 yd³ ≈ 25 dump-truck loads' },
-    { id: 'nl', label: 'Spread along', min: 10, max: 110, step: 2, get: function () { return S.design.nourishLength; }, set: function (v) { S.design.nourishLength = v; }, fmt: function (v) { return v + ' m'; }, hint: '34 m = your frontage' },
+    { id: 'nl', label: 'Spread along', min: 10, max: 110, step: 2, get: function () { return S.design.nourishLength; }, set: function (v) { S.design.nourishLength = v; }, fmt: function (v) { return v + ' m'; }, hint: '30 m = your frontage (2023 lidar)' },
     { id: 'dune', label: 'Dune built on the lawn', min: 0, max: 1.5, step: 0.1, get: function () { return S.design.crestRaise; }, set: function (v) { S.design.crestRaise = v; }, fmt: function (v) { return '+' + v.toFixed(1) + ' m'; }, hint: 'raises the bank top above +2.9 m' },
     { id: 'coir', label: 'Coir envelope height', min: 0, max: 1.5, step: 0.1, get: function () { return S.design.coirHeight; }, set: function (v) { S.design.coirHeight = v; }, fmt: function (v) { return v.toFixed(1) + ' m'; } },
     { id: 'bag', label: 'Temporary sand-bag height', min: 0, max: 1.5, step: 0.1, get: function () { return S.design.bagHeight; }, set: function (v) { S.design.bagHeight = v; }, fmt: function (v) { return v.toFixed(1) + ' m'; } }
