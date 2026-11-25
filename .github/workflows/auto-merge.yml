@@ -1,0 +1,97 @@
+# Automatic Pull Request + Merge
+#
+# Whenever code is pushed to a branch whose name starts with "claude/",
+# this workflow:
+#   1. Runs your project's tests (if it has any).
+#   2. Opens a pull request into your main branch (if one isn't open yet).
+#   3. Merges that pull request and deletes the branch.
+#
+# To PAUSE an automatic merge: mark the pull request as a "Draft", or add
+# the label "hold" to it. Remove it and push again to resume.
+
+name: Auto PR and Merge
+
+on:
+  push:
+    branches: ['claude/**']
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-merge-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests (only if the project has them)
+        run: |
+          if [ -f package.json ] && grep -q '"test"' package.json && ! grep -q 'no test specified' package.json; then
+            echo "Found a JavaScript project - running npm tests"
+            npm ci || npm install
+            npm test
+          elif { [ -f pyproject.toml ] || [ -f requirements.txt ]; } && { [ -d tests ] || [ -d test ]; }; then
+            echo "Found a Python project - running pytest"
+            [ -f requirements.txt ] && pip install -r requirements.txt
+            pip install pytest
+            [ -f pyproject.toml ] && pip install -e . || true
+            pytest
+          else
+            echo "No tests found yet - nothing to check. That's OK!"
+          fi
+
+  pr-and-merge:
+    name: Open and merge pull request
+    needs: checks
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      BRANCH: ${{ github.ref_name }}
+      COMMIT_MSG: ${{ github.event.head_commit.message }}
+    steps:
+      - name: Open pull request (if needed) and merge it
+        run: |
+          set -euo pipefail
+          BASE=$(gh api "repos/$REPO" --jq .default_branch)
+
+          AHEAD=$(gh api "repos/$REPO/compare/$BASE...$BRANCH" --jq .ahead_by)
+          if [ "$AHEAD" = "0" ]; then
+            echo "Branch $BRANCH has nothing new compared to $BASE. Nothing to merge."
+            exit 0
+          fi
+
+          PR=$(gh pr list -R "$REPO" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$PR" ]; then
+            TITLE=$(printf '%s\n' "${COMMIT_MSG:-Update from $BRANCH}" | head -n1)
+            if ! gh pr create -R "$REPO" --base "$BASE" --head "$BRANCH" \
+                 --title "$TITLE" \
+                 --body "Opened automatically from branch \`$BRANCH\`. It will be merged automatically once tests pass. To pause, mark this PR as Draft or add the label \`hold\`."; then
+              echo "::error::Could not open a pull request. In GitHub go to Settings > Actions > General > Workflow permissions and tick 'Allow GitHub Actions to create and approve pull requests', then push again."
+              exit 1
+            fi
+            PR=$(gh pr list -R "$REPO" --head "$BRANCH" --state open --json number --jq '.[0].number')
+          fi
+          echo "Pull request: #$PR"
+
+          INFO=$(gh pr view -R "$REPO" "$PR" --json isDraft,labels)
+          if [ "$(echo "$INFO" | jq .isDraft)" = "true" ]; then
+            echo "PR #$PR is a Draft - not merging. Mark it 'Ready for review' and push again to merge."
+            exit 0
+          fi
+          if echo "$INFO" | jq -e '.labels[].name | select(. == "hold")' >/dev/null; then
+            echo "PR #$PR has the 'hold' label - not merging."
+            exit 0
+          fi
+
+          if ! gh pr merge -R "$REPO" "$PR" --merge --delete-branch; then
+            echo "::error::Could not merge PR #$PR automatically (most likely a merge conflict). Ask Claude: 'please fix the merge conflict on PR #$PR'."
+            exit 1
+          fi
+          echo "Merged PR #$PR into $BASE."
