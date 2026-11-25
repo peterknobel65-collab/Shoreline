@@ -289,9 +289,10 @@
         var back = Math.min(st.pool, Math.max(0, site.naturalBermMax - st.vNat));
         st.vNat += back; st.pool -= back;                  // summer berm rebuilding
         if (p.maintainToe) { st.coirUsed = 0; st.bagUsed = 0; }
-        if (p.renourishEvery > 0 && y % p.renourishEvery === 0 && design.nourishVolume > 0) {
+        var topUp = p.topUpVolume != null ? p.topUpVolume : design.nourishVolume;
+        if (p.renourishEvery > 0 && y % p.renourishEvery === 0 && topUp > 0) {
           var len = Math.max(1, Math.min(design.nourishLength, site.pocketLength));
-          var add = design.nourishVolume * (1 - site.profileLoss);
+          var add = topUp * (1 - site.profileLoss);
           st.nTotal += add;
           st.nFront += add / len;
         }

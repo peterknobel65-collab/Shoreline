@@ -68,3 +68,6 @@ sand nourishment, coir toe protection and temporary sand bags.
 - `shoreline-sim/test/` – model tests (`npm test`)
 
 This is a planning tool, not a stamped engineering design.
+- `shoreline-sim/plan.html` – the restoration design (renders, engineering, costs, build plan)
+- `shoreline-sim/tools/optimize.js` – searches design combinations and prices them (`data/design.json`)
+- `shoreline-sim/render/scene.js` + `tools/render.js` – 3D site model and before/after renders
