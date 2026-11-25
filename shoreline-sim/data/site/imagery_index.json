@@ -1,0 +1,189 @@
+[
+ {
+  "release": 49059,
+  "release_date": "2026-04-30",
+  "file": "wayback_2026-04-30.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2026-01-10",
+   "source": "Vantor",
+   "resolution_m": 0.3,
+   "accuracy_m": 8.47,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 25285,
+  "release_date": "2025-05-29",
+  "file": "wayback_2025-05-29.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2025-02-08",
+   "source": "Maxar",
+   "resolution_m": 0.3,
+   "accuracy_m": 8.47,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 56450,
+  "release_date": "2024-10-10",
+  "file": "wayback_2024-10-10.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.3,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 12457,
+  "release_date": "2023-11-01",
+  "file": "wayback_2023-11-01.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.3,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 44988,
+  "release_date": "2022-10-12",
+  "file": "wayback_2022-10-12.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.3,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 10312,
+  "release_date": "2022-02-24",
+  "file": "wayback_2022-02-24.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.31,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 48376,
+  "release_date": "2021-06-09",
+  "file": "wayback_2021-06-09.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.31,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 9812,
+  "release_date": "2021-02-24",
+  "file": "wayback_2021-02-24.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2020-01-26",
+   "source": "Maxar",
+   "resolution_m": 0.31,
+   "accuracy_m": 4.06,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 26751,
+  "release_date": "2020-04-08",
+  "file": "wayback_2020-04-08.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2018-12-18",
+   "source": "Maxar",
+   "resolution_m": 0.5,
+   "accuracy_m": 8.47,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 14426,
+  "release_date": "2018-09-26",
+  "file": "wayback_2018-09-26.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2016-07-30",
+   "source": "DigitalGlobe",
+   "resolution_m": 0.5,
+   "accuracy_m": 10.2,
+   "layer": "30cm Resolution Metadata"
+  }
+ },
+ {
+  "release": 11334,
+  "release_date": "2018-06-27",
+  "file": "wayback_2018-06-27.jpg",
+  "origin_px": [
+   8793344,
+   59134464
+  ],
+  "zoom": 19,
+  "capture": {
+   "date": "2016-07-30",
+   "source": "DigitalGlobe",
+   "resolution_m": 0.5,
+   "accuracy_m": 10.2,
+   "layer": "30cm Resolution Metadata"
+  }
+ }
+]

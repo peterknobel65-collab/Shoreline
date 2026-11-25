@@ -1,0 +1,310 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator: University of Hawaii Coastal Geology Group
+      Publication_Date: 2011
+      Title: MauiN_baseline - Offshore baseline used to cast shore-perpendicular transects for measurement of historical shoreline positions along the North Coast of Maui, Hawaii (Waihee to Kuau)
+      Geospatial_Data_Presentation_Form: vector digital data
+      Series_Information:
+        Series_Name: Open-File Report
+        Issue_Identification: 2011-1009
+      Publication_Information:
+        Publication_Place: Woods Hole Coastal and Marine Science Center, Woods Hole, MA
+        Publisher: U.S. Geological Survey, Coastal and Marine Geology Program
+      Online_Linkage: http://pubs.usgs.gov/of/2011/1009/
+      Larger_Work_Citation:
+        Citation_Information:
+          Originator: Bradley M. Romine
+          Originator: Charles H. Fletcher
+          Originator: Ayesha S. Genz
+          Originator: Matthew M. Barbee
+          Originator: Matthew Dyer
+          Originator: Tiffany R. Anderson
+          Originator: S. Chyn Lim
+          Originator: Sean Vitousek
+          Originator: Christopher Bochicchio
+          Originator: Bruce M. Richmond
+          Publication_Date: 2011
+          Title: National Assessment of Shoreline Change: A GIS Compilation of Vector Shorelines and Associated Shoreline Change Data for the Sandy Shorelines of Kauai, Oahu, and Maui; Hawaii
+          Series_Information:
+            Series_Name: Open-File Report
+            Issue_Identification: 2011-1009
+          Publication_Information:
+            Publication_Place: Woods Hole Coastal and Marine Science Center, Woods Hole, MA
+            Publisher: U.S. Geological Survey, Coastal and Marine Geology Program
+          Online_Linkage: http://pubs.usgs.gov/of/2011/1009/
+  Description:
+    Abstract:
+      Sandy ocean beaches are a popular recreational destination, often surrounded by communities containing valuable real estate.  Development is on the rise despite the fact that coastal infrastructure is subjected to flooding and erosion.  As a result, there is an increased demand for accurate information regarding past and present shoreline changes.  To meet these national needs, the Coastal and Marine Geology Program of the U.S. Geological Survey (USGS) is compiling existing reliable historical shoreline data along open-ocean sandy shores of the conterminous United States and parts of Alaska and Hawaii under the National Assessment of Shoreline Change project.
+
+      There is no widely accepted standard for analyzing shoreline change.  Existing shoreline data measurements and rate calculation methods vary from study to study and prevent combining results into state-wide or regional assessments.  The impetus behind the National Assessment project was to develop a standardized method of measuring changes in shoreline position that is consistent from coast to coast.  The goal was to facilitate the process of periodically and systematically updating the results in an internally consistent manner.
+    Purpose:
+      This dataset includes a reference baseline used by the Digital Shoreline Analysis System (DSAS) to calculate rate-of-change statistics for Maui North region from Waihee to Kuau.  Transects were constructed manually outside of DSAS and later imported.  However, these baselines are required to calculate shoreline change rates in DSAS using the manually-constructed transects.  The transects intersect each shoreline and establish measurement points used to calculate shoreline-change rates.
+
+      Rates of long-term and short-term shoreline change were generated in a GIS using the DSAS version 4.2- An ArcGIS extension for calculating shoreline change: U.S. Geological Survey Open-File Report 2008-1278, Thieler, E.R., Himmelstoss, E.A., Zichichi, J.L., and Ergul, Ayhan.
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Single_Date/Time:
+        Calendar_Date: 2011
+    Currentness_Reference: publication date
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: None planned
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -156.507279
+      East_Bounding_Coordinate: -156.355894
+      North_Bounding_Coordinate: 20.937684
+      South_Bounding_Coordinate: 20.892403
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus: General
+      Theme_Keyword: Baseline
+      Theme_Keyword: Shoreline Change Rate
+      Theme_Keyword: Linear Regression Rate
+      Theme_Keyword: Digital Shoreline Analysis System
+      Theme_Keyword: DSAS
+      Theme_Keyword: U.S. Geological Survey
+      Theme_Keyword: USGS
+      Theme_Keyword: Coastal and Marine Geology Program
+      Theme_Keyword: CMGP
+      Theme_Keyword: Woods Hole Coastal and Marine Science Center
+      Theme_Keyword: WHCMSC
+      Theme_Keyword: National Assessment of Shoreline Change Project
+      Theme_Keyword: University of Hawaii Coastal Geology Group
+    Theme:
+      Theme_Keyword_Thesaurus: ISO 19115 Topic Category
+      Theme_Keyword: oceans
+      Theme_Keyword: oceans and estuaries
+      Theme_Keyword: oceans and coastal
+      Theme_Keyword: environment
+      Theme_Keyword: geoscientificInformation
+    Place:
+      Place_Keyword_Thesaurus: General
+      Place_Keyword: Hawaii
+      Place_Keyword: United States
+      Place_Keyword: Maui
+      Place_Keyword: North Maui
+      Place_Keyword: Waihee, Hawaii
+      Place_Keyword: Kuau, Hawaii
+  Access_Constraints: None
+  Use_Constraints: Public domain data from the U.S. Government are freely redistributable with proper metadata and source attribution. Please recognize the University of Hawaii Coastal Geology Group as the originator of the dataset.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: U.S. Geological Survey
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 384 Woods Hole Road
+        City: Woods Hole
+        State_or_Province: MA
+        Postal_Code: 02543-1598
+        Country: USA
+      Contact_Voice_Telephone: 508-548-8700
+      Contact_Facsimile_Telephone: 508-547-2310
+  Native_Data_Set_Environment: Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 3; ESRI ArcCatalog 9.3.0.1770
+  Cross_Reference:
+    Citation_Information:
+      Originator: Charles H. Fletcher
+      Originator: Bradley M. Romine
+      Originator: Ayesha S. Genz
+      Originator: Matthew M. Barbee
+      Originator: Matthew Dyer
+      Originator: Tiffany R. Anderson
+      Originator: S. Chyn Lim
+      Originator: Sean Vitousek
+      Originator: Christopher Bochicchio
+      Originator: Bruce M. Richmond
+      Publication_Date: 2011
+      Title: National Assessment of Shoreline Change: Historical Shoreline Change in the Hawaiian Islands
+      Series_Information:
+        Series_Name: Open-File Report
+        Issue_Identification: 2011-1051
+      Publication_Information:
+        Publication_Place: Woods Hole Coastal and Marine Science Center, Woods Hole, MA
+        Publisher: U.S. Geological Survey, Coastal and Marine Geology Program
+      Online_Linkage: http://pubs.usgs.gov/of/2011/1051/
+  Cross_Reference:
+    Citation_Information:
+      Originator: E.R. Thieler
+      Originator: E.A. Himmelstoss
+      Originator: J.L. Zichichi
+      Originator: A. Ergul
+      Publication_Date: 2009
+      Title: Digital Shoreline Analysis System (DSAS) version 4.0 - An ArcGIS extension for calculating shoreline change
+      Other_Citation_Details: Current version of software at time of use was 4.2
+      Online_Linkage: http://pubs.usgs.gov/of/2008/1278/
+      Online_Linkage: http://woodshole.er.usgs.gov/project-pages/dsas/version4/index.html
+      Online_Linkage: http://woodshole.er.usgs.gov/project-pages/dsas/
+Data_Quality_Information:
+  Attribute_Accuracy:
+    Attribute_Accuracy_Report: The attribute in this layer is based on the requirements for use within the Digital Shoreline Analysis System (DSAS) software (USGS Open-File Report 2008-1278).  The data have been quality checked and the attribute value (ID) increments sequentially alongshore. The attribute value (ID) may not always increment sequentially offshore. Transects may cross seaward of historical shorelines resulting in non-sequential numbering offshore.  This is done to maintain roughly equal spacing and perpendicular alignment of transects to shorelines on convex (embayed) coasts.
+  Logical_Consistency_Report: All polylines have a unique identification attribute (ID) used to designate the alongshore order of baselines.  Adjacent baseline segments may overlap and are not necessarily continuous. Baseline segments may overlap to maintain roughly equal spacing and perpendicular alignment of transects (cast from the baselines) to historical shorelines on convex (embayed) coasts.
+  Completeness_Report: This baseline file is complete and contains all baseline segments for the (region name) coastal region where shoreline data were available to calculate either a short- or long-term rate. Transects were constructed manually outside of DSAS and later imported.  However, these baselines are required to calculate shoreline change rates in DSAS using the manually-constructed transects.
+  Positional_Accuracy:
+    Horizontal_Positional_Accuracy:
+      Horizontal_Positional_Accuracy_Report: The baseline serves as a reference point for transects cast by the Digital Shoreline Analysis System (DSAS) software.  It does not correspond to any real-world feature.
+  Lineage:
+    Process_Step:
+      Process_Description: A series of baseline segments were constructed offshore from the time series of shoreline positions using standard editing tools in ArcMap v.9.3. Baselines are provided to allow the user to replicate our rate calculations with DSAS v4.2 but transects cannot be re-cast in DSAS using our baselines. Transects were constructed outside of DSAS and later imported.
+      Process_Date: 2009
+      Process_Contact:
+        Contact_Information:
+          Contact_Person_Primary:
+            Contact_Person: Ayesha Genz
+            Contact_Organization: University of Hawaii Coastal Geology Group
+          Contact_Position: Graduate Research Assistant
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: University of Hawaii
+            Address: Department of Geology and Geophysics
+            Address: 1680 East-West Road
+            Address: POST Room 721
+            City: Honolulu
+            State_or_Province: HI
+            Postal_Code: 96822
+            Country: USA
+          Contact_Voice_Telephone: 808-956-3605
+          Contact_Facsimile_Telephone: 808-956-5512
+          Contact_Electronic_Mail_Address: agenz@hawaii.edu
+    Process_Step:
+      Process_Description:
+        The baseline feature class was exported from a personal geodatabase to a shapefile in ArcCatalog (v.9.3) by performing a right-mouse click on the data layer > export > to shapefile (single).
+
+        This process step and all subsequent process steps were performed by the same person: Bradley M. Romine
+      Process_Date: 20101105
+      Process_Contact:
+        Contact_Information:
+          Contact_Person_Primary:
+            Contact_Person: Bradley M. Romine
+            Contact_Organization: University of Hawaii Coastal Geology
+          Contact_Position: Graduate Research Assistant
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 1680 East-West Road, POST Room 721
+            City: Honolulu
+            State_or_Province: HI
+            Postal_Code: 96822
+            Country: USA
+          Contact_Voice_Telephone: 808-956-3605
+          Contact_Facsimile_Telephone: 808-956-5512
+          Contact_Electronic_Mail_Address: romine@hawaii.edu
+    Process_Step:
+      Process_Description: The baseline shapefile was projected in ESRI's ArcToolbox (v.9.3) > Data Management Tools > Projections and Transformations > Feature > Project.  Parameters: input projection - UTM zone 4N (WGS 84); output projection - geographic coordinates (WGS 84).
+      Process_Date: 20110714
+Spatial_Data_Organization_Information:
+  Direct_Spatial_Reference_Method: Vector
+  Point_and_Vector_Object_Information:
+    SDTS_Terms_Description:
+      SDTS_Point_and_Vector_Object_Type: String
+      Point_and_Vector_Object_Count: 903
+Spatial_Reference_Information:
+  Horizontal_Coordinate_System_Definition:
+    Geographic:
+      Latitude_Resolution: 0.000001
+      Longitude_Resolution: 0.000001
+      Geographic_Coordinate_Units: Decimal degrees
+    Geodetic_Model:
+      Horizontal_Datum_Name: D_WGS_1984
+      Ellipsoid_Name: WGS_1984
+      Semi-major_Axis: 6378137.000000
+      Denominator_of_Flattening_Ratio: 298.257224
+Entity_and_Attribute_Information:
+  Detailed_Description:
+    Entity_Type:
+      Entity_Type_Label: MauiN_baseline
+      Entity_Type_Definition: Reference baseline used by the Digital Shoreline Analysis System (DSAS) to calculate rate-of-change statistics
+      Entity_Type_Definition_Source: USGS
+    Attribute:
+      Attribute_Label: FID
+      Attribute_Definition: Internal feature number.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Sequential unique whole numbers that are automatically generated.
+    Attribute:
+      Attribute_Label: Shape
+      Attribute_Definition: Feature geometry.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Coordinates defining the features.
+    Attribute:
+      Attribute_Label: ID
+      Attribute_Definition: Field required by the Digital Shoreline Analysis System (DSAS) software.  DSAS uses this value to determine the ordering sequence of transects when the baseline feature contains multiple segments.  Individual segments are numbered sequentially alongshore.
+      Attribute_Definition_Source: U.S. Geological Survey
+      Attribute_Domain_Values:
+        Range_Domain:
+          Range_Domain_Minimum: 1
+          Range_Domain_Maximum: 903
+    Attribute:
+      Attribute_Label: Shape_Leng
+      Attribute_Definition: Baseline length measured in meters in UTM projection, zone 4N on NAD83 datum
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Range_Domain:
+          Range_Domain_Minimum: 0.68
+          Range_Domain_Maximum: 15.036
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: U.S. Geological Survey
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 384 Woods Hole Road
+        City: Woods Hole
+        State_or_Province: MA
+        Postal_Code: 02543-1598
+        Country: USA
+      Contact_Voice_Telephone: 508-548-8700
+      Contact_Facsimile_Telephone: 508-457-2310
+  Resource_Description: Downloadable Data
+  Distribution_Liability:
+    Neither the U.S. Government, the Department of the Interior, nor the USGS, nor any of their employees, contractors, or subcontractors, make any warranty, express or implied, nor assume any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, nor represent that its use would not infringe on privately owned rights. The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the USGS in the use of these data or related materials.
+
+    Any use of trade, product, or firm names is for descriptive purposes only and does not imply endorsement by the U.S. Government.
+  Standard_Order_Process:
+    Digital_Form:
+      Digital_Transfer_Information:
+        Format_Name: WinZip
+        Format_Version_Number: 9.0
+        Format_Specification: ESRI polyline shapefile
+        Format_Information_Content: This WinZip file contains the baseline shapefile for use generating transects within the Digital Shoreline Analysis System for the Maui North coastal region from Waihee to Kuau.
+        File_Decompression_Technique: Use WinZip or pkUnzip
+        Transfer_Size: 53 KB
+      Digital_Transfer_Option:
+        Online_Option:
+          Computer_Contact_Information:
+            Network_Address:
+              Network_Resource_Name: http://pubs.usgs.gov/of/2011/1009/data/Maui/MauiN/MauiN_baseline.zip
+          Access_Instructions: Data are downloadable via the World Wide Web (WWW).
+    Fees: None
+  Technical_Prerequisites: This zip file contains data available in Environmental Systems Research Institute (ESRI) polyline shapefile format. The user must have ArcGIS or ArcView 3.0 or greater software to read and process the data file. In lieu of ArcView or ArcGIS, the user may utilize another GIS application package capable of importing the data. A free data viewer, ArcExplorer, capable of displaying the data is available from ESRI at www.esri.com.
+Metadata_Reference_Information:
+  Metadata_Date: 20111104
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Person_Primary:
+        Contact_Person: Bradley M. Romine
+        Contact_Organization: University of Hawaii Coastal Geology Group
+      Contact_Position: graduate student, research assistant
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: University of Hawaii Coastal Geology Group
+        Address: 1680 East-West Road
+        Address: POST Room 721
+        City: Honolulu
+        State_or_Province: HI
+        Postal_Code: 96822
+        Country: USA
+      Contact_Voice_Telephone: 808-956-3605
+      Contact_Facsimile_Telephone: 808-956-5512
+      Contact_Electronic_Mail_Address: romine@hawaii.edu
+  Metadata_Standard_Name: FGDC Content Standards for Digital Geospatial Metadata
+  Metadata_Standard_Version: FGDC-STD-001-1998
+  Metadata_Time_Convention: local time
+  Metadata_Extensions:
+    Online_Linkage: http://www.esri.com/metadata/esriprof80.html
+    Profile_Name: ESRI Metadata Profile
+  Metadata_Extensions:
+    Online_Linkage: http://www.esri.com/metadata/esriprof80.html
+    Profile_Name: ESRI Metadata Profile

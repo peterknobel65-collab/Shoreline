@@ -1,0 +1,5 @@
+# Rebuildable downloads (see shoreline-sim/tools/)
+shoreline-sim/data/site/tiles/
+shoreline-sim/data/site/imagery/
+shoreline-sim/data/site/*.zip
+__pycache__/

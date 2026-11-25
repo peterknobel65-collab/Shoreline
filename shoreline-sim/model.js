@@ -30,13 +30,13 @@
   var g = 9.81;
 
   var DEFAULT_SITE = {
-    shoreNormal: 10,        // deg true the beach faces (seaward normal), from aerial
+    shoreNormal: 350,       // deg true the beach faces (UH/USGS transects 596-600 run 170 deg)
     reefTransmission: 0.5,  // share of refracted offshore Hs that reaches the beach
-    foreshoreSlope: 0.10,   // tan(beta) of the beach face
+    foreshoreSlope: 0.09,   // tan(beta) of the beach face (2023 lidar: 0 to +1 m over ~11 m)
     runupCal: 1.0,          // multiplier on Stockdon R2%
-    toeElev: 1.6,           // m above MSL, base of the exposed scarp
-    crestElev: 3.3,         // m above MSL, top edge of the scarp / lawn
-    houseDistance: 12,      // m, scarp edge to seaward face of house
+    toeElev: 1.5,           // m above MSL, base of the bank (lidar 2023 ~+1.7, lowered since per Nov 2026 photos)
+    crestElev: 2.9,         // m above MSL, top edge of the bank at 461 (lidar 2023, transect 599)
+    houseDistance: 11,      // m, bank edge to roof edge of the house (imagery Jan 2026 on transect 599)
     pocketLength: 110,      // m, sandy shoreline between the two revetments
     frontageLength: 34,     // m, unarmoured frontage in front of the house
     Cs: 1.7e-4,             // Larson et al. (2004) wave-impact coefficient for loose sand
@@ -62,7 +62,8 @@
     coirHeight: 0,          // m, height of coir (coconut-fibre) envelopes at the toe
     coirLifeHours: 40,      // hours of direct wave attack before they are torn open
     bagHeight: 0,           // m, height of temporary geotextile sand bags at the toe
-    bagLifeHours: 250       // hours of direct wave attack before failure
+    bagLifeHours: 250,      // hours of direct wave attack before failure
+    crestRaise: 0           // m, planted sand dune built on the lawn behind the bank edge
   };
 
   function extend(base, over) {
@@ -143,13 +144,14 @@
 
     var buffer = st.vNat + st.nFront;
     var beta = site.foreshoreSlope;
-    var zToe = Math.min(site.crestElev, site.toeElev + Math.sqrt(2 * beta * Math.max(0, buffer)));
-    var scarpH = Math.max(0.3, site.crestElev - site.toeElev);
+    var crest = site.crestElev + (design.crestRaise || 0);
+    var zToe = Math.min(crest, site.toeElev + Math.sqrt(2 * beta * Math.max(0, buffer)));
+    var scarpH = Math.max(0.3, crest - site.toeElev);
     var regime = 0;  // 0 swash, 1 collision, 2 overwash
     var dScarp = 0;
 
     if (h.twl > zToe) {
-      regime = h.twl > site.crestElev ? 2 : 1;
+      regime = h.twl > crest ? 2 : 1;
       var demand = 4 * site.Cs * Math.pow(h.twl - zToe, 2) * dtS / tp;
 
       // 2. sand buffer is eroded first (natural berm and placed sand pro rata)

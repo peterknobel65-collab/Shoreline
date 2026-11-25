@@ -1,0 +1,205 @@
+{
+ "pixel_m": 0.278922455563245,
+ "images": [
+  {
+   "capture_date": "2016-07-30",
+   "source": "DigitalGlobe",
+   "accuracy_m": 10.2,
+   "shift_px": [
+    -5,
+    -23
+   ],
+   "shift_m": [
+    -1.4,
+    -6.4
+   ],
+   "transects": {
+    "596": {
+     "veg_line": 262.5,
+     "waterline": 262.25,
+     "beach_width": 0.25
+    },
+    "597": {
+     "veg_line": 265.75,
+     "waterline": 265.5,
+     "beach_width": 0.25
+    },
+    "598": {
+     "veg_line": 264.25,
+     "waterline": 264.0,
+     "beach_width": 0.25
+    },
+    "599": {
+     "veg_line": 246.25,
+     "waterline": 246.0,
+     "beach_width": 0.25
+    },
+    "600": {
+     "veg_line": 250.25,
+     "waterline": 250.0,
+     "beach_width": 0.25
+    }
+   }
+  },
+  {
+   "capture_date": "2018-12-18",
+   "source": "Maxar",
+   "accuracy_m": 8.47,
+   "shift_px": [
+    16,
+    -56
+   ],
+   "shift_m": [
+    4.5,
+    -15.6
+   ],
+   "transects": {
+    "596": {
+     "veg_line": 292.75,
+     "waterline": 257.75,
+     "beach_width": 35.0
+    },
+    "597": {
+     "veg_line": 258.75,
+     "waterline": 250.25,
+     "beach_width": 8.5
+    },
+    "598": {
+     "veg_line": 293.25,
+     "waterline": 282.5,
+     "beach_width": 10.75
+    },
+    "599": {
+     "veg_line": 249.25,
+     "waterline": 231.75,
+     "beach_width": 17.5
+    },
+    "600": {
+     "veg_line": 250.75,
+     "waterline": 247.0,
+     "beach_width": 3.75
+    }
+   }
+  },
+  {
+   "capture_date": "2020-01-26",
+   "source": "Maxar",
+   "accuracy_m": 4.06,
+   "shift_px": [
+    -1,
+    -6
+   ],
+   "shift_m": [
+    -0.3,
+    -1.7
+   ],
+   "transects": {
+    "596": {
+     "veg_line": 290.5,
+     "waterline": 261.0,
+     "beach_width": 29.5
+    },
+    "597": {
+     "veg_line": 288.25,
+     "waterline": 272.25,
+     "beach_width": 16.0
+    },
+    "598": {
+     "veg_line": 287.75,
+     "waterline": 253.75,
+     "beach_width": 34.0
+    },
+    "599": {
+     "veg_line": 275.0,
+     "waterline": 237.5,
+     "beach_width": 37.5
+    },
+    "600": {
+     "veg_line": 233.0,
+     "waterline": 231.0,
+     "beach_width": 2.0
+    }
+   }
+  },
+  {
+   "capture_date": "2025-02-08",
+   "source": "Maxar",
+   "accuracy_m": 8.47,
+   "shift_px": [
+    -2,
+    3
+   ],
+   "shift_m": [
+    -0.6,
+    0.8
+   ],
+   "transects": {
+    "596": {
+     "veg_line": 280.75,
+     "waterline": 258.25,
+     "beach_width": 22.5
+    },
+    "597": {
+     "veg_line": 256.5,
+     "waterline": 256.25,
+     "beach_width": 0.25
+    },
+    "598": {
+     "veg_line": 256.0,
+     "waterline": 255.75,
+     "beach_width": 0.25
+    },
+    "599": {
+     "veg_line": 277.75,
+     "waterline": 266.25,
+     "beach_width": 11.5
+    },
+    "600": {
+     "veg_line": 283.0,
+     "waterline": 282.75,
+     "beach_width": 0.25
+    }
+   }
+  },
+  {
+   "capture_date": "2026-01-10",
+   "source": "Vantor",
+   "accuracy_m": 8.47,
+   "shift_px": [
+    0,
+    0
+   ],
+   "shift_m": [
+    0.0,
+    0.0
+   ],
+   "transects": {
+    "596": {
+     "veg_line": 267.5,
+     "waterline": 267.25,
+     "beach_width": 0.25
+    },
+    "597": {
+     "veg_line": 284.5,
+     "waterline": 266.25,
+     "beach_width": 18.25
+    },
+    "598": {
+     "veg_line": 251.25,
+     "waterline": 251.0,
+     "beach_width": 0.25
+    },
+    "599": {
+     "veg_line": 244.5,
+     "waterline": 244.25,
+     "beach_width": 0.25
+    },
+    "600": {
+     "veg_line": 271.75,
+     "waterline": 271.5,
+     "beach_width": 0.25
+    }
+   }
+  }
+ ]
+}
