@@ -199,18 +199,18 @@ footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule
 <section id="value" class="stack">
   <span class="eyebrow">5 · Value engineering</span>
   <h2>Same protection, lower lifetime cost</h2>
-  <p class="prose">Starting from the earlier design, each measure below was added and re-run through 50 years of real winters and the 100 Monte Carlo futures. Bars show the 50-year cost range in today's dollars. The percentage is the share of futures in which the bank stays within 2 m of where it is today.</p>
+  <p class="prose">Starting from the earlier design, each measure below was added and re-run through 50 years of real winters and the 100 Monte Carlo futures. Bars show the 50-year cost range in today's dollars. The percentage is the share of futures in which the bank stays within 2 m of where it is today. A saving only counts if that percentage stays at 90% or higher.</p>
   <div class="panel ladder" id="ladder"></div>
   <div class="two">
     <div class="stack small">
       <p><b>Top up on a survey trigger, not a clock.</b> Calm years need no sand and rough years get it promptly. A simple spring survey decides.</p>
       <p><b>Owner-led monitoring.</b> Fixed-point photos and tape measurements by you, with a phone or drone survey each spring, and an engineer's check every three years instead of every year.</p>
-      <p><b>Recycle drifted sand.</b> Waves spread sand toward 463 and the corner of 459's wall. Pushing it back with a small loader costs about $25–50/yd³, against $150–250 for new sand. Needs OCCL approval in the maintenance plan.</p>
+      <p><b>Tested, not adopted: recycling drifted sand.</b> Pushing sand back from in front of the neighbours costs only $25–50/yd³, but it replaces new sand, so the beach ends up with less in total. In the Monte Carlo it cut reliability sharply. It stays useful as a one-off after a storm piles sand against 459's wall.</p>
     </div>
     <div class="stack small">
       <p><b>Right-size the volumes.</b> The lidar showed the frontage is 30 m, not 34 m, and how much sand the berm actually holds. The optimiser picks the starting volume and top-up size that meet the reliability target for the least money.</p>
       <p><b>Raise the crest later, not now.</b> The crest is set to clear today's record runup. Add sand to the crest in later decades as the sea rises, instead of paying for a taller dune today.</p>
-      <p><b>Not adopted:</b> coir envelopes (little benefit on this exposed shore) and a non-beach-sand dune core (risky if it ever erodes onto the beach).</p>
+      <p><b>Also not adopted:</b> coir envelopes (little benefit on this exposed shore) and a non-beach-sand dune core (risky if it ever erodes onto the beach).</p>
     </div>
   </div>
 </section>
@@ -370,7 +370,7 @@ function render(d, gr) {
   ].map(function (z) { return '<div class="zone" style="--c:' + z[0] + '"><span class="who">' + z[1] + '</span><b>' + z[2] + '</b><span class="small">' + z[3] + '</span></div>'; }).join('');
 
   $('#engIntro').textContent = 'The optimiser screened ' + d.screened + ' combinations of starting sand, top-up size, top-up policy, sand recycling and monitoring through 50 years of real Pauwela swells and Kahului water levels. ' +
-    d.passCentral + ' protected the bank in the central case. The 40 cheapest were then run through ' + d.assumptions.mcSets + ' Monte Carlo futures, and the cheapest that holds the bank within 2 m in at least 90% of them was chosen. ' +
+    d.passCentral + ' protected the bank in the central case. Every one of those was then tested against 30 Monte Carlo futures, and the most promising against all ' + d.assumptions.mcSets + '. The recommendation is the cheapest design that holds the bank within 2 m in at least 90% of them. ' +
     'Recommended: ' + des.initialYd3.toLocaleString() + ' yd³ to start, then ' + des.topUpYd3 + ' yd³ ' + policy + (des.backpass ? ', recycling drifted sand first' : '') + (des.ownerMonitoring ? ', with owner-led monitoring' : '') + '.';
 
   var nr = d.doNothing.reliability;

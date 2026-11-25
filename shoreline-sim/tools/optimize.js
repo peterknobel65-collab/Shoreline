@@ -93,14 +93,13 @@ function evaluate(d, site = central, proj = {}) {
 // ---- 1. deterministic screen ----
 const cands = [];
 for (const crestRaise of [0.8])   // crest +3.7 m: clears the record winter runup (+3.56 m) today; raise later with sea level
-  for (const initialYd3 of [750, 1000, 1250, 1500])
-    for (const topUpYd3 of [200, 300, 400, 499])
-      for (const pol of [...[2, 3, 4, 5].map((n) => ({ interval: n })), ...[4, 6, 8, 10].map((t) => ({ trigger: t }))])
-        for (const backpass of [0, 0.3])
-          for (const ownerMonitoring of [false, true]) {
-            if (ownerMonitoring && !pol.trigger) continue;          // owner monitoring only makes sense with a trigger
-            cands.push({ crestRaise, initialYd3, topUpYd3, ...pol, backpass, ownerMonitoring });
-          }
+  for (const initialYd3 of [1000, 1250, 1500])
+    for (const topUpYd3 of [250, 400, 499, 750])
+      for (const pol of [...[2, 3, 4].map((n) => ({ interval: n })), ...[8, 10, 12, 15].map((t) => ({ trigger: t }))]) {
+        // backpassing is tested in the value-engineering ladder; it lowers reliability, so it is not searched here
+        const ownerMonitoring = !!pol.trigger;                       // owner monitoring pairs with a survey trigger
+        cands.push({ crestRaise, initialYd3, topUpYd3, ...pol, backpass: 0, ownerMonitoring });
+      }
 const screened = cands.map((d) => ({ d, ...evaluate(d) })).filter((r) => r.r2076 <= 1.0);
 screened.sort((a, b) => (a.npvLow + a.npvHigh) - (b.npvLow + b.npvHigh));
 console.log('screened', cands.length, 'pass central case', screened.length);
@@ -128,19 +127,24 @@ while (sets.length < N_MC && sets.length + rejected < N_MC * 3) {
 }
 console.log('Monte Carlo sets', sets.length, 'rejected', rejected);
 
-function reliability(d) {
+function reliability(d, n) {
   let ok = 0, safe = 0; const r76 = [];
-  for (const s of sets) {
+  const use = n ? sets.slice(0, n) : sets;
+  for (const s of use) {
     const v = run(d, s.site, { slr2100: s.slr2100, order: s.order }).at(-1).retreat;
     r76.push(v); if (v <= 2) ok++; if (v < 11) safe++;
   }
   r76.sort((a, b) => a - b);
-  return { pWithin2m: ok / sets.length, pHouseSafe: safe / sets.length, median: r76[Math.floor(r76.length / 2)], p90: r76[Math.floor(r76.length * 0.9)] };
+  return { pWithin2m: ok / use.length, pHouseSafe: safe / use.length, median: r76[Math.floor(r76.length / 2)], p90: r76[Math.floor(r76.length * 0.9)] };
 }
 
 // ---- 3. choose ----
 const mid = (x) => x.npvLow + x.npvHigh;
-const shortlist = screened.slice(0, 40).map((x) => ({ ...x, rel: reliability(x.d) }));
+// quick reliability on 30 futures for every screened design, then confirm the best on all of them
+const quick = screened.map((x) => ({ ...x, q: reliability(x.d, 30).pWithin2m }));
+const promising = quick.filter((x) => x.q >= 0.87).sort((a, b) => mid(a) - mid(b)).slice(0, 10);
+console.log('quick-screened', quick.length, 'promising', promising.length);
+const shortlist = (promising.length ? promising : quick.sort((a, b) => b.q - a.q).slice(0, 6)).map((x) => ({ ...x, rel: reliability(x.d) }));
 const reliable = shortlist.filter((x) => x.rel.pWithin2m >= 0.9).sort((a, b) => mid(a) - mid(b));
 const rec = reliable[0] || shortlist.sort((a, b) => b.rel.pWithin2m - a.rel.pWithin2m)[0];
 console.log('recommended', JSON.stringify(rec.d), 'P(within 2 m)', rec.rel.pWithin2m, 'npv', Math.round(rec.npvLow), Math.round(rec.npvHigh));
@@ -167,10 +171,10 @@ function describe(x, label) {
 const ladder = [];
 const step = (name, d) => { const e = { ...evaluate(d), d }; e.rel = reliability(d); ladder.push({ name, d, npvLow: Math.round(e.npvLow), npvHigh: Math.round(e.npvHigh), pWithin2m: e.rel.pWithin2m, events: e.events }); };
 step('Earlier design: 1,500 yd³ + 250 yd³ every 3 yr', v1);
-step('+ Top up on a survey trigger instead of a clock', { ...v1, interval: 0, trigger: rec.d.trigger || 6 });
-step('+ Owner-led monitoring, engineer check every 3 yr', { ...v1, interval: 0, trigger: rec.d.trigger || 6, ownerMonitoring: true });
-step('+ Recycle drifted sand (backpassing, 30%)', { ...v1, interval: 0, trigger: rec.d.trigger || 6, ownerMonitoring: true, backpass: 0.3 });
-step('+ Right-size volumes (optimised)', rec.d);
+step('+ Top up on a survey trigger instead of a clock', { ...v1, interval: 0, trigger: rec.d.trigger || 12 });
+step('+ Owner-led monitoring, engineer check every 3 yr', { ...v1, interval: 0, trigger: rec.d.trigger || 12, ownerMonitoring: true });
+step('Tested, not adopted: recycle drifted sand (30%)', { ...v1, interval: 0, trigger: rec.d.trigger || 12, ownerMonitoring: true, backpass: 0.3 });
+step('+ Right-size sand volumes (recommended)', rec.d);
 
 const noneP = M.project(central, { vegetation: 0.3 }, full, { years: YEARS, slr2100: 0.98 });
 const noneRel = reliability({ crestRaise: 0, initialYd3: 0, topUpYd3: 0, interval: 0 });

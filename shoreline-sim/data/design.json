@@ -1,15 +1,22 @@
 {
  "generated": "2026-11-25",
  "assumptions": {
-  "frontageM": 34,
+  "frontageM": 30,
   "calibrationRate": 0.49,
+  "reefWindow": [
+   0.42,
+   0.52
+  ],
   "years": 50,
   "discount": 0.03,
-  "slr2100": 0.98,
   "costs": {
    "sandPerYd3": [
     150,
     250
+   ],
+   "backpassPerYd3": [
+    25,
+    50
    ],
    "sandMobilise": [
     6000,
@@ -60,52 +67,60 @@
     2000,
     5000
    ],
-   "monitoringPerYr": [
+   "monitoringPro": [
     2000,
     5000
    ],
+   "monitoringOwner": [
+    700,
+    1800
+   ],
+   "proCheckEvery": 3,
    "topUpReport": [
     3000,
     8000
    ]
   },
-  "constraint": "bank retreat <= 1.0 m by 2076; lawn dune footprint <= 9 m (house is ~11 m behind the bank)"
+  "maxInitialYd3": 1500,
+  "mcSets": 100,
+  "mcRejected": 19,
+  "target": "bank within 2 m of today through 2076 in >= 90% of Monte Carlo futures"
  },
- "searched": 1200,
- "feasible": 492,
+ "screened": 384,
+ "passCentral": 213,
  "doNothing": {
   "trajectory": [
    {
     "year": 2026,
-    "retreat": 0.45
+    "retreat": 0.43
    },
    {
     "year": 2027,
-    "retreat": 0.59
+    "retreat": 0.45
    },
    {
     "year": 2028,
-    "retreat": 1.08
+    "retreat": 0.94
    },
    {
     "year": 2029,
-    "retreat": 1.54
+    "retreat": 1.41
    },
    {
     "year": 2030,
-    "retreat": 2.02
+    "retreat": 1.9
    },
    {
     "year": 2031,
-    "retreat": 2.64
+    "retreat": 2.56
    },
    {
     "year": 2032,
-    "retreat": 3.22
+    "retreat": 3.16
    },
    {
     "year": 2033,
-    "retreat": 3.78
+    "retreat": 3.75
    },
    {
     "year": 2034,
@@ -113,1713 +128,1211 @@
    },
    {
     "year": 2035,
-    "retreat": 5.07
+    "retreat": 5.1
    },
    {
     "year": 2036,
-    "retreat": 5.66
+    "retreat": 5.72
    },
    {
     "year": 2037,
-    "retreat": 6.38
+    "retreat": 6.48
    },
    {
     "year": 2038,
-    "retreat": 7.01
+    "retreat": 7.14
    },
    {
     "year": 2039,
-    "retreat": 7.63
+    "retreat": 7.8
    },
    {
     "year": 2040,
-    "retreat": 8.4
+    "retreat": 8.6
    },
    {
     "year": 2041,
-    "retreat": 9.07
+    "retreat": 9.31
    },
    {
     "year": 2042,
-    "retreat": 9.73
+    "retreat": 10.01
    },
    {
     "year": 2043,
-    "retreat": 10.55
+    "retreat": 10.87
    },
    {
     "year": 2044,
-    "retreat": 11.26
+    "retreat": 11.62
    },
    {
     "year": 2045,
-    "retreat": 11.97
+    "retreat": 12.38
    },
    {
     "year": 2046,
-    "retreat": 12.85
+    "retreat": 13.31
    },
    {
     "year": 2047,
-    "retreat": 13.62
+    "retreat": 14.12
    },
    {
     "year": 2048,
-    "retreat": 14.39
+    "retreat": 14.94
    },
    {
     "year": 2049,
-    "retreat": 15.34
+    "retreat": 15.95
    },
    {
     "year": 2050,
-    "retreat": 16.17
+    "retreat": 16.83
    },
    {
     "year": 2051,
-    "retreat": 17
+    "retreat": 17.72
    },
    {
     "year": 2052,
-    "retreat": 18.04
+    "retreat": 18.83
    },
    {
     "year": 2053,
-    "retreat": 18.95
+    "retreat": 19.8
    },
    {
     "year": 2054,
-    "retreat": 19.85
+    "retreat": 20.77
    },
    {
     "year": 2055,
-    "retreat": 20.99
-   },
-   {
-    "year": 2056,
     "retreat": 21.99
    },
    {
+    "year": 2056,
+    "retreat": 23.06
+   },
+   {
     "year": 2057,
-    "retreat": 22.98
+    "retreat": 24.13
    },
    {
     "year": 2058,
-    "retreat": 24.24
+    "retreat": 25.49
    },
    {
     "year": 2059,
-    "retreat": 25.34
+    "retreat": 26.67
    },
    {
     "year": 2060,
-    "retreat": 26.44
+    "retreat": 27.87
    },
    {
     "year": 2061,
-    "retreat": 27.84
+    "retreat": 29.38
    },
    {
     "year": 2062,
-    "retreat": 29.06
+    "retreat": 30.69
    },
    {
     "year": 2063,
-    "retreat": 30.28
+    "retreat": 32.03
    },
    {
     "year": 2064,
-    "retreat": 31.84
+    "retreat": 33.72
    },
    {
     "year": 2065,
-    "retreat": 33.2
+    "retreat": 35.2
    },
    {
     "year": 2066,
-    "retreat": 34.57
+    "retreat": 36.7
    },
    {
     "year": 2067,
-    "retreat": 36.31
+    "retreat": 38.61
    },
    {
     "year": 2068,
-    "retreat": 37.83
+    "retreat": 40.27
    },
    {
     "year": 2069,
-    "retreat": 39.37
+    "retreat": 41.96
    },
    {
     "year": 2070,
-    "retreat": 41.33
+    "retreat": 44.12
    },
    {
     "year": 2071,
-    "retreat": 43.04
+    "retreat": 46
    },
    {
     "year": 2072,
-    "retreat": 44.77
+    "retreat": 47.91
    },
    {
     "year": 2073,
-    "retreat": 46.98
+    "retreat": 50.36
    },
    {
     "year": 2074,
-    "retreat": 48.92
+    "retreat": 52.49
    },
    {
     "year": 2075,
-    "retreat": 50.88
+    "retreat": 54.68
    }
   ],
-  "houseYear": 2044
+  "houseYear": 2044,
+  "reliability": {
+   "pWithin2m": 0,
+   "pHouseSafe": 0,
+   "median": 44.597304788509064,
+   "p90": 107.20037228059282
+  }
  },
  "optimal": {
-  "label": "Recommended: robust least-cost design",
+  "label": "Recommended (value-engineered)",
   "design": {
-   "crestRaise": 0.6,
-   "initialYd3": 1500,
-   "topUpYd3": 250,
-   "interval": 3,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 869115.8914174618,
-   "npvHigh": 1659714.3426747406,
-   "capLow": 386992.8385479135,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
-   }
-  },
-  "retreat": {
-   "2036": 0,
-   "2056": 0,
-   "2076": 0
-  },
-  "trajectory": [
-   {
-    "year": 2026,
-    "retreat": 0
-   },
-   {
-    "year": 2027,
-    "retreat": 0
-   },
-   {
-    "year": 2028,
-    "retreat": 0
-   },
-   {
-    "year": 2029,
-    "retreat": 0
-   },
-   {
-    "year": 2030,
-    "retreat": 0
-   },
-   {
-    "year": 2031,
-    "retreat": 0
-   },
-   {
-    "year": 2032,
-    "retreat": 0
-   },
-   {
-    "year": 2033,
-    "retreat": 0
-   },
-   {
-    "year": 2034,
-    "retreat": 0
-   },
-   {
-    "year": 2035,
-    "retreat": 0
-   },
-   {
-    "year": 2036,
-    "retreat": 0
-   },
-   {
-    "year": 2037,
-    "retreat": 0
-   },
-   {
-    "year": 2038,
-    "retreat": 0
-   },
-   {
-    "year": 2039,
-    "retreat": 0
-   },
-   {
-    "year": 2040,
-    "retreat": 0
-   },
-   {
-    "year": 2041,
-    "retreat": 0
-   },
-   {
-    "year": 2042,
-    "retreat": 0
-   },
-   {
-    "year": 2043,
-    "retreat": 0
-   },
-   {
-    "year": 2044,
-    "retreat": 0
-   },
-   {
-    "year": 2045,
-    "retreat": 0
-   },
-   {
-    "year": 2046,
-    "retreat": 0
-   },
-   {
-    "year": 2047,
-    "retreat": 0
-   },
-   {
-    "year": 2048,
-    "retreat": 0
-   },
-   {
-    "year": 2049,
-    "retreat": 0
-   },
-   {
-    "year": 2050,
-    "retreat": 0
-   },
-   {
-    "year": 2051,
-    "retreat": 0
-   },
-   {
-    "year": 2052,
-    "retreat": 0
-   },
-   {
-    "year": 2053,
-    "retreat": 0
-   },
-   {
-    "year": 2054,
-    "retreat": 0
-   },
-   {
-    "year": 2055,
-    "retreat": 0
-   },
-   {
-    "year": 2056,
-    "retreat": 0
-   },
-   {
-    "year": 2057,
-    "retreat": 0
-   },
-   {
-    "year": 2058,
-    "retreat": 0
-   },
-   {
-    "year": 2059,
-    "retreat": 0
-   },
-   {
-    "year": 2060,
-    "retreat": 0
-   },
-   {
-    "year": 2061,
-    "retreat": 0
-   },
-   {
-    "year": 2062,
-    "retreat": 0
-   },
-   {
-    "year": 2063,
-    "retreat": 0
-   },
-   {
-    "year": 2064,
-    "retreat": 0
-   },
-   {
-    "year": 2065,
-    "retreat": 0
-   },
-   {
-    "year": 2066,
-    "retreat": 0
-   },
-   {
-    "year": 2067,
-    "retreat": 0
-   },
-   {
-    "year": 2068,
-    "retreat": 0
-   },
-   {
-    "year": 2069,
-    "retreat": 0
-   },
-   {
-    "year": 2070,
-    "retreat": 0
-   },
-   {
-    "year": 2071,
-    "retreat": 0
-   },
-   {
-    "year": 2072,
-    "retreat": 0
-   },
-   {
-    "year": 2073,
-    "retreat": 0
-   },
-   {
-    "year": 2074,
-    "retreat": 0
-   },
-   {
-    "year": 2075,
-    "retreat": 0
-   }
-  ],
-  "stress": {
-   "swellsPlus15": 0,
-   "slr1_5m": 0,
-   "both": 0
-  },
-  "sandFirstYd3": 1592,
-  "dune": {
-   "heightM": 0.6,
-   "widthM": 5.4,
-   "volumeYd3": 92
-  },
-  "plantedAreaM2": 320,
-  "capital": {
-   "low": 386993,
-   "high": 730298,
-   "items": [
-    {
-     "item": "Certified shoreline & beach survey",
-     "low": 10000,
-     "high": 25000
-    },
-    {
-     "item": "Coastal engineering & construction observation",
-     "low": 25000,
-     "high": 60000
-    },
-    {
-     "item": "Permits, sand testing & environmental reports",
-     "low": 20000,
-     "high": 55000
-    },
-    {
-     "item": "Archaeological monitoring",
-     "low": 3000,
-     "high": 10000
-    },
-    {
-     "item": "Compatible sand (beach + dune), delivered & placed",
-     "low": 244808,
-     "high": 410013
-    },
-    {
-     "item": "Coir envelopes at the toe",
-     "low": 0,
-     "high": 0
-    },
-    {
-     "item": "Native planting",
-     "low": 11186,
-     "high": 25568
-    },
-    {
-     "item": "Establishment irrigation",
-     "low": 3000,
-     "high": 8000
-    },
-    {
-     "item": "Sand fencing",
-     "low": 2000,
-     "high": 5000
-    },
-    {
-     "item": "Beach access path & dune crossover",
-     "low": 2500,
-     "high": 7000
-    },
-    {
-     "item": "Remove / reroute exposed irrigation",
-     "low": 1000,
-     "high": 3000
-    },
-    {
-     "item": "Contingency (20%)",
-     "low": 64499,
-     "high": 121716
-    }
-   ]
-  },
-  "topUp": {
-   "low": 46500,
-   "high": 82500
-  },
-  "annual": {
-   "low": 4000,
-   "high": 10000
-  },
-  "npv50": {
-   "low": 869116,
-   "high": 1659714
-  }
- },
- "cheapest": {
-  "label": "Least cost (meets the target in the central case only)",
-  "design": {
-   "crestRaise": 0.4,
-   "initialYd3": 1000,
-   "topUpYd3": 250,
-   "interval": 5,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 604285.4817960679,
-   "npvHigh": 1199399.4507107818,
-   "capLow": 287532.01505974063
-  },
-  "retreat": {
-   "2036": 0,
-   "2056": 0,
-   "2076": 0
-  },
-  "trajectory": [
-   {
-    "year": 2026,
-    "retreat": 0
-   },
-   {
-    "year": 2027,
-    "retreat": 0
-   },
-   {
-    "year": 2028,
-    "retreat": 0
-   },
-   {
-    "year": 2029,
-    "retreat": 0
-   },
-   {
-    "year": 2030,
-    "retreat": 0
-   },
-   {
-    "year": 2031,
-    "retreat": 0
-   },
-   {
-    "year": 2032,
-    "retreat": 0
-   },
-   {
-    "year": 2033,
-    "retreat": 0
-   },
-   {
-    "year": 2034,
-    "retreat": 0
-   },
-   {
-    "year": 2035,
-    "retreat": 0
-   },
-   {
-    "year": 2036,
-    "retreat": 0
-   },
-   {
-    "year": 2037,
-    "retreat": 0
-   },
-   {
-    "year": 2038,
-    "retreat": 0
-   },
-   {
-    "year": 2039,
-    "retreat": 0
-   },
-   {
-    "year": 2040,
-    "retreat": 0
-   },
-   {
-    "year": 2041,
-    "retreat": 0
-   },
-   {
-    "year": 2042,
-    "retreat": 0
-   },
-   {
-    "year": 2043,
-    "retreat": 0
-   },
-   {
-    "year": 2044,
-    "retreat": 0
-   },
-   {
-    "year": 2045,
-    "retreat": 0
-   },
-   {
-    "year": 2046,
-    "retreat": 0
-   },
-   {
-    "year": 2047,
-    "retreat": 0
-   },
-   {
-    "year": 2048,
-    "retreat": 0
-   },
-   {
-    "year": 2049,
-    "retreat": 0
-   },
-   {
-    "year": 2050,
-    "retreat": 0
-   },
-   {
-    "year": 2051,
-    "retreat": 0
-   },
-   {
-    "year": 2052,
-    "retreat": 0
-   },
-   {
-    "year": 2053,
-    "retreat": 0
-   },
-   {
-    "year": 2054,
-    "retreat": 0
-   },
-   {
-    "year": 2055,
-    "retreat": 0
-   },
-   {
-    "year": 2056,
-    "retreat": 0
-   },
-   {
-    "year": 2057,
-    "retreat": 0
-   },
-   {
-    "year": 2058,
-    "retreat": 0
-   },
-   {
-    "year": 2059,
-    "retreat": 0
-   },
-   {
-    "year": 2060,
-    "retreat": 0
-   },
-   {
-    "year": 2061,
-    "retreat": 0
-   },
-   {
-    "year": 2062,
-    "retreat": 0
-   },
-   {
-    "year": 2063,
-    "retreat": 0
-   },
-   {
-    "year": 2064,
-    "retreat": 0
-   },
-   {
-    "year": 2065,
-    "retreat": 0
-   },
-   {
-    "year": 2066,
-    "retreat": 0
-   },
-   {
-    "year": 2067,
-    "retreat": 0
-   },
-   {
-    "year": 2068,
-    "retreat": 0
-   },
-   {
-    "year": 2069,
-    "retreat": 0
-   },
-   {
-    "year": 2070,
-    "retreat": 0
-   },
-   {
-    "year": 2071,
-    "retreat": 0
-   },
-   {
-    "year": 2072,
-    "retreat": 0
-   },
-   {
-    "year": 2073,
-    "retreat": 0
-   },
-   {
-    "year": 2074,
-    "retreat": 0
-   },
-   {
-    "year": 2075,
-    "retreat": 0
-   }
-  ],
-  "stress": {
-   "swellsPlus15": 33.97460801249022,
-   "slr1_5m": 11.31811833798648,
-   "both": 45.30133579258346
-  },
-  "sandFirstYd3": 1050,
-  "dune": {
-   "heightM": 0.4,
-   "widthM": 4.1,
-   "volumeYd3": 50
-  },
-  "plantedAreaM2": 275,
-  "capital": {
-   "low": 287532,
-   "high": 563380,
-   "items": [
-    {
-     "item": "Certified shoreline & beach survey",
-     "low": 10000,
-     "high": 25000
-    },
-    {
-     "item": "Coastal engineering & construction observation",
-     "low": 25000,
-     "high": 60000
-    },
-    {
-     "item": "Permits, sand testing & environmental reports",
-     "low": 20000,
-     "high": 55000
-    },
-    {
-     "item": "Archaeological monitoring",
-     "low": 3000,
-     "high": 10000
-    },
-    {
-     "item": "Compatible sand (beach + dune), delivered & placed",
-     "low": 163471,
-     "high": 274452
-    },
-    {
-     "item": "Coir envelopes at the toe",
-     "low": 0,
-     "high": 0
-    },
-    {
-     "item": "Native planting",
-     "low": 9639,
-     "high": 22032
-    },
-    {
-     "item": "Establishment irrigation",
-     "low": 3000,
-     "high": 8000
-    },
-    {
-     "item": "Sand fencing",
-     "low": 2000,
-     "high": 5000
-    },
-    {
-     "item": "Beach access path & dune crossover",
-     "low": 2500,
-     "high": 7000
-    },
-    {
-     "item": "Remove / reroute exposed irrigation",
-     "low": 1000,
-     "high": 3000
-    },
-    {
-     "item": "Contingency (20%)",
-     "low": 47922,
-     "high": 93897
-    }
-   ]
-  },
-  "topUp": {
-   "low": 46500,
-   "high": 82500
-  },
-  "annual": {
-   "low": 4000,
-   "high": 10000
-  },
-  "npv50": {
-   "low": 604285,
-   "high": 1199399
-  }
- },
- "veryRobust": {
-  "label": "Holds even with bigger swells and 1.5 m sea-level rise",
-  "design": {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 250,
-   "interval": 3,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 859655.067929289,
-   "npvHigh": 1642797.1035277862,
-   "capLow": 377532.01505974063,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 1.0043982741123272
-   }
-  },
-  "retreat": {
-   "2036": 0,
-   "2056": 0,
-   "2076": 0
-  },
-  "trajectory": [
-   {
-    "year": 2026,
-    "retreat": 0
-   },
-   {
-    "year": 2027,
-    "retreat": 0
-   },
-   {
-    "year": 2028,
-    "retreat": 0
-   },
-   {
-    "year": 2029,
-    "retreat": 0
-   },
-   {
-    "year": 2030,
-    "retreat": 0
-   },
-   {
-    "year": 2031,
-    "retreat": 0
-   },
-   {
-    "year": 2032,
-    "retreat": 0
-   },
-   {
-    "year": 2033,
-    "retreat": 0
-   },
-   {
-    "year": 2034,
-    "retreat": 0
-   },
-   {
-    "year": 2035,
-    "retreat": 0
-   },
-   {
-    "year": 2036,
-    "retreat": 0
-   },
-   {
-    "year": 2037,
-    "retreat": 0
-   },
-   {
-    "year": 2038,
-    "retreat": 0
-   },
-   {
-    "year": 2039,
-    "retreat": 0
-   },
-   {
-    "year": 2040,
-    "retreat": 0
-   },
-   {
-    "year": 2041,
-    "retreat": 0
-   },
-   {
-    "year": 2042,
-    "retreat": 0
-   },
-   {
-    "year": 2043,
-    "retreat": 0
-   },
-   {
-    "year": 2044,
-    "retreat": 0
-   },
-   {
-    "year": 2045,
-    "retreat": 0
-   },
-   {
-    "year": 2046,
-    "retreat": 0
-   },
-   {
-    "year": 2047,
-    "retreat": 0
-   },
-   {
-    "year": 2048,
-    "retreat": 0
-   },
-   {
-    "year": 2049,
-    "retreat": 0
-   },
-   {
-    "year": 2050,
-    "retreat": 0
-   },
-   {
-    "year": 2051,
-    "retreat": 0
-   },
-   {
-    "year": 2052,
-    "retreat": 0
-   },
-   {
-    "year": 2053,
-    "retreat": 0
-   },
-   {
-    "year": 2054,
-    "retreat": 0
-   },
-   {
-    "year": 2055,
-    "retreat": 0
-   },
-   {
-    "year": 2056,
-    "retreat": 0
-   },
-   {
-    "year": 2057,
-    "retreat": 0
-   },
-   {
-    "year": 2058,
-    "retreat": 0
-   },
-   {
-    "year": 2059,
-    "retreat": 0
-   },
-   {
-    "year": 2060,
-    "retreat": 0
-   },
-   {
-    "year": 2061,
-    "retreat": 0
-   },
-   {
-    "year": 2062,
-    "retreat": 0
-   },
-   {
-    "year": 2063,
-    "retreat": 0
-   },
-   {
-    "year": 2064,
-    "retreat": 0
-   },
-   {
-    "year": 2065,
-    "retreat": 0
-   },
-   {
-    "year": 2066,
-    "retreat": 0
-   },
-   {
-    "year": 2067,
-    "retreat": 0
-   },
-   {
-    "year": 2068,
-    "retreat": 0
-   },
-   {
-    "year": 2069,
-    "retreat": 0
-   },
-   {
-    "year": 2070,
-    "retreat": 0
-   },
-   {
-    "year": 2071,
-    "retreat": 0
-   },
-   {
-    "year": 2072,
-    "retreat": 0
-   },
-   {
-    "year": 2073,
-    "retreat": 0
-   },
-   {
-    "year": 2074,
-    "retreat": 0
-   },
-   {
-    "year": 2075,
-    "retreat": 0
-   }
-  ],
-  "stress": {
-   "swellsPlus15": 0,
-   "slr1_5m": 0,
-   "both": 1.0043982741123272
-  },
-  "sandFirstYd3": 1550,
-  "dune": {
-   "heightM": 0.4,
-   "widthM": 4.1,
-   "volumeYd3": 50
-  },
-  "plantedAreaM2": 275,
-  "capital": {
-   "low": 377532,
-   "high": 713380,
-   "items": [
-    {
-     "item": "Certified shoreline & beach survey",
-     "low": 10000,
-     "high": 25000
-    },
-    {
-     "item": "Coastal engineering & construction observation",
-     "low": 25000,
-     "high": 60000
-    },
-    {
-     "item": "Permits, sand testing & environmental reports",
-     "low": 20000,
-     "high": 55000
-    },
-    {
-     "item": "Archaeological monitoring",
-     "low": 3000,
-     "high": 10000
-    },
-    {
-     "item": "Compatible sand (beach + dune), delivered & placed",
-     "low": 238471,
-     "high": 399452
-    },
-    {
-     "item": "Coir envelopes at the toe",
-     "low": 0,
-     "high": 0
-    },
-    {
-     "item": "Native planting",
-     "low": 9639,
-     "high": 22032
-    },
-    {
-     "item": "Establishment irrigation",
-     "low": 3000,
-     "high": 8000
-    },
-    {
-     "item": "Sand fencing",
-     "low": 2000,
-     "high": 5000
-    },
-    {
-     "item": "Beach access path & dune crossover",
-     "low": 2500,
-     "high": 7000
-    },
-    {
-     "item": "Remove / reroute exposed irrigation",
-     "low": 1000,
-     "high": 3000
-    },
-    {
-     "item": "Contingency (20%)",
-     "low": 62922,
-     "high": 118897
-    }
-   ]
-  },
-  "topUp": {
-   "low": 46500,
-   "high": 82500
-  },
-  "annual": {
-   "low": 4000,
-   "high": 10000
-  },
-  "npv50": {
-   "low": 859655,
-   "high": 1642797
-  }
- },
- "alternatives": [
-  {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 250,
-   "interval": 3,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 859655.067929289,
-   "npvHigh": 1642797.1035277862,
-   "capLow": 377532.01505974063,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 1.0043982741123272
-   },
-   "npvMid": 1251226
-  },
-  {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 499,
-   "interval": 5,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 866775.6847568288,
-   "npvHigh": 1636883.1223120496,
-   "capLow": 377532.01505974063,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
-   },
-   "npvMid": 1251829
-  },
-  {
-   "crestRaise": 0.6,
-   "initialYd3": 1500,
-   "topUpYd3": 250,
-   "interval": 3,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 869115.8914174618,
-   "npvHigh": 1659714.3426747406,
-   "capLow": 386992.8385479135,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
-   },
-   "npvMid": 1264415
-  },
-  {
-   "crestRaise": 0.6,
-   "initialYd3": 1500,
-   "topUpYd3": 499,
-   "interval": 5,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 876236.5082450017,
-   "npvHigh": 1653800.3614590045,
-   "capLow": 386992.8385479135,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
-   },
-   "npvMid": 1265018
-  },
-  {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 250,
-   "interval": 3,
-   "coirTiers": 1,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 871702.312409289,
-   "npvHigh": 1669568.757927786,
-   "capLow": 389579.2595397406,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0.9777091550909665
-   },
-   "npvMid": 1270636
-  },
-  {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 499,
-   "interval": 5,
-   "coirTiers": 1,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 878822.9292368288,
-   "npvHigh": 1663654.7767120497,
-   "capLow": 389579.2595397406,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
-   },
-   "npvMid": 1271239
-  },
-  {
-   "crestRaise": 0.4,
-   "initialYd3": 1500,
-   "topUpYd3": 150,
-   "interval": 2,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 871608.228484675,
-   "npvHigh": 1684079.5714724958,
-   "capLow": 377532.01505974063,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 5.733340680666948
-   },
-   "npvMid": 1277844
-  },
-  {
    "crestRaise": 0.8,
+   "initialYd3": 1250,
+   "topUpYd3": 499,
+   "trigger": 10,
+   "backpass": 0,
+   "ownerMonitoring": true
+  },
+  "retreat2076": 0,
+  "reliability": {
+   "pWithin2m": 0.7,
+   "pHouseSafe": 0.93,
+   "median": 0,
+   "p90": 7.076564429043117
+  },
+  "trajectory": [
+   {
+    "year": 2026,
+    "retreat": 0,
+    "buffer": 9.9,
+    "topUp": false
+   },
+   {
+    "year": 2027,
+    "retreat": 0,
+    "buffer": 11,
+    "topUp": false
+   },
+   {
+    "year": 2028,
+    "retreat": 0,
+    "buffer": 11,
+    "topUp": false
+   },
+   {
+    "year": 2029,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2030,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2031,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2032,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2033,
+    "retreat": 0,
+    "buffer": 10.8,
+    "topUp": false
+   },
+   {
+    "year": 2034,
+    "retreat": 0,
+    "buffer": 10.8,
+    "topUp": false
+   },
+   {
+    "year": 2035,
+    "retreat": 0,
+    "buffer": 10.8,
+    "topUp": false
+   },
+   {
+    "year": 2036,
+    "retreat": 0,
+    "buffer": 10.7,
+    "topUp": false
+   },
+   {
+    "year": 2037,
+    "retreat": 0,
+    "buffer": 10.7,
+    "topUp": false
+   },
+   {
+    "year": 2038,
+    "retreat": 0,
+    "buffer": 10.6,
+    "topUp": false
+   },
+   {
+    "year": 2039,
+    "retreat": 0,
+    "buffer": 10.6,
+    "topUp": false
+   },
+   {
+    "year": 2040,
+    "retreat": 0,
+    "buffer": 10.6,
+    "topUp": false
+   },
+   {
+    "year": 2041,
+    "retreat": 0,
+    "buffer": 10.5,
+    "topUp": false
+   },
+   {
+    "year": 2042,
+    "retreat": 0,
+    "buffer": 10.4,
+    "topUp": false
+   },
+   {
+    "year": 2043,
+    "retreat": 0,
+    "buffer": 10.4,
+    "topUp": false
+   },
+   {
+    "year": 2044,
+    "retreat": 0,
+    "buffer": 10.3,
+    "topUp": false
+   },
+   {
+    "year": 2045,
+    "retreat": 0,
+    "buffer": 10.3,
+    "topUp": false
+   },
+   {
+    "year": 2046,
+    "retreat": 0,
+    "buffer": 10.2,
+    "topUp": false
+   },
+   {
+    "year": 2047,
+    "retreat": 0,
+    "buffer": 10.1,
+    "topUp": false
+   },
+   {
+    "year": 2048,
+    "retreat": 0,
+    "buffer": 10,
+    "topUp": false
+   },
+   {
+    "year": 2049,
+    "retreat": 0,
+    "buffer": 9.9,
+    "topUp": false
+   },
+   {
+    "year": 2050,
+    "retreat": 0,
+    "buffer": 12.3,
+    "topUp": true
+   },
+   {
+    "year": 2051,
+    "retreat": 0,
+    "buffer": 12.2,
+    "topUp": false
+   },
+   {
+    "year": 2052,
+    "retreat": 0,
+    "buffer": 12.1,
+    "topUp": false
+   },
+   {
+    "year": 2053,
+    "retreat": 0,
+    "buffer": 12,
+    "topUp": false
+   },
+   {
+    "year": 2054,
+    "retreat": 0,
+    "buffer": 11.9,
+    "topUp": false
+   },
+   {
+    "year": 2055,
+    "retreat": 0,
+    "buffer": 11.8,
+    "topUp": false
+   },
+   {
+    "year": 2056,
+    "retreat": 0,
+    "buffer": 11.6,
+    "topUp": false
+   },
+   {
+    "year": 2057,
+    "retreat": 0,
+    "buffer": 11.5,
+    "topUp": false
+   },
+   {
+    "year": 2058,
+    "retreat": 0,
+    "buffer": 11.3,
+    "topUp": false
+   },
+   {
+    "year": 2059,
+    "retreat": 0,
+    "buffer": 11.1,
+    "topUp": false
+   },
+   {
+    "year": 2060,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2061,
+    "retreat": 0,
+    "buffer": 10.7,
+    "topUp": false
+   },
+   {
+    "year": 2062,
+    "retreat": 0,
+    "buffer": 10.4,
+    "topUp": false
+   },
+   {
+    "year": 2063,
+    "retreat": 0,
+    "buffer": 10,
+    "topUp": false
+   },
+   {
+    "year": 2064,
+    "retreat": 0,
+    "buffer": 9.8,
+    "topUp": false
+   },
+   {
+    "year": 2065,
+    "retreat": 0,
+    "buffer": 11.9,
+    "topUp": true
+   },
+   {
+    "year": 2066,
+    "retreat": 0,
+    "buffer": 11.6,
+    "topUp": false
+   },
+   {
+    "year": 2067,
+    "retreat": 0,
+    "buffer": 11.4,
+    "topUp": false
+   },
+   {
+    "year": 2068,
+    "retreat": 0,
+    "buffer": 11,
+    "topUp": false
+   },
+   {
+    "year": 2069,
+    "retreat": 0,
+    "buffer": 10.5,
+    "topUp": false
+   },
+   {
+    "year": 2070,
+    "retreat": 0,
+    "buffer": 10.1,
+    "topUp": false
+   },
+   {
+    "year": 2071,
+    "retreat": 0,
+    "buffer": 9.3,
+    "topUp": false
+   },
+   {
+    "year": 2072,
+    "retreat": 0,
+    "buffer": 11.4,
+    "topUp": true
+   },
+   {
+    "year": 2073,
+    "retreat": 0,
+    "buffer": 10.9,
+    "topUp": false
+   },
+   {
+    "year": 2074,
+    "retreat": 0,
+    "buffer": 10.1,
+    "topUp": false
+   },
+   {
+    "year": 2075,
+    "retreat": 0,
+    "buffer": 9.3,
+    "topUp": false
+   }
+  ],
+  "topUps": {
+   "events": 3,
+   "importedYd3": 1497,
+   "backpassedYd3": 0
+  },
+  "sandFirstYd3": 1476,
+  "duneYd3": 226,
+  "plantedAreaM2": 330,
+  "capital": {
+   "low": 366540,
+   "high": 696480,
+   "items": [
+    {
+     "item": "Certified shoreline & beach survey",
+     "low": 10000,
+     "high": 25000
+    },
+    {
+     "item": "Coastal engineering & construction observation",
+     "low": 25000,
+     "high": 60000
+    },
+    {
+     "item": "Permits, sand testing & environmental reports",
+     "low": 20000,
+     "high": 55000
+    },
+    {
+     "item": "Archaeological monitoring",
+     "low": 3000,
+     "high": 10000
+    },
+    {
+     "item": "Compatible sand (beach + dune), delivered & placed",
+     "low": 227400,
+     "high": 381000
+    },
+    {
+     "item": "Native planting",
+     "low": 11550,
+     "high": 26400
+    },
+    {
+     "item": "Establishment irrigation",
+     "low": 3000,
+     "high": 8000
+    },
+    {
+     "item": "Sand fencing",
+     "low": 2000,
+     "high": 5000
+    },
+    {
+     "item": "Beach access path & dune crossover",
+     "low": 2500,
+     "high": 7000
+    },
+    {
+     "item": "Remove / reroute exposed irrigation",
+     "low": 1000,
+     "high": 3000
+    },
+    {
+     "item": "Contingency (20%)",
+     "low": 61090,
+     "high": 116080
+    }
+   ]
+  },
+  "npv50": {
+   "low": 540996,
+   "high": 1064839
+  }
+ },
+ "earlier": {
+  "label": "Earlier design on the corrected frontage",
+  "design": {
+   "crestRaise": 0.6,
    "initialYd3": 1500,
    "topUpYd3": 250,
    "interval": 3,
-   "coirTiers": 0,
-   "r2056": 0,
-   "r2076": 0,
-   "npvLow": 880657.9255445029,
-   "npvHigh": 1680100.2662198097,
-   "capLow": 398534.87267495465,
-   "stress": {
-    "swellsPlus15": 0,
-    "slr1_5m": 0,
-    "both": 0
+   "backpass": 0,
+   "ownerMonitoring": false
+  },
+  "retreat2076": 0,
+  "reliability": {
+   "pWithin2m": 0.93,
+   "pHouseSafe": 0.94,
+   "median": 0,
+   "p90": 0
+  },
+  "trajectory": [
+   {
+    "year": 2026,
+    "retreat": 0,
+    "buffer": 11.2,
+    "topUp": false
    },
-   "npvMid": 1280379
+   {
+    "year": 2027,
+    "retreat": 0,
+    "buffer": 12.2,
+    "topUp": false
+   },
+   {
+    "year": 2028,
+    "retreat": 0,
+    "buffer": 12.2,
+    "topUp": false
+   },
+   {
+    "year": 2029,
+    "retreat": 0,
+    "buffer": 13.4,
+    "topUp": true
+   },
+   {
+    "year": 2030,
+    "retreat": 0,
+    "buffer": 13.4,
+    "topUp": false
+   },
+   {
+    "year": 2031,
+    "retreat": 0,
+    "buffer": 13.4,
+    "topUp": false
+   },
+   {
+    "year": 2032,
+    "retreat": 0,
+    "buffer": 14.6,
+    "topUp": true
+   },
+   {
+    "year": 2033,
+    "retreat": 0,
+    "buffer": 14.6,
+    "topUp": false
+   },
+   {
+    "year": 2034,
+    "retreat": 0,
+    "buffer": 14.6,
+    "topUp": false
+   },
+   {
+    "year": 2035,
+    "retreat": 0,
+    "buffer": 15.8,
+    "topUp": true
+   },
+   {
+    "year": 2036,
+    "retreat": 0,
+    "buffer": 15.8,
+    "topUp": false
+   },
+   {
+    "year": 2037,
+    "retreat": 0,
+    "buffer": 15.8,
+    "topUp": false
+   },
+   {
+    "year": 2038,
+    "retreat": 0,
+    "buffer": 17,
+    "topUp": true
+   },
+   {
+    "year": 2039,
+    "retreat": 0,
+    "buffer": 17,
+    "topUp": false
+   },
+   {
+    "year": 2040,
+    "retreat": 0,
+    "buffer": 17,
+    "topUp": false
+   },
+   {
+    "year": 2041,
+    "retreat": 0,
+    "buffer": 18.3,
+    "topUp": true
+   },
+   {
+    "year": 2042,
+    "retreat": 0,
+    "buffer": 18.2,
+    "topUp": false
+   },
+   {
+    "year": 2043,
+    "retreat": 0,
+    "buffer": 18.2,
+    "topUp": false
+   },
+   {
+    "year": 2044,
+    "retreat": 0,
+    "buffer": 19.5,
+    "topUp": true
+   },
+   {
+    "year": 2045,
+    "retreat": 0,
+    "buffer": 19.5,
+    "topUp": false
+   },
+   {
+    "year": 2046,
+    "retreat": 0,
+    "buffer": 19.5,
+    "topUp": false
+   },
+   {
+    "year": 2047,
+    "retreat": 0,
+    "buffer": 20.7,
+    "topUp": true
+   },
+   {
+    "year": 2048,
+    "retreat": 0,
+    "buffer": 20.7,
+    "topUp": false
+   },
+   {
+    "year": 2049,
+    "retreat": 0,
+    "buffer": 20.7,
+    "topUp": false
+   },
+   {
+    "year": 2050,
+    "retreat": 0,
+    "buffer": 21.9,
+    "topUp": true
+   },
+   {
+    "year": 2051,
+    "retreat": 0,
+    "buffer": 21.9,
+    "topUp": false
+   },
+   {
+    "year": 2052,
+    "retreat": 0,
+    "buffer": 21.9,
+    "topUp": false
+   },
+   {
+    "year": 2053,
+    "retreat": 0,
+    "buffer": 23.1,
+    "topUp": true
+   },
+   {
+    "year": 2054,
+    "retreat": 0,
+    "buffer": 23.1,
+    "topUp": false
+   },
+   {
+    "year": 2055,
+    "retreat": 0,
+    "buffer": 23.1,
+    "topUp": false
+   },
+   {
+    "year": 2056,
+    "retreat": 0,
+    "buffer": 24.3,
+    "topUp": true
+   },
+   {
+    "year": 2057,
+    "retreat": 0,
+    "buffer": 24.3,
+    "topUp": false
+   },
+   {
+    "year": 2058,
+    "retreat": 0,
+    "buffer": 24.3,
+    "topUp": false
+   },
+   {
+    "year": 2059,
+    "retreat": 0,
+    "buffer": 25.5,
+    "topUp": true
+   },
+   {
+    "year": 2060,
+    "retreat": 0,
+    "buffer": 25.5,
+    "topUp": false
+   },
+   {
+    "year": 2061,
+    "retreat": 0,
+    "buffer": 25.5,
+    "topUp": false
+   },
+   {
+    "year": 2062,
+    "retreat": 0,
+    "buffer": 26.7,
+    "topUp": true
+   },
+   {
+    "year": 2063,
+    "retreat": 0,
+    "buffer": 26.7,
+    "topUp": false
+   },
+   {
+    "year": 2064,
+    "retreat": 0,
+    "buffer": 26.7,
+    "topUp": false
+   },
+   {
+    "year": 2065,
+    "retreat": 0,
+    "buffer": 28,
+    "topUp": true
+   },
+   {
+    "year": 2066,
+    "retreat": 0,
+    "buffer": 27.9,
+    "topUp": false
+   },
+   {
+    "year": 2067,
+    "retreat": 0,
+    "buffer": 27.9,
+    "topUp": false
+   },
+   {
+    "year": 2068,
+    "retreat": 0,
+    "buffer": 29.2,
+    "topUp": true
+   },
+   {
+    "year": 2069,
+    "retreat": 0,
+    "buffer": 29.1,
+    "topUp": false
+   },
+   {
+    "year": 2070,
+    "retreat": 0,
+    "buffer": 29.1,
+    "topUp": false
+   },
+   {
+    "year": 2071,
+    "retreat": 0,
+    "buffer": 30.4,
+    "topUp": true
+   },
+   {
+    "year": 2072,
+    "retreat": 0,
+    "buffer": 30.3,
+    "topUp": false
+   },
+   {
+    "year": 2073,
+    "retreat": 0,
+    "buffer": 30.3,
+    "topUp": false
+   },
+   {
+    "year": 2074,
+    "retreat": 0,
+    "buffer": 31.5,
+    "topUp": true
+   },
+   {
+    "year": 2075,
+    "retreat": 0,
+    "buffer": 31.5,
+    "topUp": false
+   }
+  ],
+  "topUps": {
+   "events": 16,
+   "importedYd3": 4000,
+   "backpassedYd3": 0
+  },
+  "sandFirstYd3": 1680,
+  "duneYd3": 180,
+  "plantedAreaM2": 330,
+  "capital": {
+   "low": 403260,
+   "high": 757680,
+   "items": [
+    {
+     "item": "Certified shoreline & beach survey",
+     "low": 10000,
+     "high": 25000
+    },
+    {
+     "item": "Coastal engineering & construction observation",
+     "low": 25000,
+     "high": 60000
+    },
+    {
+     "item": "Permits, sand testing & environmental reports",
+     "low": 20000,
+     "high": 55000
+    },
+    {
+     "item": "Archaeological monitoring",
+     "low": 3000,
+     "high": 10000
+    },
+    {
+     "item": "Compatible sand (beach + dune), delivered & placed",
+     "low": 258000,
+     "high": 432000
+    },
+    {
+     "item": "Native planting",
+     "low": 11550,
+     "high": 26400
+    },
+    {
+     "item": "Establishment irrigation",
+     "low": 3000,
+     "high": 8000
+    },
+    {
+     "item": "Sand fencing",
+     "low": 2000,
+     "high": 5000
+    },
+    {
+     "item": "Beach access path & dune crossover",
+     "low": 2500,
+     "high": 7000
+    },
+    {
+     "item": "Remove / reroute exposed irrigation",
+     "low": 1000,
+     "high": 3000
+    },
+    {
+     "item": "Contingency (20%)",
+     "low": 67210,
+     "high": 126280
+    }
+   ]
+  },
+  "npv50": {
+   "low": 885383,
+   "high": 1687097
   }
- ],
- "tiers": [
+ },
+ "ladder": [
   {
-   "name": "Plants only",
-   "design": {
-    "crestRaise": 0,
-    "initialYd3": 0,
-    "topUpYd3": 0,
-    "interval": 0,
-    "coirTiers": 0
-   },
-   "retreat2076": 36.4,
-   "stressBoth": 68.3,
-   "houseYear": 2050,
-   "capital": {
-    "low": 85254,
-    "high": 219552,
-    "items": [
-     {
-      "item": "Certified shoreline & beach survey",
-      "low": 10000,
-      "high": 25000
-     },
-     {
-      "item": "Coastal engineering & construction observation",
-      "low": 25000,
-      "high": 60000
-     },
-     {
-      "item": "Permits, sand testing & environmental reports",
-      "low": 20000,
-      "high": 55000
-     },
-     {
-      "item": "Archaeological monitoring",
-      "low": 3000,
-      "high": 10000
-     },
-     {
-      "item": "Compatible sand (beach + dune), delivered & placed",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Coir envelopes at the toe",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Native planting",
-      "low": 6545,
-      "high": 14960
-     },
-     {
-      "item": "Establishment irrigation",
-      "low": 3000,
-      "high": 8000
-     },
-     {
-      "item": "Sand fencing",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Beach access path & dune crossover",
-      "low": 2500,
-      "high": 7000
-     },
-     {
-      "item": "Remove / reroute exposed irrigation",
-      "low": 1000,
-      "high": 3000
-     },
-     {
-      "item": "Contingency (20%)",
-      "low": 14209,
-      "high": 36592
-     }
-    ]
-   },
-   "topUp": {
-    "low": 0,
-    "high": 0
-   },
-   "npv50": {
-    "low": 187261,
-    "high": 474569
-   }
-  },
-  {
-   "name": "Lawn dune + plants",
-   "design": {
-    "crestRaise": 0.6,
-    "initialYd3": 0,
-    "topUpYd3": 0,
-    "interval": 0,
-    "coirTiers": 0
-   },
-   "retreat2076": 24.4,
-   "stressBoth": 45,
-   "houseYear": 2057,
-   "capital": {
-    "low": 116993,
-    "high": 280298,
-    "items": [
-     {
-      "item": "Certified shoreline & beach survey",
-      "low": 10000,
-      "high": 25000
-     },
-     {
-      "item": "Coastal engineering & construction observation",
-      "low": 25000,
-      "high": 60000
-     },
-     {
-      "item": "Permits, sand testing & environmental reports",
-      "low": 20000,
-      "high": 55000
-     },
-     {
-      "item": "Archaeological monitoring",
-      "low": 3000,
-      "high": 10000
-     },
-     {
-      "item": "Compatible sand (beach + dune), delivered & placed",
-      "low": 19808,
-      "high": 35013
-     },
-     {
-      "item": "Coir envelopes at the toe",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Native planting",
-      "low": 11186,
-      "high": 25568
-     },
-     {
-      "item": "Establishment irrigation",
-      "low": 3000,
-      "high": 8000
-     },
-     {
-      "item": "Sand fencing",
-      "low": 2000,
-      "high": 5000
-     },
-     {
-      "item": "Beach access path & dune crossover",
-      "low": 2500,
-      "high": 7000
-     },
-     {
-      "item": "Remove / reroute exposed irrigation",
-      "low": 1000,
-      "high": 3000
-     },
-     {
-      "item": "Contingency (20%)",
-      "low": 19499,
-      "high": 46716
-     }
-    ]
-   },
-   "topUp": {
-    "low": 0,
-    "high": 0
-   },
-   "npv50": {
-    "low": 218999,
-    "high": 535314
-   }
-  },
-  {
-   "name": "Cat. I sand + lawn dune",
-   "design": {
-    "crestRaise": 0.6,
-    "initialYd3": 499,
-    "topUpYd3": 250,
-    "interval": 3,
-    "coirTiers": 0
-   },
-   "retreat2076": 0,
-   "stressBoth": 43.1,
-   "houseYear": null,
-   "capital": {
-    "low": 206813,
-    "high": 429998,
-    "items": [
-     {
-      "item": "Certified shoreline & beach survey",
-      "low": 10000,
-      "high": 25000
-     },
-     {
-      "item": "Coastal engineering & construction observation",
-      "low": 25000,
-      "high": 60000
-     },
-     {
-      "item": "Permits, sand testing & environmental reports",
-      "low": 20000,
-      "high": 55000
-     },
-     {
-      "item": "Archaeological monitoring",
-      "low": 3000,
-      "high": 10000
-     },
-     {
-      "item": "Compatible sand (beach + dune), delivered & placed",
-      "low": 94658,
-      "high": 159763
-     },
-     {
-      "item": "Coir envelopes at the toe",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Native planting",
-      "low": 11186,
-      "high": 25568
-     },
-     {
-      "item": "Establishment irrigation",
-      "low": 3000,
-      "high": 8000
-     },
-     {
-      "item": "Sand fencing",
-      "low": 2000,
-      "high": 5000
-     },
-     {
-      "item": "Beach access path & dune crossover",
-      "low": 2500,
-      "high": 7000
-     },
-     {
-      "item": "Remove / reroute exposed irrigation",
-      "low": 1000,
-      "high": 3000
-     },
-     {
-      "item": "Contingency (20%)",
-      "low": 34469,
-      "high": 71666
-     }
-    ]
-   },
-   "topUp": {
-    "low": 46500,
-    "high": 82500
-   },
-   "npv50": {
-    "low": 688936,
-    "high": 1359414
-   }
-  },
-  {
-   "name": "Least cost (central case)",
-   "design": {
-    "crestRaise": 0.4,
-    "initialYd3": 1000,
-    "topUpYd3": 250,
-    "interval": 5,
-    "coirTiers": 0,
-    "r2056": 0,
-    "r2076": 0,
-    "npvLow": 604285.4817960679,
-    "npvHigh": 1199399.4507107818,
-    "capLow": 287532.01505974063
-   },
-   "retreat2076": 0,
-   "stressBoth": 45.3,
-   "houseYear": null,
-   "capital": {
-    "low": 287532,
-    "high": 563380,
-    "items": [
-     {
-      "item": "Certified shoreline & beach survey",
-      "low": 10000,
-      "high": 25000
-     },
-     {
-      "item": "Coastal engineering & construction observation",
-      "low": 25000,
-      "high": 60000
-     },
-     {
-      "item": "Permits, sand testing & environmental reports",
-      "low": 20000,
-      "high": 55000
-     },
-     {
-      "item": "Archaeological monitoring",
-      "low": 3000,
-      "high": 10000
-     },
-     {
-      "item": "Compatible sand (beach + dune), delivered & placed",
-      "low": 163471,
-      "high": 274452
-     },
-     {
-      "item": "Coir envelopes at the toe",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Native planting",
-      "low": 9639,
-      "high": 22032
-     },
-     {
-      "item": "Establishment irrigation",
-      "low": 3000,
-      "high": 8000
-     },
-     {
-      "item": "Sand fencing",
-      "low": 2000,
-      "high": 5000
-     },
-     {
-      "item": "Beach access path & dune crossover",
-      "low": 2500,
-      "high": 7000
-     },
-     {
-      "item": "Remove / reroute exposed irrigation",
-      "low": 1000,
-      "high": 3000
-     },
-     {
-      "item": "Contingency (20%)",
-      "low": 47922,
-      "high": 93897
-     }
-    ]
-   },
-   "topUp": {
-    "low": 46500,
-    "high": 82500
-   },
-   "npv50": {
-    "low": 604285,
-    "high": 1199399
-   }
-  },
-  {
-   "name": "Recommended",
-   "design": {
+   "name": "Earlier design: 1,500 yd³ + 250 yd³ every 3 yr",
+   "d": {
     "crestRaise": 0.6,
     "initialYd3": 1500,
     "topUpYd3": 250,
     "interval": 3,
-    "coirTiers": 0,
-    "r2056": 0,
-    "r2076": 0,
-    "npvLow": 869115.8914174618,
-    "npvHigh": 1659714.3426747406,
-    "capLow": 386992.8385479135,
-    "stress": {
-     "swellsPlus15": 0,
-     "slr1_5m": 0,
-     "both": 0
-    }
+    "backpass": 0,
+    "ownerMonitoring": false
    },
-   "retreat2076": 0,
-   "stressBoth": 0,
-   "houseYear": null,
-   "capital": {
-    "low": 386993,
-    "high": 730298,
-    "items": [
-     {
-      "item": "Certified shoreline & beach survey",
-      "low": 10000,
-      "high": 25000
-     },
-     {
-      "item": "Coastal engineering & construction observation",
-      "low": 25000,
-      "high": 60000
-     },
-     {
-      "item": "Permits, sand testing & environmental reports",
-      "low": 20000,
-      "high": 55000
-     },
-     {
-      "item": "Archaeological monitoring",
-      "low": 3000,
-      "high": 10000
-     },
-     {
-      "item": "Compatible sand (beach + dune), delivered & placed",
-      "low": 244808,
-      "high": 410013
-     },
-     {
-      "item": "Coir envelopes at the toe",
-      "low": 0,
-      "high": 0
-     },
-     {
-      "item": "Native planting",
-      "low": 11186,
-      "high": 25568
-     },
-     {
-      "item": "Establishment irrigation",
-      "low": 3000,
-      "high": 8000
-     },
-     {
-      "item": "Sand fencing",
-      "low": 2000,
-      "high": 5000
-     },
-     {
-      "item": "Beach access path & dune crossover",
-      "low": 2500,
-      "high": 7000
-     },
-     {
-      "item": "Remove / reroute exposed irrigation",
-      "low": 1000,
-      "high": 3000
-     },
-     {
-      "item": "Contingency (20%)",
-      "low": 64499,
-      "high": 121716
-     }
-    ]
+   "npvLow": 885383,
+   "npvHigh": 1687097,
+   "pWithin2m": 0.93,
+   "events": 16
+  },
+  {
+   "name": "+ Top up on a survey trigger instead of a clock",
+   "d": {
+    "crestRaise": 0.6,
+    "initialYd3": 1500,
+    "topUpYd3": 250,
+    "interval": 0,
+    "backpass": 0,
+    "ownerMonitoring": false,
+    "trigger": 10
    },
-   "topUp": {
-    "low": 46500,
-    "high": 82500
+   "npvLow": 571802,
+   "npvHigh": 1130743,
+   "pWithin2m": 0.48,
+   "events": 5
+  },
+  {
+   "name": "+ Owner-led monitoring, engineer check every 3 yr",
+   "d": {
+    "crestRaise": 0.6,
+    "initialYd3": 1500,
+    "topUpYd3": 250,
+    "interval": 0,
+    "backpass": 0,
+    "ownerMonitoring": true,
+    "trigger": 10
    },
-   "npv50": {
-    "low": 869116,
-    "high": 1659714
-   }
+   "npvLow": 554999,
+   "npvHigh": 1090011,
+   "pWithin2m": 0.48,
+   "events": 5
+  },
+  {
+   "name": "+ Recycle drifted sand (backpassing, 30%)",
+   "d": {
+    "crestRaise": 0.6,
+    "initialYd3": 1500,
+    "topUpYd3": 250,
+    "interval": 0,
+    "backpass": 0.3,
+    "ownerMonitoring": true,
+    "trigger": 10
+   },
+   "npvLow": 555804,
+   "npvHigh": 1096208,
+   "pWithin2m": 0.28,
+   "events": 7
+  },
+  {
+   "name": "+ Right-size volumes (optimised)",
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 540996,
+   "npvHigh": 1064839,
+   "pWithin2m": 0.7,
+   "events": 3
+  }
+ ],
+ "shortlist": [
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 540996,
+   "npvHigh": 1064839,
+   "pWithin2m": 0.7,
+   "pHouseSafe": 0.93
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": false
+   },
+   "npvLow": 557799,
+   "npvHigh": 1105572,
+   "pWithin2m": 0.7,
+   "pHouseSafe": 0.93
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 558803,
+   "npvHigh": 1098264,
+   "pWithin2m": 0.69,
+   "pHouseSafe": 0.93
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 750,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 536649,
+   "npvHigh": 1062703,
+   "pWithin2m": 0.66,
+   "pHouseSafe": 0.9
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 750,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": false
+   },
+   "npvLow": 553452,
+   "npvHigh": 1103436,
+   "pWithin2m": 0.66,
+   "pHouseSafe": 0.9
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1500,
+    "topUpYd3": 400,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 557107,
+   "npvHigh": 1090744,
+   "pWithin2m": 0.65,
+   "pHouseSafe": 0.92
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0.3,
+    "ownerMonitoring": true
+   },
+   "npvLow": 557445,
+   "npvHigh": 1100416,
+   "pWithin2m": 0.65,
+   "pHouseSafe": 0.9
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0.3,
+    "ownerMonitoring": true
+   },
+   "npvLow": 563387,
+   "npvHigh": 1106634,
+   "pWithin2m": 0.65,
+   "pHouseSafe": 0.92
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 750,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0.3,
+    "ownerMonitoring": true
+   },
+   "npvLow": 560925,
+   "npvHigh": 1109892,
+   "pWithin2m": 0.64,
+   "pHouseSafe": 0.89
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1500,
+    "topUpYd3": 499,
+    "trigger": 10,
+    "backpass": 0.3,
+    "ownerMonitoring": true
+   },
+   "npvLow": 557686,
+   "npvHigh": 1092625,
+   "pWithin2m": 0.63,
+   "pHouseSafe": 0.91
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1250,
+    "topUpYd3": 400,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 546051,
+   "npvHigh": 1074776,
+   "pWithin2m": 0.62,
+   "pHouseSafe": 0.92
+  },
+  {
+   "d": {
+    "crestRaise": 0.8,
+    "initialYd3": 1000,
+    "topUpYd3": 400,
+    "trigger": 10,
+    "backpass": 0,
+    "ownerMonitoring": true
+   },
+   "npvLow": 556113,
+   "npvHigh": 1095537,
+   "pWithin2m": 0.62,
+   "pHouseSafe": 0.9
   }
  ]
 }
