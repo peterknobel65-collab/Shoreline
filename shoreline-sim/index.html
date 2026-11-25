@@ -1,0 +1,802 @@
+<title>Laulea Shoreline Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a field notebook for one beach. Narrow reading column, wide instrument panels for the simulator. */
+:root {
+  --bg: #f3f6f5;          /* salt-washed off-white */
+  --panel: #ffffff;
+  --ink: #1c272b;         /* basalt */
+  --muted: #5b6a6e;
+  --rule: #d6dfdd;
+  --accent: #0d7377;      /* reef channel teal */
+  --accent-ink: #ffffff;
+  --sand: #d8c49b;
+  --sand-deep: #b89f6c;
+  --water: #2a7fa3;
+  --water-soft: rgba(42,127,163,.18);
+  --veg: #3d7a37;
+  --rock: #3b4447;
+  --soil: #5a4632;
+  --danger: #c0392b;
+  --warn: #b7791f;
+  --ok: #2f7d4a;
+  --l1: #59656a; --l2: #3d8c3a; --l3: #c08a1e; --l4: #0d7f86; --l5: #7a55b3; --l6: #c4533d;
+  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11181b; --panel: #172125; --ink: #e3ecea; --muted: #9aaaae; --rule: #2a383c;
+  --accent: #3fb7b5; --accent-ink: #0c1416; --sand: #a8946b; --sand-deep: #8a7651;
+  --water: #4fa3c7; --water-soft: rgba(79,163,199,.2); --veg: #6db463; --rock: #6f7b80; --soil: #8a6c4c;
+  --danger: #ef6b5b; --warn: #e0a640; --ok: #5cbf7d;
+  --l1: #9aa8ad; --l2: #6fbf63; --l3: #e0aa3e; --l4: #3fc0c4; --l5: #a98be0; --l6: #ee7a62;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11181b; --panel: #172125; --ink: #e3ecea; --muted: #9aaaae; --rule: #2a383c;
+  --accent: #3fb7b5; --accent-ink: #0c1416; --sand: #a8946b; --sand-deep: #8a7651;
+  --water: #4fa3c7; --water-soft: rgba(79,163,199,.2); --veg: #6db463; --rock: #6f7b80; --soil: #8a6c4c;
+  --danger: #ef6b5b; --warn: #e0a640; --ok: #5cbf7d;
+  --l1: #9aa8ad; --l2: #6fbf63; --l3: #e0aa3e; --l4: #3fc0c4; --l5: #a98be0; --l6: #ee7a62;
+  color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px; display: grid; gap: 44px }
+.prose { max-width: 68ch }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0 }
+h1 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); letter-spacing: -.01em }
+h2 { font-size: 1.5rem }
+h3 { font-size: 1.05rem }
+p { margin: 0 }
+.stack { display: grid; gap: 14px }
+.eyebrow { font: 500 .72rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent) }
+.muted { color: var(--muted) }
+.small { font-size: .85rem }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+a { color: var(--accent) }
+header.top { display: grid; gap: 12px }
+.status { display: flex; flex-wrap: wrap; gap: 8px }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 99px; font: 500 .75rem/1.6 var(--mono);
+  border: 1px solid var(--rule); background: var(--panel) }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; display: inline-block }
+.pill.warn { color: var(--warn) } .pill.ok { color: var(--ok) } .pill.danger { color: var(--danger) } .pill.info { color: var(--accent) }
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .9rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding-block: 10px }
+nav.toc a { text-decoration: none; color: var(--ink) }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent) }
+
+.findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px }
+.finding { border-top: 2px solid var(--ink); padding-top: 10px; display: grid; gap: 4px; min-width: 0 }
+.finding b { font-family: var(--display); font-size: 1.02rem }
+
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; min-width: 0 }
+.sim { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; align-items: start }
+@media (max-width: 860px) { .sim { grid-template-columns: 1fr } }
+.controls { display: grid; gap: 18px }
+fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width: 0 }
+legend { font: 600 .78rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 6px }
+.presets { display: grid; gap: 6px }
+.preset { text-align: left; font: inherit; font-size: .9rem; color: var(--ink); background: transparent; border: 1px solid var(--rule); border-radius: 8px;
+  padding: 7px 10px; cursor: pointer; display: grid; grid-template-columns: 12px 1fr; gap: 8px; align-items: center }
+.preset .sw { width: 12px; height: 3px; border-radius: 2px }
+.preset[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 600 }
+.preset:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.ctl { display: grid; gap: 2px }
+.ctl label { display: flex; justify-content: space-between; gap: 10px; font-size: .86rem }
+.ctl output { font: 500 .8rem var(--mono); color: var(--accent); white-space: nowrap }
+.ctl .hint { font-size: .75rem; color: var(--muted) }
+input[type=range] { width: 100%; accent-color: var(--accent) }
+select { font: inherit; font-size: .9rem; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); width: 100% }
+.legalnote { font-size: .82rem; padding: 8px 10px; border-radius: 6px; background: var(--bg); border-left: 3px solid var(--warn) }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px }
+.kpi { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; background: var(--bg) }
+.kpi .v { font: 600 1.35rem/1.2 var(--display); font-variant-numeric: tabular-nums }
+.kpi .k { font-size: .76rem; color: var(--muted) }
+.kpi.bad .v { color: var(--danger) } .kpi.good .v { color: var(--ok) } .kpi.mid .v { color: var(--warn) }
+.plot { display: grid; gap: 8px; min-width: 0 }
+.plot canvas { width: 100%; display: block; touch-action: pan-y }
+.plothead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; align-items: baseline }
+.key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted) }
+.key span::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: var(--c) }
+.cursorinfo { font: .8rem var(--mono); color: var(--muted) }
+
+.tablewrap { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 640px }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top }
+th { font: 600 .74rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+td.num, th.num { text-align: right }
+tr.sel td { background: var(--water-soft) }
+.tag { font: 500 .72rem/1.5 var(--mono); padding: 1px 7px; border-radius: 4px; white-space: nowrap; border: 1px solid currentColor }
+.tag.ok { color: var(--ok) } .tag.warn { color: var(--warn) } .tag.danger { color: var(--danger) }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px }
+ol.steps, ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px }
+.dont { border-left: 3px solid var(--danger); padding-left: 12px }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px }
+.plan svg { width: 100%; height: auto; display: block }
+details { border-top: 1px solid var(--rule); padding-block: 10px }
+summary { cursor: pointer; font-weight: 600 }
+.btn { font: 600 .85rem var(--body); padding: 7px 12px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer }
+.btn.ghost { background: transparent; color: var(--accent) }
+footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 14px }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Kuʻau · Pāʻia · Maui north shore · 20.92° N</span>
+  <h1>Laulea Shoreline Lab</h1>
+  <p class="prose">A physics model of the eroding pocket beach in front of the white house on Laulea Place, driven by
+    real NOAA wave-buoy and tide records. Use it to compare legal, soft ways to stabilise the shoreline: native dune plants,
+    sand nourishment and coir (coconut-fibre) toe protection. You can also test what large winter swells, king tides and sea-level rise do to each option.</p>
+  <div class="status">
+    <span class="pill warn"><i></i>Draft: elevations estimated from photos</span>
+    <span class="pill info"><i></i><span id="dataPill">Real buoy data loading…</span></span>
+    <span class="pill warn"><i></i>Not engineering or legal advice</span>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#site">1 · What the photos show</a>
+    <a href="#sim">2 · Storm simulator</a>
+    <a href="#future">3 · 50-year outlook</a>
+    <a href="#design">4 · Recommended design</a>
+    <a href="#permits">5 · Permits</a>
+    <a href="#method">6 · How the model works</a>
+    <a href="#questions">7 · Open questions</a>
+  </nav>
+</header>
+
+<section id="site" class="stack">
+  <span class="eyebrow">1 · Site reading</span>
+  <h2>What the photos and aerial show</h2>
+  <div class="findings">
+    <div class="finding"><b>A short unprotected gap between two rock walls</b><span class="small">About 34 m of natural shoreline in front of the white house sits between large basalt revetments on both neighbouring lots. Waves wrap around the ends of walls and scour the unprotected stretch next to them. This is called flanking.</span></div>
+    <div class="finding"><b>An active erosion scarp</b><span class="small">A near-vertical cut 0.5–1 m tall through dark soil and coral rubble, with roots and white irrigation pipe hanging out. Fresh debris lies at its base, so waves reached it in the last few weeks.</span></div>
+    <div class="finding"><b>Stripped winter beach</b><span class="small">Little sand is left against the scarp. A lag of cobbles and coral rubble lies on the upper beach, and loose basalt boulders are scattered across it. The boulders are probably stones displaced from the old wall.</span></div>
+    <div class="finding"><b>Exposed to NW winter swell</b><span class="small">The beach faces about 10° (north). Big North Pacific swells arrive from 315–335°, roughly 45° off the shore line, and long-period ones (17–22 s) give the highest runup.</span></div>
+    <div class="finding"><b>Reef and rock bench offshore</b><span class="small">Dark reef and rock patches nearshore break waves before they reach the sand. This protection is the largest uncertainty in the model.</span></div>
+    <div class="finding"><b>Good plants already present</b><span class="small">The berm is covered in pōhuehue (beach morning glory), a native sand binder. Its shallow runners can't hold the bank once waves undercut it.</span></div>
+  </div>
+
+  <div class="panel plan">
+    <div class="plothead"><h3>Plan sketch measured from the aerial (scale bar 20 m)</h3><span class="small muted">Approximate; a survey will replace this</span></div>
+    <svg viewBox="0 0 900 360" role="img" aria-label="Plan sketch: pocket beach about 110 metres long between two revetments, house set about 12 metres behind the scarp">
+      <rect x="0" y="0" width="900" height="360" fill="var(--water-soft)"/>
+      <path d="M0 150 C 180 190, 380 230, 560 255 L 700 262 L 900 250 L 900 360 L 0 360 Z" fill="var(--veg)" opacity=".25"/>
+      <path d="M40 150 C 200 180, 380 215, 560 245 L 640 250 L 690 252 L 690 236 C 600 226, 380 150, 60 110 Z" fill="var(--sand)"/>
+      <path d="M0 140 L 60 150 C 200 180, 380 215, 470 232" stroke="var(--rock)" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path d="M690 256 L 760 206 L 900 196" stroke="var(--rock)" stroke-width="11" fill="none" stroke-linecap="round"/>
+      <path d="M470 236 L 690 254" stroke="var(--danger)" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+      <rect x="520" y="285" width="120" height="58" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="580" y="318" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="Inter, sans-serif">House (461)</text>
+      <line x1="580" y1="248" x2="580" y2="285" stroke="var(--ink)" stroke-width="1"/>
+      <text x="588" y="272" font-size="12" fill="var(--ink)" font-family="IBM Plex Mono, monospace">≈12 m</text>
+      <text x="580" y="226" text-anchor="middle" font-size="12" fill="var(--danger)" font-family="IBM Plex Mono, monospace">eroding scarp ≈34 m</text>
+      <text x="150" y="128" font-size="12" fill="var(--ink)" font-family="IBM Plex Mono, monospace">revetment (463)</text>
+      <text x="770" y="188" font-size="12" fill="var(--ink)" font-family="IBM Plex Mono, monospace">revetment (459)</text>
+      <text x="250" y="200" font-size="12" fill="var(--sand-deep)" font-family="IBM Plex Mono, monospace" transform="rotate(10 250 200)">pocket beach ≈110 m</text>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--water)">
+        <text x="40" y="40">NW swell 315–335°</text>
+        <path d="M60 52 l60 40" stroke="var(--water)" stroke-width="2" marker-end="url(#ar)"/>
+        <path d="M100 52 l60 40" stroke="var(--water)" stroke-width="2" marker-end="url(#ar)"/>
+      </g>
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--water)"/></marker></defs>
+      <g transform="translate(840 50)" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink)">
+        <path d="M0 22 L0 -14" stroke="var(--ink)" stroke-width="2" marker-end="url(#arn)"/><text x="-4" y="-20">N</text>
+      </g>
+      <defs><marker id="arn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink)"/></marker></defs>
+      <text x="16" y="345" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">ocean ↑ · land ↓ · not to exact scale</text>
+    </svg>
+  </div>
+</section>
+
+<section id="sim" class="stack">
+  <span class="eyebrow">2 · Storm simulator</span>
+  <h2>Run a real winter against each design</h2>
+  <p class="prose muted">Pick a design, then a winter of real swells and tides. Scrub across the chart to watch the beach profile at any hour. Change the site numbers under “Site & calibration” once you have survey data.</p>
+  <div class="sim">
+    <div class="panel controls">
+      <fieldset>
+        <legend>Design</legend>
+        <div class="presets" id="presets" role="group" aria-label="Design presets"></div>
+        <div class="legalnote" id="legalNote"></div>
+      </fieldset>
+      <fieldset id="designCtl"><legend>Fine-tune the design</legend></fieldset>
+      <fieldset id="weatherCtl">
+        <legend>Waves &amp; water</legend>
+        <div class="ctl"><label for="season">Wave record</label><select id="season"></select></div>
+      </fieldset>
+      <fieldset id="stormCtl" hidden><legend>Design storm</legend></fieldset>
+      <details>
+        <summary>Site &amp; calibration</summary>
+        <fieldset id="siteCtl" style="margin-top:10px"></fieldset>
+        <p class="small muted" id="calibInfo" style="margin-top:8px"></p>
+      </details>
+    </div>
+
+    <div class="stack" style="min-width:0">
+      <div class="kpis" id="kpis"></div>
+      <div class="panel plot">
+        <div class="plothead"><h3>Beach profile</h3><span class="cursorinfo" id="cursorInfo"></span></div>
+        <canvas id="profile" height="300" aria-label="Cross-section of the beach, scarp and house at the selected hour"></canvas>
+        <div class="key">
+          <span style="--c: var(--water)">still water (tide)</span><span style="--c: var(--accent)">wave runup, top 2%</span>
+          <span style="--c: var(--sand)">sand buffer</span><span style="--c: var(--soil)">scarp / bank</span>
+        </div>
+      </div>
+      <div class="panel plot">
+        <div class="plothead"><h3>The season hour by hour</h3><span class="small muted">Drag or tap to move through time</span></div>
+        <canvas id="series" height="420" aria-label="Offshore wave height, total water level and cumulative scarp retreat through the season"></canvas>
+        <div class="key">
+          <span style="--c: var(--water)">offshore wave height</span><span style="--c: var(--accent)">total water level (tide + runup)</span>
+          <span style="--c: var(--sand-deep)">top of sand at scarp</span><span style="--c: var(--ink)">lawn edge</span><span style="--c: var(--danger)">scarp retreat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="future" class="stack">
+  <span class="eyebrow">3 · Long-term outlook</span>
+  <h2>How far the bank retreats over the next 50 years</h2>
+  <p class="prose muted">Each line cycles through the complete real winters on record, adds sea-level rise, and lets the beach rebuild each summer from the sand that stayed in the pocket. Absolute numbers depend on the calibration retreat rate. The gaps between the lines come from the physics.</p>
+  <div class="sim">
+    <div class="panel controls"><fieldset id="futureCtl"><legend>Outlook settings</legend></fieldset></div>
+    <div class="stack" style="min-width:0">
+      <div class="panel plot">
+        <div class="plothead"><h3>Scarp retreat toward the house</h3><span class="small muted">metres from today's scarp edge</span></div>
+        <canvas id="futureChart" height="340" aria-label="Projected scarp retreat for each design option over time"></canvas>
+        <div class="key" id="futureKey"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel tablewrap">
+    <table id="compare">
+      <thead><tr><th>Option</th><th>Legal path</th><th class="num">Retreat by 2036</th><th class="num">by 2056</th><th>Bank reaches house</th><th class="num">Sand placed</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="design" class="stack">
+  <span class="eyebrow">4 · Recommendation (draft)</span>
+  <h2>A living shoreline, done together with the neighbours</h2>
+  <div class="two">
+    <div class="stack prose">
+      <p>The model and the site point the same way. The bank fails because there is too little sand in front of it, and because it is a short gap between two walls. Plants alone slow the cutting but cannot stop it. Sand placed against the bank does stop it while the sand lasts. The pocket beach spreads any sand along its whole 110 m length within weeks of the first big swell, so sand placed only in front of your lot ends up helping the neighbours too.</p>
+      <ol class="steps">
+        <li><b>Now (this winter):</b> photograph and measure the scarp monthly from fixed points; cap and reroute the exposed irrigation pipes; keep foot traffic off the bank. Ask OCCL about temporary erosion control only if the bank gets within a few metres of the house.</li>
+        <li><b>Survey (next 1–2 months):</b> a licensed surveyor's beach profile and certified shoreline. Those elevations replace the estimates in this model.</li>
+        <li><b>Permit (3–9 months):</b> apply to DLNR-OCCL for small-scale beach nourishment, ideally as a joint application with 459 and 463 covering the whole pocket. Volume and timing will come from the recalibrated model.</li>
+        <li><b>Build (late spring–summer, calm season):</b> place compatible sand as a dune against the bank, add buried coir envelopes at its core if approved, and plant natives densely.</li>
+        <li><b>Maintain:</b> add sand every 3–5 years using the maintenance volume in the permit; replant after big winters; re-run this model with each new survey.</li>
+      </ol>
+    </div>
+    <div class="stack">
+      <div class="panel stack">
+        <h3>Native plants for the dune</h3>
+        <ul class="plain small">
+          <li><b>ʻAkiʻaki</b> (<i>Sporobolus virginicus</i>): low grass, dense roots, binds sand at the front of the dune.</li>
+          <li><b>Pōhuehue</b> (<i>Ipomoea pes-caprae</i>): already on site; long runners trap blowing sand.</li>
+          <li><b>Naupaka kahakai</b> (<i>Scaevola taccada</i>): shrub on the dune crest, deep woody roots.</li>
+          <li><b>Hinahina kū kahakai</b> (<i>Heliotropium anomalum</i>), <b>nanea</b> (<i>Vigna marina</i>), <b>ʻilima</b> (<i>Sida fallax</i>): fill in and hold the surface.</li>
+        </ul>
+        <p class="small muted">Plant on the existing lawn edge and on placed sand, landward of the certified shoreline unless your permit says otherwise.</p>
+      </div>
+      <div class="panel stack dont">
+        <h3>Avoid</h3>
+        <ul class="plain small">
+          <li>New seawalls, revetments or rock piles. State law now prohibits private shoreline hardening where there is a sand beach.</li>
+          <li>Moving the loose boulders, or pushing beach sand up against the bank, without asking OCCL first. The beach is state land, and taking or moving beach sand is restricted.</li>
+          <li>Planting to push the shoreline seaward. Planted vegetation is not supposed to set the shoreline location.</li>
+          <li>Plastic sandbags or geotextile left in place long-term. These need a time-limited permit and removal.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="permits" class="stack">
+  <span class="eyebrow">5 · Permits</span>
+  <h2>Who approves what</h2>
+  <div class="panel tablewrap">
+    <table>
+      <thead><tr><th>Work</th><th>Agency</th><th>Path</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Certified shoreline</td><td>DLNR (State Land Surveyor)</td><td>Survey by licensed surveyor</td><td>Fixes the line between your lot and state land; needed for everything else.</td></tr>
+        <tr><td>Sand placement under 500 yd³</td><td>DLNR-OCCL</td><td>Small-Scale Beach Nourishment, Category I</td><td>Sand must match the beach (grain size, colour, carbonate content) and come from an approved inland source.</td></tr>
+        <tr><td>Larger or multi-lot nourishment</td><td>DLNR-OCCL</td><td>SSBN Category II (under 10,000 yd³ per cell per year)</td><td>Can include future maintenance volumes. Example: Sugar Cove, Maui, holds an SSBN authorisation for up to 8,000 yd³.</td></tr>
+        <tr><td>Work landward of the shoreline</td><td>Maui County Planning (SMA &amp; shoreline setback)</td><td>SMA assessment; setback approval if in the setback area</td><td>Maui's setback rules were updated in August 2024 and now account for erosion and sea-level rise.</td></tr>
+        <tr><td>Coir envelopes, temporary bags</td><td>DLNR-OCCL and County</td><td>Case by case; emergency authorisation is time-limited</td><td>Must be removable.</td></tr>
+        <tr><td>Any digging</td><td>State Historic Preservation Division</td><td>Review when burials are possible</td><td>North-shore Maui dunes can hold iwi kūpuna (ancestral burials).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Sources: <a href="https://dlnr.hawaii.gov/occl/?p=1215" target="_blank" rel="noopener">DLNR-OCCL beach nourishment</a>, <a href="https://dlnr.hawaii.gov/occl/files/2022/06/3000-SSBN.pdf" target="_blank" rel="noopener">SSBN application</a>, <a href="https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2020/SLH2020_Act16.pdf" target="_blank" rel="noopener">Act 16 (2020)</a>, <a href="https://files.hawaii.gov/dbedt/op/czm/program/sma/HCZM-Guidance-SMA-Permitting.pdf" target="_blank" rel="noopener">Hawaiʻi CZM SMA guidance</a>, <a href="https://www.mauicounty.gov/2799/Maui-Island-Shoreline-Rule-Update-2024" target="_blank" rel="noopener">Maui shoreline rules (2024)</a>. Confirm current thresholds with OCCL; they have been revised in recent drafts.</p>
+</section>
+
+<section id="method" class="stack">
+  <span class="eyebrow">6 · Method</span>
+  <h2>How the model works</h2>
+  <div class="two small">
+    <div class="stack">
+      <p><b>Waves.</b> Hourly significant wave height, peak period and direction from NOAA buoy 51205 (PacIOOS/CDIP 187), about 9 mi off Pauwela. Waves are refracted toward the shore normal with Snell's law, then cut by a reef transmission factor.</p>
+      <p><b>Water level.</b> Measured hourly water level at Kahului Harbor (NOAA 1615680), so seasonal highs, king tides and surge are real. Sea-level rise is added on top.</p>
+      <p><b>Runup.</b> Stockdon et al. (2006) 2%-exceedance runup from wave height, period and beach slope. Total water level is tide plus sea-level rise plus runup.</p>
+      <p><b>Impact regime.</b> Sallenger (2000): swash (below the bank), collision (hitting the bank), overwash (over the lawn edge).</p>
+    </div>
+    <div class="stack">
+      <p><b>Erosion.</b> Larson, Erikson &amp; Hanson (2004) wave-impact model, dV/dt = 4·Cs·(TWL − z<sub>toe</sub>)²/T. Sand in front of the bank goes first. The cohesive, rooted bank erodes at a calibrated fraction of that rate, reduced further by plant roots. Retreat equals eroded volume divided by bank height.</p>
+      <p><b>Sand budget.</b> Sand stripped off the beach moves offshore. Most of it returns in calm weather and over summer; part leaves the pocket for good. That loss is the chronic erosion.</p>
+      <p><b>Nourishment spreading.</b> Pelnard-Considère diffusion spreads placed sand along the 110 m pocket. The rock walls at each end keep it inside.</p>
+      <p><b>Calibration.</b> The bank's erodibility is tuned so that “do nothing” matches an observed long-term retreat rate. That rate is 0.3 m/yr until we have yours.</p>
+    </div>
+  </div>
+  <p class="small muted">Tests: <span class="num">npm test</span> checks the runup formula against a hand calculation, sand conservation, calibration accuracy, and that more protection never produces more retreat.</p>
+</section>
+
+<section id="questions" class="stack">
+  <span class="eyebrow">7 · Open questions</span>
+  <h2>What would sharpen the model most</h2>
+  <ol class="steps prose">
+    <li>Which lot is yours: the white house labelled 461 between the two rock walls?</li>
+    <li>How far has the bank moved, and when? Old photos or a date when the lawn edge was at a known object give the calibration rate.</li>
+    <li>Do you have a certified shoreline or topographic survey? Elevations of the bank toe, lawn edge and house floor matter most.</li>
+    <li>Did the scattered boulders come from your property or a neighbour's wall, and was that wall permitted?</li>
+    <li>Are 459 and 463 interested in a joint project? Sand placed in front of one lot spreads across all three.</li>
+    <li>Rough budget and timeline? Sand volume and how often to top it up drive cost.</li>
+  </ol>
+</section>
+
+<footer>Wave data: NOAA NDBC 51205 / PacIOOS-CDIP 187. Water levels: NOAA CO-OPS 1615680 Kahului. Model code and tests live in the Shoreline repository under <span class="num">shoreline-sim/</span>. This is a planning tool, not a stamped engineering design; a licensed coastal engineer and the permitting agencies have the final word.</footer>
+</div>
+
+<script src="model.js"></script>
+<script>
+(function () {
+'use strict';
+var M = window.ShoreModel;
+var YD3 = 0.764555;
+var $ = function (s) { return document.querySelector(s); };
+var css = function (n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); };
+
+var PRESETS = [
+  { id: 'none', label: 'Do nothing', color: '--l1', tone: 'ok', legal: 'No permit', note: 'Today\'s condition: sparse pōhuehue on the bank, no added sand.',
+    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 0 } },
+  { id: 'plants', label: 'Native dune planting', color: '--l2', tone: 'ok', legal: 'Usually allowed', note: 'Dense, mature native cover on the bank. Allowed landward of the shoreline; plants take 1–2 years to root deeply.',
+    design: { vegetation: 1, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 0 } },
+  { id: 'sandFront', label: 'Sand + plants, your frontage', color: '--l3', tone: 'warn', legal: 'OCCL SSBN Cat. I', note: '500 yd³ of compatible sand shaped as a dune against your 34 m of bank, planted. Under 500 yd³: OCCL Small-Scale Beach Nourishment Category I.',
+    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 34, coirHeight: 0, bagHeight: 0 } },
+  { id: 'sandPocket', label: 'Shared sand + plants, whole beach', color: '--l4', tone: 'warn', legal: 'OCCL SSBN Cat. II', note: '3,000 yd³ over the whole 110 m pocket beach with 459 and 463, planted. Category II application; can include maintenance volumes.',
+    design: { vegetation: 1, nourishVolume: 3000 * YD3, nourishLength: 110, coirHeight: 0, bagHeight: 0 } },
+  { id: 'hybrid', label: 'Sand + coir toe + plants', color: '--l5', tone: 'warn', legal: 'OCCL + County review', note: '500 yd³ sand dune with 0.9 m of buried coir envelopes at its toe, planted. Coir is biodegradable but still needs agency approval.',
+    design: { vegetation: 1, nourishVolume: 500 * YD3, nourishLength: 34, coirHeight: 0.9, bagHeight: 0 } },
+  { id: 'bags', label: 'Temporary sand bags', color: '--l6', tone: 'danger', legal: 'Emergency only', note: '1.2 m of geotextile sand bags at the toe. Only with emergency, time-limited authorisation, and they must come out.',
+    design: { vegetation: 0.3, nourishVolume: 0, nourishLength: 34, coirHeight: 0, bagHeight: 1.2 } }
+];
+
+var S = {
+  data: null, full: [], seasonIdx: 0, presetId: 'none', hour: null,
+  site: M.extend(M.DEFAULT_SITE, {}), design: M.extend(M.DEFAULT_DESIGN, PRESETS[0].design),
+  storm: { hs: 6.5, tp: 17, dir: 330, tideOffset: 0.35 },
+  observedRate: 0.3, future: { slr2100: 0.98, renourishEvery: 5, years: 50 },
+  run: null, proj: null
+};
+
+// ---------- controls ----------
+function slider(parent, o) {
+  var id = 'c_' + o.id;
+  var wrap = document.createElement('div'); wrap.className = 'ctl';
+  wrap.innerHTML = '<label for="' + id + '"><span>' + o.label + '</span><output id="' + id + '_o"></output></label>' +
+    '<input type="range" id="' + id + '" min="' + o.min + '" max="' + o.max + '" step="' + o.step + '">' +
+    (o.hint ? '<span class="hint">' + o.hint + '</span>' : '');
+  parent.appendChild(wrap);
+  var inp = wrap.querySelector('input'), out = wrap.querySelector('output');
+  o.sync = function () { var v = o.get(); inp.value = v; out.textContent = o.fmt(v); };
+  inp.addEventListener('input', function () { o.set(parseFloat(inp.value)); out.textContent = o.fmt(parseFloat(inp.value)); o.on(); });
+  o.sync();
+  return o;
+}
+var ft = function (m) { return (m * 3.2808).toFixed(1) + ' ft'; };
+var designCtls = [], siteCtls = [];
+function designChanged() { markCustom(); simulate(); scheduleFuture(); }
+function buildControls() {
+  var dc = $('#designCtl');
+  [
+    { id: 'veg', label: 'Native plant cover', min: 0, max: 1, step: 0.05, get: function () { return S.design.vegetation; }, set: function (v) { S.design.vegetation = v; }, fmt: function (v) { return Math.round(v * 100) + '%'; } },
+    { id: 'nv', label: 'Sand placed', min: 0, max: 6000, step: 100, get: function () { return Math.round(S.design.nourishVolume / YD3 / 100) * 100; }, set: function (v) { S.design.nourishVolume = v * YD3; }, fmt: function (v) { return v.toLocaleString() + ' yd³'; }, hint: '500 yd³ ≈ 25 dump-truck loads' },
+    { id: 'nl', label: 'Spread along', min: 10, max: 110, step: 2, get: function () { return S.design.nourishLength; }, set: function (v) { S.design.nourishLength = v; }, fmt: function (v) { return v + ' m'; }, hint: '34 m = your frontage · 110 m = whole pocket beach' },
+    { id: 'coir', label: 'Coir envelope height', min: 0, max: 1.5, step: 0.1, get: function () { return S.design.coirHeight; }, set: function (v) { S.design.coirHeight = v; }, fmt: function (v) { return v.toFixed(1) + ' m'; } },
+    { id: 'bag', label: 'Temporary sand-bag height', min: 0, max: 1.5, step: 0.1, get: function () { return S.design.bagHeight; }, set: function (v) { S.design.bagHeight = v; }, fmt: function (v) { return v.toFixed(1) + ' m'; } }
+  ].forEach(function (o) { o.on = designChanged; designCtls.push(slider(dc, o)); });
+
+  var wc = $('#weatherCtl');
+  slider(wc, { id: 'ws', label: 'Swell size multiplier', min: 0.7, max: 1.5, step: 0.05, get: function () { return S.site.waveScale; }, set: function (v) { S.site.waveScale = v; }, fmt: function (v) { return '×' + v.toFixed(2); }, hint: '×1.3 ≈ a once-in-decades winter', on: simulate });
+  slider(wc, { id: 'slr', label: 'Sea-level rise', min: 0, max: 1.2, step: 0.05, get: function () { return S.site.slr; }, set: function (v) { S.site.slr = v; }, fmt: function (v) { return '+' + v.toFixed(2) + ' m'; }, hint: 'Hawaiʻi planning target: +0.98 m (3.2 ft) by 2100', on: simulate });
+
+  var sc = $('#stormCtl'), onStorm = function () { if (isStorm()) { simulate(); } };
+  slider(sc, { id: 'shs', label: 'Peak swell height (offshore)', min: 2, max: 9, step: 0.25, get: function () { return S.storm.hs; }, set: function (v) { S.storm.hs = v; }, fmt: function (v) { return v.toFixed(2) + ' m'; }, hint: 'Biggest on record here: 7.7 m (Feb 2019)', on: onStorm });
+  slider(sc, { id: 'stp', label: 'Swell period', min: 8, max: 24, step: 0.5, get: function () { return S.storm.tp; }, set: function (v) { S.storm.tp = v; }, fmt: function (v) { return v.toFixed(1) + ' s'; }, on: onStorm });
+  slider(sc, { id: 'sdir', label: 'Swell direction (from)', min: 280, max: 400, step: 5, get: function () { return S.storm.dir < 200 ? S.storm.dir + 360 : S.storm.dir; }, set: function (v) { S.storm.dir = v % 360; }, fmt: function (v) { return (v % 360) + '°'; }, on: onStorm });
+  slider(sc, { id: 'stide', label: 'Mean water level (tide + anomaly)', min: -0.2, max: 0.8, step: 0.05, get: function () { return S.storm.tideOffset; }, set: function (v) { S.storm.tideOffset = v; }, fmt: function (v) { return '+' + v.toFixed(2) + ' m'; }, hint: 'King tides at Kahului: about +0.4 to +0.5 m above mean sea level', on: onStorm });
+
+  var st = $('#siteCtl'), onSite = function () { recalibrate(); };
+  [
+    { id: 'toe', label: 'Bank toe elevation', min: 0.8, max: 2.6, step: 0.05, k: 'toeElev', fmt: function (v) { return '+' + v.toFixed(2) + ' m'; }, hint: 'above mean sea level' },
+    { id: 'crest', label: 'Lawn-edge elevation', min: 2, max: 5, step: 0.05, k: 'crestElev', fmt: function (v) { return '+' + v.toFixed(2) + ' m'; } },
+    { id: 'house', label: 'Bank edge to house', min: 3, max: 40, step: 0.5, k: 'houseDistance', fmt: function (v) { return v + ' m (' + ft(v) + ')'; } },
+    { id: 'slope', label: 'Beach-face slope', min: 0.04, max: 0.2, step: 0.005, k: 'foreshoreSlope', fmt: function (v) { return '1:' + Math.round(1 / v); } },
+    { id: 'reef', label: 'Wave energy passing the reef', min: 0.2, max: 1, step: 0.05, k: 'reefTransmission', fmt: function (v) { return Math.round(v * 100) + '%'; } }
+  ].forEach(function (o) {
+    o.get = function () { return S.site[o.k]; }; o.set = function (v) { S.site[o.k] = v; }; o.on = onSite; siteCtls.push(slider(st, o));
+  });
+  slider(st, { id: 'rate', label: 'Observed long-term bank retreat', min: 0.05, max: 1.5, step: 0.05, get: function () { return S.observedRate; }, set: function (v) { S.observedRate = v; }, fmt: function (v) { return v.toFixed(2) + ' m/yr'; }, hint: 'Calibration target; 0.3 m/yr is Maui\'s sandy-shore average', on: onSite });
+
+  var fc = $('#futureCtl');
+  slider(fc, { id: 'slr2100', label: 'Sea-level rise by 2100', min: 0, max: 2, step: 0.1, get: function () { return S.future.slr2100; }, set: function (v) { S.future.slr2100 = v; }, fmt: function (v) { return '+' + v.toFixed(1) + ' m (' + ft(v) + ')'; }, on: scheduleFuture });
+  slider(fc, { id: 'ren', label: 'Top up sand every', min: 0, max: 10, step: 1, get: function () { return S.future.renourishEvery; }, set: function (v) { S.future.renourishEvery = v; }, fmt: function (v) { return v === 0 ? 'never' : v + ' yr'; }, hint: 'Applies to options that place sand', on: scheduleFuture });
+
+  var ps = $('#presets');
+  PRESETS.forEach(function (p) {
+    var b = document.createElement('button'); b.className = 'preset'; b.type = 'button'; b.dataset.id = p.id;
+    b.innerHTML = '<span class="sw" style="background:var(' + p.color + ')"></span><span>' + p.label + '</span>';
+    b.addEventListener('click', function () { choosePreset(p.id); });
+    ps.appendChild(b);
+  });
+}
+function choosePreset(id) {
+  var p = PRESETS.find(function (x) { return x.id === id; });
+  S.presetId = id; S.design = M.extend(M.DEFAULT_DESIGN, p.design);
+  designCtls.forEach(function (c) { c.sync(); });
+  updatePresetUI(); simulate(); computeFuture();
+}
+function markCustom() { S.presetId = 'custom'; updatePresetUI(); }
+function updatePresetUI() {
+  document.querySelectorAll('.preset').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.id === S.presetId)); });
+  var p = PRESETS.find(function (x) { return x.id === S.presetId; });
+  $('#legalNote').innerHTML = p ? '<b>' + p.legal + '.</b> ' + p.note : '<b>Custom design.</b> Check the legal path for each element in section 5.';
+}
+function isStorm() { return S.seasonIdx === 'storm'; }
+function currentSeason() {
+  if (isStorm()) return M.designStorm({ hs: S.storm.hs, tp: S.storm.tp, dir: S.storm.dir, tideOffset: S.storm.tideOffset, hours: 96, peakHour: 48 });
+  return S.data.seasons[S.seasonIdx];
+}
+
+// ---------- simulation ----------
+function simulate() {
+  if (!S.data) return;
+  var season = currentSeason();
+  S.run = M.runSeason(S.site, S.design, season);
+  S.run.season = season;
+  if (S.hour == null || S.hour >= S.run.series.length) S.hour = peakHour(S.run.series);
+  renderKpis(); drawSeries(); drawProfile();
+}
+function peakHour(series) {
+  var best = 0, v = -Infinity;
+  series.forEach(function (r, i) { if (r && r.twl > v) { v = r.twl; best = i; } });
+  return best;
+}
+function renderKpis() {
+  var s = S.run.summary, site = S.site;
+  var margin = s.houseMargin;
+  var items = [
+    { k: 'Bank retreat this run', v: s.retreat.toFixed(2) + ' m', c: s.retreat > 1 ? 'bad' : s.retreat > 0.2 ? 'mid' : 'good' },
+    { k: 'Hours waves hit the bank', v: String(s.collisionHours + s.overwashHours), c: s.collisionHours + s.overwashHours > 50 ? 'mid' : 'good' },
+    { k: 'Hours water tops the lawn edge', v: String(s.overwashHours), c: s.overwashHours > 0 ? 'bad' : 'good' },
+    { k: 'Highest water + runup', v: '+' + s.maxTwl.toFixed(2) + ' m', c: s.maxTwl > site.crestElev ? 'bad' : s.maxTwl > site.toeElev ? 'mid' : 'good' },
+    { k: 'Sand left at the bank', v: s.bufferLeft.toFixed(1) + ' m³/m', c: '' },
+    { k: 'Bank to house afterwards', v: margin.toFixed(1) + ' m', c: margin < 5 ? 'bad' : margin < 9 ? 'mid' : 'good' }
+  ];
+  if (s.coirFailed || s.bagFailed) items.push({ k: 'Toe protection', v: 'Failed', c: 'bad' });
+  $('#kpis').innerHTML = items.map(function (i) { return '<div class="kpi ' + i.c + '"><span class="v">' + i.v + '</span><span class="k">' + i.k + '</span></div>'; }).join('');
+}
+
+// ---------- canvas helpers ----------
+function setupCanvas(cv) {
+  if (!cv.dataset.h) cv.dataset.h = cv.getAttribute('height');
+  var dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = parseInt(cv.dataset.h, 10);
+  if (w < 520) h = Math.round(h * 0.82);
+  cv.style.height = h + 'px';
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx: ctx, w: w, h: h };
+}
+function hourDate(season, i) {
+  if (!season.start) return 'hour ' + i;
+  var d = new Date(Date.parse(season.start) + i * 3600e3);
+  return d.toLocaleString('en-US', { timeZone: 'Pacific/Honolulu', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric' }) + ' HST';
+}
+
+// ---------- season chart ----------
+var seriesGeom = null;
+function drawSeries() {
+  var cv = $('#series'), g = setupCanvas(cv), ctx = g.ctx, w = g.w, h = g.h;
+  var ser = S.run.series, n = ser.length, site = S.site;
+  var L = 44, R = 46, T = 10, gap = 26, ph = (h - T - 26 - 2 * gap) / 3;
+  var X = function (i) { return L + (w - L - R) * i / Math.max(1, n - 1); };
+  var ink = css('--ink'), muted = css('--muted'), rule = css('--rule');
+  ctx.clearRect(0, 0, w, h);
+  ctx.font = '11px ' + css('--mono'); ctx.textBaseline = 'middle';
+  var panels = [
+    { top: T, title: 'Offshore wave height (m)' },
+    { top: T + ph + gap, title: 'Water level + runup (m above MSL)' },
+    { top: T + 2 * (ph + gap), title: 'Bank retreat (m)' }
+  ];
+  // scales
+  var hsMax = 1; ser.forEach(function (r) { if (r && r.hs > hsMax) hsMax = r.hs; }); hsMax = Math.ceil(hsMax);
+  var zMin = -1, zMax = Math.max(site.crestElev + 0.8, S.run.summary.maxTwl + 0.3);
+  var rMax = Math.max(0.5, S.run.summary.retreat * 1.15);
+  var bMax = 1; ser.forEach(function (r) { if (r && r.buffer > bMax) bMax = r.buffer; });
+  function yS(p, v, lo, hi) { return p.top + ph - (v - lo) / (hi - lo) * ph; }
+  function axis(p, lo, hi, ticks, fmt) {
+    ctx.strokeStyle = rule; ctx.lineWidth = 1; ctx.fillStyle = muted; ctx.textAlign = 'right';
+    ticks.forEach(function (t) { var y = yS(p, t, lo, hi); ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(w - R, y); ctx.stroke(); ctx.fillText(fmt(t), L - 6, y); });
+    ctx.textAlign = 'left'; ctx.fillStyle = ink; ctx.fillText(p.title, L + 4, p.top + 8);
+  }
+  function tickList(lo, hi, k) { var out = [], step = (hi - lo) / k; for (var i = 0; i <= k; i++) out.push(+(lo + step * i).toFixed(2)); return out; }
+  axis(panels[0], 0, hsMax, tickList(0, hsMax, Math.min(4, hsMax)), function (v) { return v.toFixed(0); });
+  axis(panels[1], zMin, zMax, tickList(zMin, Math.ceil(zMax), Math.ceil(zMax) - zMin), function (v) { return v.toFixed(0); });
+  axis(panels[2], 0, rMax, tickList(0, rMax, 3), function (v) { return v.toFixed(rMax < 3 ? 1 : 0); });
+  // panel 1: Hs
+  ctx.fillStyle = css('--water-soft'); ctx.strokeStyle = css('--water'); ctx.lineWidth = 1.2;
+  pathOf(function (r) { return r.hs; }, panels[0], 0, hsMax, true);
+  // panel 2: collisions shading, levels
+  var p2 = panels[1];
+  ser.forEach(function (r, i) {
+    if (r && r.regime > 0) { ctx.fillStyle = r.regime === 2 ? css('--danger') : css('--warn'); ctx.globalAlpha = .28; ctx.fillRect(X(i) - 0.5, p2.top, Math.max(1, X(1) - X(0)), ph); ctx.globalAlpha = 1; }
+  });
+  ctx.strokeStyle = css('--water'); ctx.lineWidth = 1; pathOf(function (r) { return r.wl; }, p2, zMin, zMax, false);
+  ctx.strokeStyle = css('--accent'); ctx.lineWidth = 1.2; pathOf(function (r) { return r.twl; }, p2, zMin, zMax, false);
+  ctx.strokeStyle = css('--sand-deep'); ctx.lineWidth = 2; pathOf(function (r) { return r.zToe; }, p2, zMin, zMax, false);
+  ctx.setLineDash([5, 4]); ctx.strokeStyle = ink; ctx.lineWidth = 1.2;
+  var yc = yS(p2, site.crestElev, zMin, zMax); ctx.beginPath(); ctx.moveTo(L, yc); ctx.lineTo(w - R, yc); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = ink; ctx.textAlign = 'left'; ctx.fillText('lawn', w - R + 4, yc);
+  // panel 3: retreat + buffer
+  var p3 = panels[2];
+  ctx.strokeStyle = css('--sand-deep'); ctx.lineWidth = 1.2; ctx.globalAlpha = .7;
+  pathOf(function (r) { return r.buffer / bMax * rMax; }, p3, 0, rMax, false); ctx.globalAlpha = 1;
+  ctx.fillStyle = css('--sand-deep'); ctx.textAlign = 'left'; ctx.fillText('sand ' + bMax.toFixed(0) + ' m³/m', w - R + 4 - 44, p3.top + 8);
+  ctx.strokeStyle = css('--danger'); ctx.lineWidth = 2.2; pathOf(function (r) { return r.retreat; }, p3, 0, rMax, false);
+  // x ticks
+  ctx.fillStyle = muted; ctx.textAlign = 'center';
+  var season = S.run.season;
+  if (season.start) {
+    var t0 = Date.parse(season.start);
+    for (var i = 0; i < n; i++) {
+      var d = new Date(t0 + i * 3600e3);
+      if (d.getUTCDate() === 1 && d.getUTCHours() === 10) {
+        ctx.fillText(d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }), X(i), h - 10);
+        ctx.strokeStyle = rule; ctx.beginPath(); ctx.moveTo(X(i), T); ctx.lineTo(X(i), h - 22); ctx.stroke();
+      }
+    }
+  } else {
+    for (var k = 0; k <= n; k += 24) ctx.fillText('day ' + (k / 24 + 1), X(Math.min(k + 12, n - 1)), h - 10);
+  }
+  // cursor
+  if (S.hour != null) {
+    ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(S.hour), T); ctx.lineTo(X(S.hour), h - 22); ctx.stroke();
+  }
+  seriesGeom = { L: L, R: R, w: w, n: n };
+  function pathOf(f, p, lo, hi, fill) {
+    ctx.beginPath(); var started = false, firstX = null, lastX = null;
+    for (var i = 0; i < n; i++) {
+      var r = ser[i]; if (!r) { if (started && !fill) { ctx.stroke(); ctx.beginPath(); started = false; } continue; }
+      var x = X(i), y = yS(p, f(r), lo, hi);
+      if (!started) { ctx.moveTo(x, fill ? yS(p, lo, lo, hi) : y); if (fill) ctx.lineTo(x, y); started = true; if (firstX == null) firstX = x; }
+      else ctx.lineTo(x, y);
+      lastX = x;
+    }
+    if (fill && started) { ctx.lineTo(lastX, yS(p, lo, lo, hi)); ctx.closePath(); ctx.fill(); }
+    else if (started) ctx.stroke();
+  }
+}
+function seriesPointer(ev) {
+  if (!seriesGeom || !S.run) return;
+  var rect = $('#series').getBoundingClientRect(), x = ev.clientX - rect.left;
+  var f = (x - seriesGeom.L) / (seriesGeom.w - seriesGeom.L - seriesGeom.R);
+  S.hour = Math.max(0, Math.min(seriesGeom.n - 1, Math.round(f * (seriesGeom.n - 1))));
+  drawSeries(); drawProfile();
+}
+
+// ---------- profile ----------
+function drawProfile() {
+  var cv = $('#profile'), g = setupCanvas(cv), ctx = g.ctx, w = g.w, h = g.h;
+  var site = S.site, d = S.design, run = S.run, r = run.series[S.hour];
+  var info = $('#cursorInfo');
+  ctx.clearRect(0, 0, w, h);
+  if (!r) { info.textContent = hourDate(run.season, S.hour) + ' · no data'; return; }
+  info.textContent = hourDate(run.season, S.hour) + ' · swell ' + r.hs.toFixed(1) + ' m · at beach ' + r.heff.toFixed(1) + ' m';
+  var xs = r.retreat, beta = site.foreshoreSlope;
+  var xMin = -Math.min(36, (site.toeElev + 1.2) / beta + 8), xMax = site.houseDistance + 9;
+  var zMin = -1.6, zMax = Math.max(site.crestElev + 3.2, r.twl + 0.6);
+  var L = 40, Rr = 12, T = 12, B = 24;
+  var X = function (x) { return L + (x - xMin) / (xMax - xMin) * (w - L - Rr); };
+  var Z = function (z) { return T + (zMax - z) / (zMax - zMin) * (h - T - B); };
+  var muted = css('--muted'), ink = css('--ink');
+  ctx.font = '11px ' + css('--mono'); ctx.textBaseline = 'middle';
+  // grid + axis
+  ctx.strokeStyle = css('--rule'); ctx.fillStyle = muted; ctx.textAlign = 'right'; ctx.lineWidth = 1;
+  for (var z = Math.ceil(zMin); z <= zMax; z++) { ctx.beginPath(); ctx.moveTo(L, Z(z)); ctx.lineTo(w - Rr, Z(z)); ctx.stroke(); ctx.fillText((z > 0 ? '+' : '') + z + ' m', L - 4, Z(z)); }
+  // ground profile function
+  var toe = site.toeElev, crest = site.crestElev;
+  function ground(x) {
+    if (x >= xs) return crest;
+    var zf = toe + beta * (x - xs);
+    return Math.max(zf, -1.05 - (x < xMin + 10 ? 0 : 0));
+  }
+  // water (still) fill
+  var wl = r.wl;
+  ctx.fillStyle = css('--water-soft');
+  ctx.beginPath(); ctx.moveTo(X(xMin), Z(wl));
+  var xw = xMin; for (var x = xMin; x <= xs; x += 0.1) { if (ground(x) <= wl) xw = x; }
+  ctx.lineTo(X(xw), Z(wl)); ctx.lineTo(X(xw), Z(zMin)); ctx.lineTo(X(xMin), Z(zMin)); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = css('--water'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(xMin), Z(wl)); ctx.lineTo(X(xw), Z(wl)); ctx.stroke();
+  // reef / rock under sand offshore
+  ctx.fillStyle = css('--rock'); ctx.globalAlpha = .55;
+  ctx.beginPath(); ctx.moveTo(X(xMin), Z(-1.05)); for (var xr = xMin; xr <= xMin + 12; xr += 1) ctx.lineTo(X(xr), Z(-1.05 + 0.18 * Math.sin(xr * 1.7))); ctx.lineTo(X(xMin + 12), Z(zMin)); ctx.lineTo(X(xMin), Z(zMin)); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+  // sand beach
+  ctx.fillStyle = css('--sand');
+  ctx.beginPath(); ctx.moveTo(X(xMin), Z(zMin));
+  for (var x2 = xMin; x2 <= xs; x2 += 0.25) ctx.lineTo(X(x2), Z(ground(x2)));
+  ctx.lineTo(X(xs), Z(zMin)); ctx.closePath(); ctx.fill();
+  // buffer wedge
+  var dz = r.zToe - toe;
+  if (dz > 0.01) {
+    var run2 = dz / beta;   // wedge meets foreshore at d = -dz/beta (slope 2*beta on top)
+    ctx.fillStyle = css('--sand-deep'); ctx.globalAlpha = .85;
+    ctx.beginPath(); ctx.moveTo(X(xs), Z(toe)); ctx.lineTo(X(xs), Z(r.zToe)); ctx.lineTo(X(xs - run2), Z(toe - beta * run2)); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+  }
+  // bank / lawn block
+  ctx.fillStyle = css('--soil');
+  ctx.beginPath(); ctx.moveTo(X(xs), Z(toe)); ctx.lineTo(X(xs), Z(crest)); ctx.lineTo(X(xMax), Z(crest)); ctx.lineTo(X(xMax), Z(zMin)); ctx.lineTo(X(xs), Z(zMin)); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = css('--sand'); ctx.globalAlpha = .35; ctx.fillRect(X(xs), Z(toe), X(xMax) - X(xs), Z(zMin) - Z(toe)); ctx.globalAlpha = 1;
+  // original bank position
+  if (xs > 0.05) { ctx.setLineDash([4, 4]); ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(0), Z(toe)); ctx.lineTo(X(0), Z(crest)); ctx.lineTo(X(xs), Z(crest)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = ink; ctx.textAlign = 'center'; ctx.fillText('bank today', X(0), Z(crest) - 10); }
+  // vegetation
+  var veg = d.vegetation, nTuft = Math.round(veg * 26);
+  ctx.strokeStyle = css('--veg'); ctx.lineWidth = 1.6;
+  for (var i = 0; i < nTuft; i++) {
+    var xv = xs + 0.3 + i * Math.min(0.55, (site.houseDistance - 1) / Math.max(1, nTuft));
+    if (xv > site.houseDistance - 0.5) break;
+    var zb = Z(crest);
+    ctx.beginPath(); ctx.moveTo(X(xv), zb); ctx.lineTo(X(xv) - 3, zb - 7); ctx.moveTo(X(xv), zb); ctx.lineTo(X(xv) + 3, zb - 8); ctx.moveTo(X(xv), zb); ctx.lineTo(X(xv), zb - 10); ctx.stroke();
+    if (veg > 0.5 && i % 2 === 0) { ctx.globalAlpha = .45; ctx.beginPath(); ctx.moveTo(X(xv), zb); ctx.lineTo(X(xv) + 2, zb + (Z(toe) - zb) * 0.75 * veg); ctx.stroke(); ctx.globalAlpha = 1; }
+  }
+  // toe protection
+  function block(hgt, color, failed) {
+    if (hgt <= 0) return;
+    ctx.fillStyle = color; ctx.strokeStyle = ink; ctx.lineWidth = 1;
+    var bw = 0.9, rows = Math.max(1, Math.round(hgt / 0.3));
+    for (var k = 0; k < rows; k++) {
+      var y0 = toe + k * hgt / rows, x0 = xs - bw - (rows - 1 - k) * 0.15;
+      ctx.globalAlpha = failed ? .35 : 1;
+      ctx.beginPath(); ctx.ellipse(X(x0 + bw / 2), Z(y0 + hgt / rows / 2), (X(x0 + bw) - X(x0)) / 2, (Z(y0) - Z(y0 + hgt / rows)) / 2, 0, 0, Math.PI * 2);
+      ctx.fill(); if (failed) ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    }
+  }
+  var st = run.state, failedCoir = st.coirUsed >= d.coirLifeHours, failedBag = st.bagUsed >= d.bagLifeHours;
+  block(d.bagHeight, css('--rock'), failedBag);
+  block(d.coirHeight, css('--soil'), failedCoir);
+  // house
+  var hx = site.houseDistance;
+  ctx.fillStyle = css('--panel'); ctx.strokeStyle = ink; ctx.lineWidth = 1.5;
+  ctx.fillRect(X(hx), Z(crest + 3.2), X(xMax) - X(hx), Z(crest + 0.3) - Z(crest + 3.2)); ctx.strokeRect(X(hx), Z(crest + 3.2), X(xMax) - X(hx), Z(crest + 0.3) - Z(crest + 3.2));
+  ctx.beginPath(); ctx.moveTo(X(hx) - 6, Z(crest + 3.2)); ctx.lineTo(X(hx + 3), Z(crest + 4.2 > zMax ? zMax : crest + 4.0)); ctx.lineTo(X(xMax), Z(crest + 3.6)); ctx.stroke();
+  ctx.fillStyle = ink; ctx.textAlign = 'center'; ctx.fillText('house', (X(hx) + X(xMax)) / 2, Z(crest + 1.7));
+  // runup swash
+  var twl = r.twl, reach = Math.min(twl, crest + 0.4);
+  ctx.strokeStyle = css('--accent'); ctx.lineWidth = 3; ctx.globalAlpha = .9;
+  ctx.beginPath(); var first = true;
+  for (var x3 = xw; x3 <= xs; x3 += 0.1) { var gz = Math.max(ground(x3), x3 >= xs - (dz / beta) ? Math.min(r.zToe, toe + dz + 2 * beta * (x3 - xs)) : -9); if (gz > reach) break; ctx[first ? 'moveTo' : 'lineTo'](X(x3), Z(gz) - 2); first = false; }
+  if (twl > r.zToe) { ctx.lineTo(X(xs) - 2, Z(Math.min(twl, crest))); }
+  ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.setLineDash([2, 4]); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(xMin), Z(twl)); ctx.lineTo(X(xs), Z(twl)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.textAlign = 'left'; ctx.fillStyle = css('--accent');
+  ctx.fillText('runup ' + (twl >= 0 ? '+' : '') + twl.toFixed(2) + ' m', X(xMin) + 4, Z(twl) - 9);
+  ctx.fillStyle = css('--water'); ctx.fillText('tide ' + (wl >= 0 ? '+' : '') + wl.toFixed(2) + ' m', X(xMin) + 4, Z(wl) + 10);
+  // regime label
+  var lab = r.regime === 2 ? ['Water over the lawn edge', css('--danger')] : r.regime === 1 ? ['Waves cutting the bank', css('--warn')] : ['Swash stays on the beach', css('--ok')];
+  ctx.font = '600 12px ' + css('--body'); ctx.fillStyle = lab[1]; ctx.textAlign = 'left'; ctx.fillText(lab[0], L + 6, T + 8);
+  ctx.font = '11px ' + css('--mono'); ctx.fillStyle = muted; ctx.textAlign = 'left'; ctx.fillText('← ocean', L + 2, h - 10); ctx.textAlign = 'right'; ctx.fillText('land →', w - Rr, h - 10);
+  ctx.textAlign = 'center'; ctx.fillText('bank retreat ' + xs.toFixed(2) + ' m', X(xs), h - 10);
+}
+
+// ---------- calibration + projections ----------
+function recalibrate() {
+  if (!S.data) return;
+  S.site.scarpFactor = M.calibrateScarp(S.site, PRESETS[0].design, S.full, S.observedRate);
+  $('#calibInfo').textContent = 'Calibrated bank erodibility: ' + S.site.scarpFactor.toPrecision(2) + ' × loose sand, so “do nothing” retreats ' + S.observedRate.toFixed(2) +
+    ' m per year on today\'s sea level. Calibrated on ' + S.full.map(function (s) { return s.name.replace('Winter ', ''); }).join(', ') + '.';
+  simulate(); scheduleFuture();
+}
+var futTimer = null;
+function scheduleFuture() { clearTimeout(futTimer); futTimer = setTimeout(computeFuture, 120); }
+function computeFuture() {
+  S.proj = PRESETS.map(function (p) {
+    var des = p.design;
+    return { p: p, rows: M.project(S.site, des, S.full, { years: S.future.years, slr2100: S.future.slr2100, renourishEvery: des.nourishVolume > 0 ? S.future.renourishEvery : 0 }) };
+  });
+  if (S.presetId === 'custom') S.proj.push({ p: { id: 'custom', label: 'Your custom design', color: '--accent', legal: 'See section 5', tone: 'warn', design: S.design },
+    rows: M.project(S.site, S.design, S.full, { years: S.future.years, slr2100: S.future.slr2100, renourishEvery: S.design.nourishVolume > 0 ? S.future.renourishEvery : 0 }) });
+  drawFuture(); renderCompare();
+}
+function drawFuture() {
+  if (!S.proj) return;
+  var cv = $('#futureChart'), g = setupCanvas(cv), ctx = g.ctx, w = g.w, h = g.h;
+  var L = 44, R = 16, T = 14, B = 26, house = S.site.houseDistance;
+  var y0 = S.proj[0].rows[0].year - 1, y1 = S.proj[0].rows[S.proj[0].rows.length - 1].year;
+  var vMax = house * 1.25; S.proj.forEach(function (q) { q.rows.forEach(function (r) { if (r.retreat > vMax) vMax = r.retreat; }); }); vMax = Math.min(vMax, house * 2.2);
+  var X = function (y) { return L + (y - y0) / (y1 - y0) * (w - L - R); };
+  var Y = function (v) { return T + (1 - Math.min(v, vMax) / vMax) * (h - T - B); };
+  ctx.clearRect(0, 0, w, h); ctx.font = '11px ' + css('--mono'); ctx.textBaseline = 'middle';
+  ctx.strokeStyle = css('--rule'); ctx.fillStyle = css('--muted'); ctx.lineWidth = 1;
+  var step = vMax > 30 ? 10 : 5;
+  for (var v = 0; v <= vMax; v += step) { ctx.beginPath(); ctx.moveTo(L, Y(v)); ctx.lineTo(w - R, Y(v)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(v + ' m', L - 4, Y(v)); }
+  ctx.textAlign = 'center';
+  for (var y = Math.ceil(y0 / 10) * 10; y <= y1; y += 10) ctx.fillText(String(y), X(y), h - 10);
+  ctx.fillStyle = css('--danger'); ctx.globalAlpha = .1; ctx.fillRect(L, T, w - L - R, Y(house) - T); ctx.globalAlpha = 1;
+  ctx.setLineDash([6, 4]); ctx.strokeStyle = css('--danger'); ctx.beginPath(); ctx.moveTo(L, Y(house)); ctx.lineTo(w - R, Y(house)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = css('--danger'); ctx.textAlign = 'left'; ctx.fillText('house (' + house + ' m)', L + 6, Y(house) - 9);
+  S.proj.forEach(function (q) {
+    var sel = q.p.id === S.presetId;
+    ctx.strokeStyle = css(q.p.color); ctx.lineWidth = sel ? 3.2 : 1.6; ctx.globalAlpha = sel || S.presetId === 'none' ? 1 : .85;
+    ctx.beginPath(); ctx.moveTo(X(y0), Y(0));
+    q.rows.forEach(function (r) { ctx.lineTo(X(r.year), Y(r.retreat)); });
+    ctx.stroke(); ctx.globalAlpha = 1;
+    var last = q.rows[q.rows.length - 1]; ctx.fillStyle = css(q.p.color); ctx.beginPath(); ctx.arc(X(last.year), Y(last.retreat), sel ? 4 : 2.5, 0, 7); ctx.fill();
+  });
+  $('#futureKey').innerHTML = S.proj.map(function (q) { return '<span style="--c: var(' + q.p.color + ')">' + q.p.label + '</span>'; }).join('');
+}
+function renderCompare() {
+  var house = S.site.houseDistance;
+  $('#compare tbody').innerHTML = S.proj.map(function (q) {
+    var at = function (yr) { var r = q.rows.find(function (x) { return x.year === yr; }); return r ? r.retreat.toFixed(1) + ' m' : '–'; };
+    var hit = q.rows.find(function (x) { return x.retreat >= house; });
+    var vol = q.p.design.nourishVolume / YD3, ren = vol > 0 && S.future.renourishEvery > 0 ? ' + every ' + S.future.renourishEvery + ' yr' : '';
+    return '<tr class="' + (q.p.id === S.presetId ? 'sel' : '') + '"><td><span class="sw" style="display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle;background:var(' + q.p.color + ')"></span>' + q.p.label + '</td>' +
+      '<td><span class="tag ' + q.p.tone + '">' + q.p.legal + '</span></td>' +
+      '<td class="num">' + at(2036) + '</td><td class="num">' + at(2056) + '</td>' +
+      '<td>' + (hit ? '<b style="color:var(--danger)">' + hit.year + '</b>' : 'not by ' + q.rows[q.rows.length - 1].year) + '</td>' +
+      '<td class="num">' + (vol > 0 ? Math.round(vol).toLocaleString() + ' yd³' + ren : '–') + '</td></tr>';
+  }).join('');
+}
+
+// ---------- boot ----------
+function boot() {
+  buildControls(); updatePresetUI();
+  var sel = $('#season');
+  sel.addEventListener('change', function () {
+    S.seasonIdx = sel.value === 'storm' ? 'storm' : parseInt(sel.value, 10); S.hour = null;
+    $('#stormCtl').hidden = !isStorm(); simulate();
+  });
+  var cv = $('#series'), dragging = false;
+  cv.addEventListener('pointerdown', function (e) { dragging = true; seriesPointer(e); });
+  cv.addEventListener('pointermove', function (e) { if (dragging || e.pointerType === 'mouse') seriesPointer(e); });
+  window.addEventListener('pointerup', function () { dragging = false; });
+  var redraw = function () { if (S.run) { drawSeries(); drawProfile(); } drawFuture(); };
+  if (window.ResizeObserver) new ResizeObserver(function () { redraw(); }).observe($('.wrap'));
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw); } catch (e) {}
+  new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  fetch('data/winters.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+    S.data = data;
+    S.full = data.seasons.filter(function (s) { return s.coverage > 0.9; });
+    sel.innerHTML = data.seasons.map(function (s, i) {
+      return '<option value="' + i + '">' + s.name + ' · max ' + s.hs_max.toFixed(1) + ' m' + (s.coverage < 0.9 ? ' · ' + Math.round(s.coverage * 100) + '% data' : '') + '</option>';
+    }).join('') + '<option value="storm">Design storm (you set it)</option>';
+    S.seasonIdx = 0; sel.value = '0';
+    var hrs = data.seasons.reduce(function (a, s) { return a + Math.round(s.hours * s.coverage); }, 0);
+    $('#dataPill').textContent = hrs.toLocaleString() + ' real hours of NOAA wave & tide data';
+    recalibrate();
+  }).catch(function (e) {
+    $('#dataPill').textContent = 'Wave data failed to load (' + e.message + '); showing design storm only';
+    S.data = { seasons: [] }; S.full = [M.designStorm({})]; sel.innerHTML = '<option value="storm">Design storm</option>'; S.seasonIdx = 'storm'; $('#stormCtl').hidden = false; recalibrate();
+  });
+}
+boot();
+})();
+</script>

@@ -51,3 +51,20 @@ Do this only if you want to ask Claude for work directly on GitHub.
 
 Only you (the repository owner) can trigger `@claude`, so other people can't
 get code merged into your project.
+
+---
+
+## Shoreline Lab (`shoreline-sim/`)
+
+A physics model of the eroding beach at Laulea Place (Kuʻau, Maui), driven by
+real NOAA wave-buoy (51205 Pauwela) and tide-gauge (1615680 Kahului) records.
+It compares legal, soft ways to stabilise the shoreline: native dune plants,
+sand nourishment, coir toe protection and temporary sand bags.
+
+- `shoreline-sim/index.html` – interactive simulator page
+- `shoreline-sim/model.js` – the physics (runup, wave-impact erosion, sand budget)
+- `shoreline-sim/data/` – raw NOAA downloads and the packed hourly dataset
+- `shoreline-sim/tools/build_data.py` – rebuilds the dataset (`npm run build-data`)
+- `shoreline-sim/test/` – model tests (`npm test`)
+
+This is a planning tool, not a stamped engineering design.

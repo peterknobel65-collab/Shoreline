@@ -1,0 +1,9 @@
+{
+  "name": "shoreline",
+  "private": true,
+  "description": "Laulea shoreline storm-response model and simulator",
+  "scripts": {
+    "test": "node --test shoreline-sim/test/*.test.js",
+    "build-data": "python3 shoreline-sim/tools/build_data.py"
+  }
+}
